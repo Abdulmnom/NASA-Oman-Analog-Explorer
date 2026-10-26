@@ -1,0 +1,1001 @@
+{
+  "generated": "2026-10-22T09:31:22+00:00",
+  "provisional": true,
+  "config": {
+    "criteria": {
+      "terrain": {
+        "weight": 0.4,
+        "features": [
+          "slope_deg",
+          "roughness_m",
+          "relief_m"
+        ]
+      },
+      "mineralogy": {
+        "weight": 0.4,
+        "features": [
+          "serpentine_index",
+          "carbonate_index",
+          "chloride_index"
+        ]
+      },
+      "surface": {
+        "weight": 0.2,
+        "features": [
+          "albedo",
+          "thermal_inertia"
+        ]
+      }
+    },
+    "feature_ranges": {
+      "slope_deg": [
+        0,
+        30
+      ],
+      "roughness_m": [
+        0,
+        150
+      ],
+      "relief_m": [
+        0,
+        2000
+      ],
+      "serpentine_index": [
+        0,
+        1
+      ],
+      "carbonate_index": [
+        0,
+        1
+      ],
+      "chloride_index": [
+        0,
+        1
+      ],
+      "albedo": [
+        0,
+        0.5
+      ],
+      "thermal_inertia": [
+        0,
+        2000
+      ]
+    },
+    "common_terrain_scale_m": 463,
+    "confidence": {
+      "resolution_k": 0.1,
+      "resolution_min_factor": 0.5
+    }
+  },
+  "earth_sites": [
+    {
+      "id": "samail_ophiolite",
+      "name": {
+        "en": "Samail Ophiolite (Wadi Tayin)",
+        "ar": "أفيوليت سمائل (وادي الطائيين)"
+      },
+      "lat": 22.9,
+      "lon": 58.45,
+      "bbox_km": 10,
+      "role": "analog",
+      "intended_targets": [
+        "jezero_crater",
+        "nili_fossae"
+      ],
+      "resolution_m": {
+        "terrain": 30,
+        "mineralogy": 60,
+        "surface": 500
+      },
+      "sources": {
+        "terrain": [
+          "NASADEM"
+        ],
+        "mineralogy": [
+          "EMIT",
+          "ASTER"
+        ],
+        "surface": [
+          "MODIS"
+        ]
+      },
+      "card": {
+        "en": {
+          "summary": "Earth's best-exposed slab of oceanic mantle. Peridotite reacting with water and CO2 makes serpentine and carbonate veins, the same mineral pair CRISM maps around Jezero and Nili Fossae.",
+          "similarities": [
+            "Serpentine + Mg-carbonate assemblage formed by water-rock reaction",
+            "Olivine-rich ultramafic bedrock",
+            "Arid, sparsely vegetated surface with good spectral exposure"
+          ],
+          "differences": [
+            "Active weathering under today's Earth atmosphere and occasional rain",
+            "Rock here is much denser and more cohesive than Martian regolith (higher thermal inertia)",
+            "Tectonic origin (ophiolite obduction) has no direct Martian equivalent"
+          ]
+        },
+        "ar": {
+          "summary": "أفضل مقطع مكشوف لوشاح المحيط على الأرض. تفاعل البيريدوتيت مع الماء وثاني أكسيد الكربون يُكوّن السربنتين وعروق الكربونات، وهو نفس الثنائي المعدني الذي رصده CRISM حول Jezero و Nili Fossae.",
+          "similarities": [
+            "تجمّع السربنتين وكربونات المغنيسيوم الناتج عن تفاعل الماء مع الصخر",
+            "صخور فوق مافية غنية بالأوليفين",
+            "سطح جاف قليل الغطاء النباتي يسمح بقراءة طيفية جيدة"
+          ],
+          "differences": [
+            "تجوية نشطة تحت غلاف الأرض الجوي الحالي وأمطار متقطعة",
+            "الصخور هنا أكثر كثافة وتماسكاً من تربة المريخ (قصور حراري أعلى)",
+            "الأصل التكتوني (زحف الأفيوليت) لا يوجد له مقابل مباشر على المريخ"
+          ]
+        }
+      },
+      "body": "earth",
+      "raw": {
+        "slope_deg": 12,
+        "roughness_m": 45,
+        "relief_m": 600,
+        "serpentine_index": 0.7,
+        "carbonate_index": 0.5,
+        "chloride_index": 0.05,
+        "albedo": 0.18,
+        "thermal_inertia": 1200
+      },
+      "provisional": true
+    },
+    {
+      "id": "umm_as_samim",
+      "name": {
+        "en": "Umm as Samim (salt sabkha)",
+        "ar": "أم السميم (سبخة ملحية)"
+      },
+      "lat": 21.3,
+      "lon": 56.0,
+      "bbox_km": 15,
+      "role": "analog",
+      "intended_targets": [
+        "terra_sirenum_chlorides"
+      ],
+      "resolution_m": {
+        "terrain": 30,
+        "mineralogy": 60,
+        "surface": 500
+      },
+      "sources": {
+        "terrain": [
+          "NASADEM"
+        ],
+        "mineralogy": [
+          "EMIT"
+        ],
+        "surface": [
+          "MODIS"
+        ]
+      },
+      "card": {
+        "en": {
+          "summary": "One of the largest inland sabkhas in Arabia: a flat, salt-crusted basin where evaporating groundwater leaves chloride and sulfate salts - a template for the chloride deposits found in Mars' southern highlands.",
+          "similarities": [
+            "Chloride-dominated evaporite crust in a closed basin",
+            "Extremely flat, low-relief surface",
+            "Hyper-arid setting where salts persist at the surface"
+          ],
+          "differences": [
+            "Shallow groundwater still feeds the sabkha today",
+            "Mars chloride deposits are billions of years old and partly buried by dust",
+            "Moist salt crust raises thermal inertia compared with dry Martian deposits"
+          ]
+        },
+        "ar": {
+          "summary": "من أكبر السبخات الداخلية في الجزيرة العربية: حوض مسطح مغطى بقشرة ملحية، تتبخر فيه المياه الجوفية تاركة أملاح الكلوريد والكبريتات، وهو نموذج لرواسب الكلوريد في المرتفعات الجنوبية للمريخ.",
+          "similarities": [
+            "قشرة تبخرية يغلب عليها الكلوريد داخل حوض مغلق",
+            "سطح شديد الاستواء قليل التضاريس",
+            "بيئة شديدة الجفاف تبقى فيها الأملاح على السطح"
+          ],
+          "differences": [
+            "ما زالت المياه الجوفية الضحلة تغذي السبخة حالياً",
+            "رواسب الكلوريد على المريخ عمرها مليارات السنين ومغطاة جزئياً بالغبار",
+            "رطوبة القشرة الملحية ترفع القصور الحراري مقارنة برواسب المريخ الجافة"
+          ]
+        }
+      },
+      "body": "earth",
+      "raw": {
+        "slope_deg": 0.3,
+        "roughness_m": 1,
+        "relief_m": 15,
+        "serpentine_index": 0.0,
+        "carbonate_index": 0.15,
+        "chloride_index": 0.85,
+        "albedo": 0.42,
+        "thermal_inertia": 900
+      },
+      "provisional": true
+    },
+    {
+      "id": "sharqiya_sands",
+      "name": {
+        "en": "Sharqiya (Wahiba) Sands",
+        "ar": "رمال الشرقية (وهيبة)"
+      },
+      "lat": 21.9,
+      "lon": 58.8,
+      "bbox_km": 15,
+      "role": "analog",
+      "intended_targets": [
+        "nili_patera_dunes"
+      ],
+      "resolution_m": {
+        "terrain": 30,
+        "mineralogy": 60,
+        "surface": 500
+      },
+      "sources": {
+        "terrain": [
+          "NASADEM"
+        ],
+        "mineralogy": [
+          "EMIT"
+        ],
+        "surface": [
+          "MODIS"
+        ]
+      },
+      "card": {
+        "en": {
+          "summary": "A sand sea of linear and star dunes a short drive from Ibra. Dune spacing, height and loose-sand thermal behaviour can be compared with the dark basaltic dune field of Nili Patera.",
+          "similarities": [
+            "Wind-built dune forms (linear and barchanoid ridges)",
+            "Loose, unconsolidated sand with low thermal inertia",
+            "Comparable dune heights and ridge spacing at the 463 m scale"
+          ],
+          "differences": [
+            "Quartz-carbonate sand is bright; Nili Patera sand is dark basalt",
+            "Earth's thicker atmosphere moves sand far more often",
+            "Vegetation and moisture stabilise parts of the Wahiba dunes"
+          ]
+        },
+        "ar": {
+          "summary": "بحر رملي من الكثبان الطولية والنجمية على مسافة قصيرة من إبراء. يمكن مقارنة تباعد الكثبان وارتفاعها وسلوك الرمل الحراري بحقل الكثبان البازلتية الداكنة في Nili Patera.",
+          "similarities": [
+            "أشكال كثبان تبنيها الرياح (حافات طولية وهلالية)",
+            "رمل مفكك غير متماسك بقصور حراري منخفض",
+            "ارتفاعات وتباعد كثبان متقاربة عند مقياس 463 م"
+          ],
+          "differences": [
+            "رمل الكوارتز والكربونات فاتح اللون، بينما رمل Nili Patera بازلت داكن",
+            "غلاف الأرض الأكثف يحرّك الرمل بشكل أكثر تكراراً بكثير",
+            "النباتات والرطوبة تثبّت أجزاء من كثبان وهيبة"
+          ]
+        }
+      },
+      "body": "earth",
+      "raw": {
+        "slope_deg": 3,
+        "roughness_m": 12,
+        "relief_m": 120,
+        "serpentine_index": 0.0,
+        "carbonate_index": 0.2,
+        "chloride_index": 0.02,
+        "albedo": 0.35,
+        "thermal_inertia": 350
+      },
+      "provisional": true
+    },
+    {
+      "id": "dhofar_amadee18",
+      "name": {
+        "en": "Dhofar desert (AMADEE-18 site)",
+        "ar": "صحراء ظفار (موقع AMADEE-18)"
+      },
+      "lat": 18.8,
+      "lon": 55.4,
+      "bbox_km": 10,
+      "role": "reference",
+      "intended_targets": [],
+      "resolution_m": {
+        "terrain": 30,
+        "mineralogy": 60,
+        "surface": 500
+      },
+      "sources": {
+        "terrain": [
+          "NASADEM"
+        ],
+        "mineralogy": [
+          "EMIT",
+          "ASTER"
+        ],
+        "surface": [
+          "MODIS"
+        ]
+      },
+      "card": {
+        "en": {
+          "summary": "Host of the Austrian Space Forum's AMADEE-18 Mars analog mission (2018). Because experts already chose it as Mars-like, we use it to check the index: a sound method should give it a high score.",
+          "similarities": [
+            "Gravel plains, wadis and evaporite patches typical of Mars field-test sites",
+            "Hyper-arid, nearly vegetation-free surface",
+            "Already validated by a real analog mission"
+          ],
+          "differences": [
+            "Not tied to one specific Martian landing site",
+            "Earth-normal gravity, atmosphere and radiation",
+            "Exact AMADEE-18 coordinates are approximate in this dataset"
+          ]
+        },
+        "ar": {
+          "summary": "استضاف مهمة AMADEE-18 للمنتدى الفضائي النمساوي لمحاكاة المريخ (2018). بما أن الخبراء اختاروه مسبقاً كموقع شبيه بالمريخ، نستخدمه لاختبار المؤشر: المنهجية السليمة يجب أن تمنحه درجة عالية.",
+          "similarities": [
+            "سهول حصوية وأودية وبقع تبخرية مثل مواقع اختبارات المريخ الميدانية",
+            "سطح شديد الجفاف يكاد يخلو من النباتات",
+            "سبق التحقق منه في مهمة محاكاة حقيقية"
+          ],
+          "differences": [
+            "غير مرتبط بموقع هبوط محدد على المريخ",
+            "جاذبية وغلاف جوي وإشعاع أرضي طبيعي",
+            "إحداثيات موقع AMADEE-18 تقريبية في هذه البيانات"
+          ]
+        }
+      },
+      "body": "earth",
+      "raw": {
+        "slope_deg": 1.5,
+        "roughness_m": 5,
+        "relief_m": 60,
+        "serpentine_index": 0.05,
+        "carbonate_index": 0.35,
+        "chloride_index": 0.1,
+        "albedo": 0.32,
+        "thermal_inertia": 700
+      },
+      "provisional": true
+    },
+    {
+      "id": "jebel_shams",
+      "name": {
+        "en": "Jebel Shams / Wadi Ghul",
+        "ar": "جبل شمس / وادي غول"
+      },
+      "lat": 23.24,
+      "lon": 57.26,
+      "bbox_km": 10,
+      "role": "analog",
+      "intended_targets": [
+        "moon_south_pole"
+      ],
+      "resolution_m": {
+        "terrain": 30,
+        "mineralogy": 60,
+        "surface": 500
+      },
+      "sources": {
+        "terrain": [
+          "NASADEM"
+        ],
+        "mineralogy": [
+          "EMIT"
+        ],
+        "surface": [
+          "MODIS"
+        ]
+      },
+      "card": {
+        "en": {
+          "summary": "Oman's highest summit and a canyon nearly 1 km deep. We compare only its slopes and relief with the rugged crater rims near the lunar south pole, where Artemis plans to land.",
+          "similarities": [
+            "Steep slopes and kilometre-scale relief over short distances",
+            "Rough, blocky terrain relevant to rover traverses and landing hazards"
+          ],
+          "differences": [
+            "Terrain only: limestone geology has nothing in common with lunar anorthosite",
+            "No permanently shadowed regions or water-ice cold traps",
+            "Erosion by water carved the canyon; lunar relief comes from impacts"
+          ]
+        },
+        "ar": {
+          "summary": "أعلى قمة في عُمان وأخدود يقارب عمقه كيلومتراً. نقارن انحداراته وتضاريسه فقط مع حواف الفوهات الوعرة قرب القطب الجنوبي للقمر، حيث تخطط Artemis للهبوط.",
+          "similarities": [
+            "انحدارات حادة وتضاريس بارتفاع كيلومتري خلال مسافات قصيرة",
+            "أرض وعرة صخرية مهمة لدراسة مسارات العربات ومخاطر الهبوط"
+          ],
+          "differences": [
+            "التضاريس فقط: جيولوجيا الحجر الجيري لا تشبه صخور الأنورثوسيت القمرية",
+            "لا توجد مناطق مظللة دائماً أو مصائد باردة للجليد",
+            "الأخدود نحتته المياه، بينما تضاريس القمر ناتجة عن الاصطدامات"
+          ]
+        }
+      },
+      "body": "earth",
+      "raw": {
+        "slope_deg": 22,
+        "roughness_m": 110,
+        "relief_m": 1800,
+        "serpentine_index": 0.05,
+        "carbonate_index": 0.6,
+        "chloride_index": 0.0,
+        "albedo": 0.28,
+        "thermal_inertia": 1500
+      },
+      "provisional": true
+    }
+  ],
+  "targets": [
+    {
+      "id": "jezero_crater",
+      "body": "mars",
+      "name": {
+        "en": "Jezero Crater",
+        "ar": "فوهة Jezero"
+      },
+      "lat": 18.44,
+      "lon": 77.45,
+      "bbox_km": 10,
+      "resolution_m": {
+        "terrain": 463,
+        "mineralogy": 18,
+        "surface": 100
+      },
+      "sources": {
+        "terrain": [
+          "MOLA",
+          "HiRISE DTM"
+        ],
+        "mineralogy": [
+          "CRISM"
+        ],
+        "surface": [
+          "THEMIS",
+          "TES"
+        ]
+      },
+      "card": {
+        "en": {
+          "summary": "Ancient lake basin and delta explored by NASA's Perseverance rover since 2021. Orbital spectra show olivine, Mg-carbonate and serpentine on the crater floor and rim."
+        },
+        "ar": {
+          "summary": "حوض بحيرة قديمة ودلتا تستكشفه عربة Perseverance التابعة لـ NASA منذ 2021. تُظهر الأطياف المدارية الأوليفين وكربونات المغنيسيوم والسربنتين في أرضية الفوهة وحافتها."
+        }
+      },
+      "raw": {
+        "slope_deg": 3,
+        "roughness_m": 15,
+        "relief_m": 600,
+        "serpentine_index": 0.15,
+        "carbonate_index": 0.45,
+        "chloride_index": 0.02,
+        "albedo": 0.2,
+        "thermal_inertia": 380
+      },
+      "provisional": true
+    },
+    {
+      "id": "nili_fossae",
+      "body": "mars",
+      "name": {
+        "en": "Nili Fossae",
+        "ar": "Nili Fossae"
+      },
+      "lat": 21.5,
+      "lon": 74.5,
+      "bbox_km": 15,
+      "resolution_m": {
+        "terrain": 463,
+        "mineralogy": 18,
+        "surface": 100
+      },
+      "sources": {
+        "terrain": [
+          "MOLA"
+        ],
+        "mineralogy": [
+          "CRISM"
+        ],
+        "surface": [
+          "THEMIS",
+          "TES"
+        ]
+      },
+      "card": {
+        "en": {
+          "summary": "Troughs west of Jezero holding the strongest serpentine and carbonate signatures on Mars - often called the best Martian counterpart to an ophiolite."
+        },
+        "ar": {
+          "summary": "أخاديد غرب Jezero تحتوي أقوى بصمات السربنتين والكربونات على المريخ، وغالباً ما تُعد أقرب مقابل مريخي للأفيوليت."
+        }
+      },
+      "raw": {
+        "slope_deg": 8,
+        "roughness_m": 40,
+        "relief_m": 700,
+        "serpentine_index": 0.4,
+        "carbonate_index": 0.5,
+        "chloride_index": 0.02,
+        "albedo": 0.17,
+        "thermal_inertia": 450
+      },
+      "provisional": true
+    },
+    {
+      "id": "terra_sirenum_chlorides",
+      "body": "mars",
+      "name": {
+        "en": "Terra Sirenum chloride deposits",
+        "ar": "رواسب الكلوريد في Terra Sirenum"
+      },
+      "lat": -30.5,
+      "lon": -173.0,
+      "bbox_km": 15,
+      "resolution_m": {
+        "terrain": 463,
+        "mineralogy": 100,
+        "surface": 100
+      },
+      "sources": {
+        "terrain": [
+          "MOLA"
+        ],
+        "mineralogy": [
+          "THEMIS",
+          "CRISM"
+        ],
+        "surface": [
+          "THEMIS",
+          "TES"
+        ]
+      },
+      "card": {
+        "en": {
+          "summary": "Bright, flat patches in low-lying basins of the southern highlands, interpreted as chloride salts left by evaporating ponds or groundwater."
+        },
+        "ar": {
+          "summary": "بقع فاتحة مسطحة في أحواض منخفضة بالمرتفعات الجنوبية، تُفسَّر على أنها أملاح كلوريد خلّفها تبخر برك أو مياه جوفية."
+        }
+      },
+      "raw": {
+        "slope_deg": 1.5,
+        "roughness_m": 6,
+        "relief_m": 80,
+        "serpentine_index": 0.0,
+        "carbonate_index": 0.02,
+        "chloride_index": 0.7,
+        "albedo": 0.24,
+        "thermal_inertia": 400
+      },
+      "provisional": true
+    },
+    {
+      "id": "nili_patera_dunes",
+      "body": "mars",
+      "name": {
+        "en": "Nili Patera dune field",
+        "ar": "حقل كثبان Nili Patera"
+      },
+      "lat": 8.8,
+      "lon": 67.3,
+      "bbox_km": 10,
+      "resolution_m": {
+        "terrain": 463,
+        "mineralogy": 18,
+        "surface": 100
+      },
+      "sources": {
+        "terrain": [
+          "MOLA",
+          "HiRISE DTM"
+        ],
+        "mineralogy": [
+          "CRISM"
+        ],
+        "surface": [
+          "THEMIS",
+          "TES"
+        ]
+      },
+      "card": {
+        "en": {
+          "summary": "Active dark basaltic dunes inside the Syrtis Major caldera; HiRISE has measured them migrating, making it a key site for Martian wind processes."
+        },
+        "ar": {
+          "summary": "كثبان بازلتية داكنة نشطة داخل كالديرا Syrtis Major، رصد HiRISE حركتها، مما يجعلها موقعاً أساسياً لدراسة عمليات الرياح على المريخ."
+        }
+      },
+      "raw": {
+        "slope_deg": 2.5,
+        "roughness_m": 10,
+        "relief_m": 150,
+        "serpentine_index": 0.0,
+        "carbonate_index": 0.0,
+        "chloride_index": 0.0,
+        "albedo": 0.1,
+        "thermal_inertia": 250
+      },
+      "provisional": true
+    },
+    {
+      "id": "moon_south_pole",
+      "body": "moon",
+      "name": {
+        "en": "Lunar south pole (Shackleton rim)",
+        "ar": "القطب الجنوبي للقمر (حافة Shackleton)"
+      },
+      "lat": -89.5,
+      "lon": 130.0,
+      "bbox_km": 10,
+      "resolution_m": {
+        "terrain": 20,
+        "mineralogy": null,
+        "surface": null
+      },
+      "sources": {
+        "terrain": [
+          "LOLA"
+        ],
+        "mineralogy": [],
+        "surface": []
+      },
+      "card": {
+        "en": {
+          "summary": "Crater rims and ridges near Shackleton, inside the Artemis candidate landing regions. Compared on terrain only: slopes and relief that drive landing and rover safety."
+        },
+        "ar": {
+          "summary": "حواف فوهات وتلال قرب Shackleton ضمن مناطق الهبوط المرشحة لـ Artemis. تُقارن بالتضاريس فقط: الانحدار والتضاريس التي تحدد سلامة الهبوط والتنقل."
+        }
+      },
+      "raw": {
+        "slope_deg": 18,
+        "roughness_m": 90,
+        "relief_m": 1900,
+        "serpentine_index": null,
+        "carbonate_index": null,
+        "chloride_index": null,
+        "albedo": null,
+        "thermal_inertia": null
+      },
+      "provisional": true
+    }
+  ],
+  "scores": [
+    {
+      "earth": "samail_ophiolite",
+      "target": "jezero_crater",
+      "overall": 0.8043333333333335,
+      "confidence": 0.7261637028295358,
+      "coverage": 1.0,
+      "resolution_factor": 0.7261637028295358,
+      "per_criterion": {
+        "terrain": 0.8333333333333334,
+        "mineralogy": 0.79,
+        "surface": 0.775
+      }
+    },
+    {
+      "earth": "samail_ophiolite",
+      "target": "nili_fossae",
+      "overall": 0.8876111111111111,
+      "confidence": 0.7261637028295358,
+      "coverage": 1.0,
+      "resolution_factor": 0.7261637028295358,
+      "per_criterion": {
+        "terrain": 0.9277777777777777,
+        "mineralogy": 0.89,
+        "surface": 0.8025
+      }
+    },
+    {
+      "earth": "samail_ophiolite",
+      "target": "terra_sirenum_chlorides",
+      "overall": 0.588,
+      "confidence": 0.7661637028295358,
+      "coverage": 1.0,
+      "resolution_factor": 0.7661637028295358,
+      "per_criterion": {
+        "terrain": 0.71,
+        "mineralogy": 0.39000000000000007,
+        "surface": 0.74
+      }
+    },
+    {
+      "earth": "samail_ophiolite",
+      "target": "nili_patera_dunes",
+      "overall": 0.6665000000000001,
+      "confidence": 0.7261637028295358,
+      "coverage": 1.0,
+      "resolution_factor": 0.7261637028295358,
+      "per_criterion": {
+        "terrain": 0.7416666666666667,
+        "mineralogy": 0.5833333333333334,
+        "surface": 0.6825000000000001
+      }
+    },
+    {
+      "earth": "samail_ophiolite",
+      "target": "moon_south_pole",
+      "overall": 0.6166666666666667,
+      "confidence": 0.3766014999711538,
+      "coverage": 0.4,
+      "resolution_factor": 0.9415037499278844,
+      "per_criterion": {
+        "terrain": 0.6166666666666667,
+        "mineralogy": null,
+        "surface": null
+      }
+    },
+    {
+      "earth": "umm_as_samim",
+      "target": "jezero_crater",
+      "overall": 0.6958888888888889,
+      "confidence": 0.7261637028295358,
+      "coverage": 1.0,
+      "resolution_factor": 0.7261637028295358,
+      "per_criterion": {
+        "terrain": 0.841388888888889,
+        "mineralogy": 0.5733333333333333,
+        "surface": 0.65
+      }
+    },
+    {
+      "earth": "umm_as_samim",
+      "target": "nili_fossae",
+      "overall": 0.6022777777777778,
+      "confidence": 0.7261637028295358,
+      "coverage": 1.0,
+      "resolution_factor": 0.7261637028295358,
+      "per_criterion": {
+        "terrain": 0.7136111111111111,
+        "mineralogy": 0.47333333333333333,
+        "surface": 0.6375
+      }
+    },
+    {
+      "earth": "umm_as_samim",
+      "target": "terra_sirenum_chlorides",
+      "overall": 0.8875555555555557,
+      "confidence": 0.7661637028295358,
+      "coverage": 1.0,
+      "resolution_factor": 0.7661637028295358,
+      "per_criterion": {
+        "terrain": 0.9647222222222224,
+        "mineralogy": 0.9066666666666667,
+        "surface": 0.6950000000000001
+      }
+    },
+    {
+      "earth": "umm_as_samim",
+      "target": "nili_patera_dunes",
+      "overall": 0.743388888888889,
+      "confidence": 0.7261637028295358,
+      "coverage": 1.0,
+      "resolution_factor": 0.7261637028295358,
+      "per_criterion": {
+        "terrain": 0.9330555555555556,
+        "mineralogy": 0.6666666666666666,
+        "surface": 0.5175000000000001
+      }
+    },
+    {
+      "earth": "umm_as_samim",
+      "target": "moon_south_pole",
+      "overall": 0.2913888888888889,
+      "confidence": 0.3766014999711538,
+      "coverage": 0.4,
+      "resolution_factor": 0.9415037499278844,
+      "per_criterion": {
+        "terrain": 0.2913888888888889,
+        "mineralogy": null,
+        "surface": null
+      }
+    },
+    {
+      "earth": "sharqiya_sands",
+      "target": "jezero_crater",
+      "overall": 0.8805000000000001,
+      "confidence": 0.7261637028295358,
+      "coverage": 1.0,
+      "resolution_factor": 0.7261637028295358,
+      "per_criterion": {
+        "terrain": 0.9133333333333334,
+        "mineralogy": 0.8666666666666667,
+        "surface": 0.8425
+      }
+    },
+    {
+      "earth": "sharqiya_sands",
+      "target": "nili_fossae",
+      "overall": 0.7798888888888889,
+      "confidence": 0.7261637028295358,
+      "coverage": 1.0,
+      "resolution_factor": 0.7261637028295358,
+      "per_criterion": {
+        "terrain": 0.7855555555555555,
+        "mineralogy": 0.7666666666666666,
+        "surface": 0.795
+      }
+    },
+    {
+      "earth": "sharqiya_sands",
+      "target": "terra_sirenum_chlorides",
+      "overall": 0.8461666666666666,
+      "confidence": 0.7661637028295358,
+      "coverage": 1.0,
+      "resolution_factor": 0.7661637028295358,
+      "per_criterion": {
+        "terrain": 0.9633333333333333,
+        "mineralogy": 0.7133333333333333,
+        "surface": 0.8775
+      }
+    },
+    {
+      "earth": "sharqiya_sands",
+      "target": "nili_patera_dunes",
+      "overall": 0.9096666666666667,
+      "confidence": 0.7261637028295358,
+      "coverage": 1.0,
+      "resolution_factor": 0.7261637028295358,
+      "per_criterion": {
+        "terrain": 0.985,
+        "mineralogy": 0.9266666666666667,
+        "surface": 0.725
+      }
+    },
+    {
+      "earth": "sharqiya_sands",
+      "target": "moon_south_pole",
+      "overall": 0.36333333333333334,
+      "confidence": 0.3766014999711538,
+      "coverage": 0.4,
+      "resolution_factor": 0.9415037499278844,
+      "per_criterion": {
+        "terrain": 0.36333333333333334,
+        "mineralogy": null,
+        "surface": null
+      }
+    },
+    {
+      "earth": "dhofar_amadee18",
+      "target": "jezero_crater",
+      "overall": 0.8711111111111112,
+      "confidence": 0.7261637028295358,
+      "coverage": 1.0,
+      "resolution_factor": 0.7261637028295358,
+      "per_criterion": {
+        "terrain": 0.8711111111111111,
+        "mineralogy": 0.9066666666666666,
+        "surface": 0.8
+      }
+    },
+    {
+      "earth": "dhofar_amadee18",
+      "target": "nili_fossae",
+      "overall": 0.7775,
+      "confidence": 0.7261637028295358,
+      "coverage": 1.0,
+      "resolution_factor": 0.7261637028295358,
+      "per_criterion": {
+        "terrain": 0.7433333333333333,
+        "mineralogy": 0.8066666666666666,
+        "surface": 0.7875
+      }
+    },
+    {
+      "earth": "dhofar_amadee18",
+      "target": "terra_sirenum_chlorides",
+      "overall": 0.8361111111111112,
+      "confidence": 0.7661637028295358,
+      "coverage": 1.0,
+      "resolution_factor": 0.7661637028295358,
+      "per_criterion": {
+        "terrain": 0.9944444444444445,
+        "mineralogy": 0.6733333333333333,
+        "surface": 0.845
+      }
+    },
+    {
+      "earth": "dhofar_amadee18",
+      "target": "nili_patera_dunes",
+      "overall": 0.8519444444444444,
+      "confidence": 0.7261637028295358,
+      "coverage": 1.0,
+      "resolution_factor": 0.7261637028295358,
+      "per_criterion": {
+        "terrain": 0.9627777777777777,
+        "mineralogy": 0.8333333333333334,
+        "surface": 0.6675
+      }
+    },
+    {
+      "earth": "dhofar_amadee18",
+      "target": "moon_south_pole",
+      "overall": 0.3211111111111112,
+      "confidence": 0.3766014999711538,
+      "coverage": 0.4,
+      "resolution_factor": 0.9415037499278844,
+      "per_criterion": {
+        "terrain": 0.3211111111111112,
+        "mineralogy": null,
+        "surface": null
+      }
+    },
+    {
+      "earth": "jebel_shams",
+      "target": "jezero_crater",
+      "overall": 0.6431111111111112,
+      "confidence": 0.7261637028295358,
+      "coverage": 1.0,
+      "resolution_factor": 0.7261637028295358,
+      "per_criterion": {
+        "terrain": 0.37777777777777777,
+        "mineralogy": 0.91,
+        "surface": 0.6399999999999999
+      }
+    },
+    {
+      "earth": "jebel_shams",
+      "target": "nili_fossae",
+      "overall": 0.6650555555555555,
+      "confidence": 0.7261637028295358,
+      "coverage": 1.0,
+      "resolution_factor": 0.7261637028295358,
+      "per_criterion": {
+        "terrain": 0.5055555555555556,
+        "mineralogy": 0.8433333333333333,
+        "surface": 0.6275
+      }
+    },
+    {
+      "earth": "jebel_shams",
+      "target": "terra_sirenum_chlorides",
+      "overall": 0.46144444444444455,
+      "confidence": 0.7661637028295358,
+      "coverage": 1.0,
+      "resolution_factor": 0.7661637028295358,
+      "per_criterion": {
+        "terrain": 0.25444444444444453,
+        "mineralogy": 0.5566666666666668,
+        "surface": 0.6849999999999999
+      }
+    },
+    {
+      "earth": "jebel_shams",
+      "target": "nili_patera_dunes",
+      "overall": 0.5292777777777778,
+      "confidence": 0.7261637028295358,
+      "coverage": 1.0,
+      "resolution_factor": 0.7261637028295358,
+      "per_criterion": {
+        "terrain": 0.28611111111111115,
+        "mineralogy": 0.7833333333333333,
+        "surface": 0.5075
+      }
+    },
+    {
+      "earth": "jebel_shams",
+      "target": "moon_south_pole",
+      "overall": 0.8944444444444445,
+      "confidence": 0.3766014999711538,
+      "coverage": 0.4,
+      "resolution_factor": 0.9415037499278844,
+      "per_criterion": {
+        "terrain": 0.8944444444444445,
+        "mineralogy": null,
+        "surface": null
+      }
+    }
+  ],
+  "validation": {
+    "reference_site": "dhofar_amadee18",
+    "mean_mars_similarity": {
+      "samail_ophiolite": 0.7366111111111111,
+      "umm_as_samim": 0.7322777777777778,
+      "sharqiya_sands": 0.8540555555555556,
+      "dhofar_amadee18": 0.8341666666666667,
+      "jebel_shams": 0.5747222222222222
+    },
+    "ranking": [
+      "sharqiya_sands",
+      "dhofar_amadee18",
+      "samail_ophiolite",
+      "umm_as_samim",
+      "jebel_shams"
+    ],
+    "reference_rank": 2
+  }
+}

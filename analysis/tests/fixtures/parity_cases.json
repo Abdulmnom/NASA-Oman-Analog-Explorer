@@ -1,0 +1,4970 @@
+{
+ "config": {
+  "criteria": {
+   "terrain": {
+    "weight": 0.4,
+    "features": [
+     "slope_deg",
+     "roughness_m",
+     "relief_m"
+    ]
+   },
+   "mineralogy": {
+    "weight": 0.4,
+    "features": [
+     "serpentine_index",
+     "carbonate_index",
+     "chloride_index"
+    ]
+   },
+   "surface": {
+    "weight": 0.2,
+    "features": [
+     "albedo",
+     "thermal_inertia"
+    ]
+   }
+  },
+  "feature_ranges": {
+   "slope_deg": [
+    0,
+    30
+   ],
+   "roughness_m": [
+    0,
+    150
+   ],
+   "relief_m": [
+    0,
+    2000
+   ],
+   "serpentine_index": [
+    0,
+    1
+   ],
+   "carbonate_index": [
+    0,
+    1
+   ],
+   "chloride_index": [
+    0,
+    1
+   ],
+   "albedo": [
+    0,
+    0.5
+   ],
+   "thermal_inertia": [
+    0,
+    2000
+   ]
+  },
+  "common_terrain_scale_m": 463,
+  "confidence": {
+   "resolution_k": 0.1,
+   "resolution_min_factor": 0.5
+  }
+ },
+ "cases": [
+  {
+   "earth": "samail_ophiolite",
+   "target": "jezero_crater",
+   "raw_a": {
+    "slope_deg": 12,
+    "roughness_m": 45,
+    "relief_m": 600,
+    "serpentine_index": 0.7,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.05,
+    "albedo": 0.18,
+    "thermal_inertia": 1200
+   },
+   "raw_b": {
+    "slope_deg": 3,
+    "roughness_m": 15,
+    "relief_m": 600,
+    "serpentine_index": 0.15,
+    "carbonate_index": 0.45,
+    "chloride_index": 0.02,
+    "albedo": 0.2,
+    "thermal_inertia": 380
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.8043333333333335,
+    "confidence": 0.7261637028295358,
+    "coverage": 1.0,
+    "resolution_factor": 0.7261637028295358,
+    "per_criterion": {
+     "terrain": 0.8333333333333334,
+     "mineralogy": 0.79,
+     "surface": 0.775
+    }
+   }
+  },
+  {
+   "earth": "samail_ophiolite",
+   "target": "nili_fossae",
+   "raw_a": {
+    "slope_deg": 12,
+    "roughness_m": 45,
+    "relief_m": 600,
+    "serpentine_index": 0.7,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.05,
+    "albedo": 0.18,
+    "thermal_inertia": 1200
+   },
+   "raw_b": {
+    "slope_deg": 8,
+    "roughness_m": 40,
+    "relief_m": 700,
+    "serpentine_index": 0.4,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.02,
+    "albedo": 0.17,
+    "thermal_inertia": 450
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.8876111111111111,
+    "confidence": 0.7261637028295358,
+    "coverage": 1.0,
+    "resolution_factor": 0.7261637028295358,
+    "per_criterion": {
+     "terrain": 0.9277777777777777,
+     "mineralogy": 0.89,
+     "surface": 0.8025
+    }
+   }
+  },
+  {
+   "earth": "samail_ophiolite",
+   "target": "terra_sirenum_chlorides",
+   "raw_a": {
+    "slope_deg": 12,
+    "roughness_m": 45,
+    "relief_m": 600,
+    "serpentine_index": 0.7,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.05,
+    "albedo": 0.18,
+    "thermal_inertia": 1200
+   },
+   "raw_b": {
+    "slope_deg": 1.5,
+    "roughness_m": 6,
+    "relief_m": 80,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.02,
+    "chloride_index": 0.7,
+    "albedo": 0.24,
+    "thermal_inertia": 400
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 100,
+    "surface": 100
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.588,
+    "confidence": 0.7661637028295358,
+    "coverage": 1.0,
+    "resolution_factor": 0.7661637028295358,
+    "per_criterion": {
+     "terrain": 0.71,
+     "mineralogy": 0.39000000000000007,
+     "surface": 0.74
+    }
+   }
+  },
+  {
+   "earth": "samail_ophiolite",
+   "target": "nili_patera_dunes",
+   "raw_a": {
+    "slope_deg": 12,
+    "roughness_m": 45,
+    "relief_m": 600,
+    "serpentine_index": 0.7,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.05,
+    "albedo": 0.18,
+    "thermal_inertia": 1200
+   },
+   "raw_b": {
+    "slope_deg": 2.5,
+    "roughness_m": 10,
+    "relief_m": 150,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.0,
+    "chloride_index": 0.0,
+    "albedo": 0.1,
+    "thermal_inertia": 250
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.6665000000000001,
+    "confidence": 0.7261637028295358,
+    "coverage": 1.0,
+    "resolution_factor": 0.7261637028295358,
+    "per_criterion": {
+     "terrain": 0.7416666666666667,
+     "mineralogy": 0.5833333333333334,
+     "surface": 0.6825000000000001
+    }
+   }
+  },
+  {
+   "earth": "samail_ophiolite",
+   "target": "moon_south_pole",
+   "raw_a": {
+    "slope_deg": 12,
+    "roughness_m": 45,
+    "relief_m": 600,
+    "serpentine_index": 0.7,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.05,
+    "albedo": 0.18,
+    "thermal_inertia": 1200
+   },
+   "raw_b": {
+    "slope_deg": 18,
+    "roughness_m": 90,
+    "relief_m": 1900,
+    "serpentine_index": null,
+    "carbonate_index": null,
+    "chloride_index": null,
+    "albedo": null,
+    "thermal_inertia": null
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 20,
+    "mineralogy": null,
+    "surface": null
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.6166666666666667,
+    "confidence": 0.3766014999711538,
+    "coverage": 0.4,
+    "resolution_factor": 0.9415037499278844,
+    "per_criterion": {
+     "terrain": 0.6166666666666667,
+     "mineralogy": null,
+     "surface": null
+    }
+   }
+  },
+  {
+   "earth": "umm_as_samim",
+   "target": "jezero_crater",
+   "raw_a": {
+    "slope_deg": 0.3,
+    "roughness_m": 1,
+    "relief_m": 15,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.15,
+    "chloride_index": 0.85,
+    "albedo": 0.42,
+    "thermal_inertia": 900
+   },
+   "raw_b": {
+    "slope_deg": 3,
+    "roughness_m": 15,
+    "relief_m": 600,
+    "serpentine_index": 0.15,
+    "carbonate_index": 0.45,
+    "chloride_index": 0.02,
+    "albedo": 0.2,
+    "thermal_inertia": 380
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.6958888888888889,
+    "confidence": 0.7261637028295358,
+    "coverage": 1.0,
+    "resolution_factor": 0.7261637028295358,
+    "per_criterion": {
+     "terrain": 0.841388888888889,
+     "mineralogy": 0.5733333333333333,
+     "surface": 0.65
+    }
+   }
+  },
+  {
+   "earth": "umm_as_samim",
+   "target": "nili_fossae",
+   "raw_a": {
+    "slope_deg": 0.3,
+    "roughness_m": 1,
+    "relief_m": 15,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.15,
+    "chloride_index": 0.85,
+    "albedo": 0.42,
+    "thermal_inertia": 900
+   },
+   "raw_b": {
+    "slope_deg": 8,
+    "roughness_m": 40,
+    "relief_m": 700,
+    "serpentine_index": 0.4,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.02,
+    "albedo": 0.17,
+    "thermal_inertia": 450
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.6022777777777778,
+    "confidence": 0.7261637028295358,
+    "coverage": 1.0,
+    "resolution_factor": 0.7261637028295358,
+    "per_criterion": {
+     "terrain": 0.7136111111111111,
+     "mineralogy": 0.47333333333333333,
+     "surface": 0.6375
+    }
+   }
+  },
+  {
+   "earth": "umm_as_samim",
+   "target": "terra_sirenum_chlorides",
+   "raw_a": {
+    "slope_deg": 0.3,
+    "roughness_m": 1,
+    "relief_m": 15,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.15,
+    "chloride_index": 0.85,
+    "albedo": 0.42,
+    "thermal_inertia": 900
+   },
+   "raw_b": {
+    "slope_deg": 1.5,
+    "roughness_m": 6,
+    "relief_m": 80,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.02,
+    "chloride_index": 0.7,
+    "albedo": 0.24,
+    "thermal_inertia": 400
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 100,
+    "surface": 100
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.8875555555555557,
+    "confidence": 0.7661637028295358,
+    "coverage": 1.0,
+    "resolution_factor": 0.7661637028295358,
+    "per_criterion": {
+     "terrain": 0.9647222222222224,
+     "mineralogy": 0.9066666666666667,
+     "surface": 0.6950000000000001
+    }
+   }
+  },
+  {
+   "earth": "umm_as_samim",
+   "target": "nili_patera_dunes",
+   "raw_a": {
+    "slope_deg": 0.3,
+    "roughness_m": 1,
+    "relief_m": 15,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.15,
+    "chloride_index": 0.85,
+    "albedo": 0.42,
+    "thermal_inertia": 900
+   },
+   "raw_b": {
+    "slope_deg": 2.5,
+    "roughness_m": 10,
+    "relief_m": 150,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.0,
+    "chloride_index": 0.0,
+    "albedo": 0.1,
+    "thermal_inertia": 250
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.743388888888889,
+    "confidence": 0.7261637028295358,
+    "coverage": 1.0,
+    "resolution_factor": 0.7261637028295358,
+    "per_criterion": {
+     "terrain": 0.9330555555555556,
+     "mineralogy": 0.6666666666666666,
+     "surface": 0.5175000000000001
+    }
+   }
+  },
+  {
+   "earth": "umm_as_samim",
+   "target": "moon_south_pole",
+   "raw_a": {
+    "slope_deg": 0.3,
+    "roughness_m": 1,
+    "relief_m": 15,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.15,
+    "chloride_index": 0.85,
+    "albedo": 0.42,
+    "thermal_inertia": 900
+   },
+   "raw_b": {
+    "slope_deg": 18,
+    "roughness_m": 90,
+    "relief_m": 1900,
+    "serpentine_index": null,
+    "carbonate_index": null,
+    "chloride_index": null,
+    "albedo": null,
+    "thermal_inertia": null
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 20,
+    "mineralogy": null,
+    "surface": null
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.2913888888888889,
+    "confidence": 0.3766014999711538,
+    "coverage": 0.4,
+    "resolution_factor": 0.9415037499278844,
+    "per_criterion": {
+     "terrain": 0.2913888888888889,
+     "mineralogy": null,
+     "surface": null
+    }
+   }
+  },
+  {
+   "earth": "sharqiya_sands",
+   "target": "jezero_crater",
+   "raw_a": {
+    "slope_deg": 3,
+    "roughness_m": 12,
+    "relief_m": 120,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.2,
+    "chloride_index": 0.02,
+    "albedo": 0.35,
+    "thermal_inertia": 350
+   },
+   "raw_b": {
+    "slope_deg": 3,
+    "roughness_m": 15,
+    "relief_m": 600,
+    "serpentine_index": 0.15,
+    "carbonate_index": 0.45,
+    "chloride_index": 0.02,
+    "albedo": 0.2,
+    "thermal_inertia": 380
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.8805000000000001,
+    "confidence": 0.7261637028295358,
+    "coverage": 1.0,
+    "resolution_factor": 0.7261637028295358,
+    "per_criterion": {
+     "terrain": 0.9133333333333334,
+     "mineralogy": 0.8666666666666667,
+     "surface": 0.8425
+    }
+   }
+  },
+  {
+   "earth": "sharqiya_sands",
+   "target": "nili_fossae",
+   "raw_a": {
+    "slope_deg": 3,
+    "roughness_m": 12,
+    "relief_m": 120,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.2,
+    "chloride_index": 0.02,
+    "albedo": 0.35,
+    "thermal_inertia": 350
+   },
+   "raw_b": {
+    "slope_deg": 8,
+    "roughness_m": 40,
+    "relief_m": 700,
+    "serpentine_index": 0.4,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.02,
+    "albedo": 0.17,
+    "thermal_inertia": 450
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.7798888888888889,
+    "confidence": 0.7261637028295358,
+    "coverage": 1.0,
+    "resolution_factor": 0.7261637028295358,
+    "per_criterion": {
+     "terrain": 0.7855555555555555,
+     "mineralogy": 0.7666666666666666,
+     "surface": 0.795
+    }
+   }
+  },
+  {
+   "earth": "sharqiya_sands",
+   "target": "terra_sirenum_chlorides",
+   "raw_a": {
+    "slope_deg": 3,
+    "roughness_m": 12,
+    "relief_m": 120,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.2,
+    "chloride_index": 0.02,
+    "albedo": 0.35,
+    "thermal_inertia": 350
+   },
+   "raw_b": {
+    "slope_deg": 1.5,
+    "roughness_m": 6,
+    "relief_m": 80,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.02,
+    "chloride_index": 0.7,
+    "albedo": 0.24,
+    "thermal_inertia": 400
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 100,
+    "surface": 100
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.8461666666666666,
+    "confidence": 0.7661637028295358,
+    "coverage": 1.0,
+    "resolution_factor": 0.7661637028295358,
+    "per_criterion": {
+     "terrain": 0.9633333333333333,
+     "mineralogy": 0.7133333333333333,
+     "surface": 0.8775
+    }
+   }
+  },
+  {
+   "earth": "sharqiya_sands",
+   "target": "nili_patera_dunes",
+   "raw_a": {
+    "slope_deg": 3,
+    "roughness_m": 12,
+    "relief_m": 120,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.2,
+    "chloride_index": 0.02,
+    "albedo": 0.35,
+    "thermal_inertia": 350
+   },
+   "raw_b": {
+    "slope_deg": 2.5,
+    "roughness_m": 10,
+    "relief_m": 150,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.0,
+    "chloride_index": 0.0,
+    "albedo": 0.1,
+    "thermal_inertia": 250
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.9096666666666667,
+    "confidence": 0.7261637028295358,
+    "coverage": 1.0,
+    "resolution_factor": 0.7261637028295358,
+    "per_criterion": {
+     "terrain": 0.985,
+     "mineralogy": 0.9266666666666667,
+     "surface": 0.725
+    }
+   }
+  },
+  {
+   "earth": "sharqiya_sands",
+   "target": "moon_south_pole",
+   "raw_a": {
+    "slope_deg": 3,
+    "roughness_m": 12,
+    "relief_m": 120,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.2,
+    "chloride_index": 0.02,
+    "albedo": 0.35,
+    "thermal_inertia": 350
+   },
+   "raw_b": {
+    "slope_deg": 18,
+    "roughness_m": 90,
+    "relief_m": 1900,
+    "serpentine_index": null,
+    "carbonate_index": null,
+    "chloride_index": null,
+    "albedo": null,
+    "thermal_inertia": null
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 20,
+    "mineralogy": null,
+    "surface": null
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.36333333333333334,
+    "confidence": 0.3766014999711538,
+    "coverage": 0.4,
+    "resolution_factor": 0.9415037499278844,
+    "per_criterion": {
+     "terrain": 0.36333333333333334,
+     "mineralogy": null,
+     "surface": null
+    }
+   }
+  },
+  {
+   "earth": "dhofar_amadee18",
+   "target": "jezero_crater",
+   "raw_a": {
+    "slope_deg": 1.5,
+    "roughness_m": 5,
+    "relief_m": 60,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.35,
+    "chloride_index": 0.1,
+    "albedo": 0.32,
+    "thermal_inertia": 700
+   },
+   "raw_b": {
+    "slope_deg": 3,
+    "roughness_m": 15,
+    "relief_m": 600,
+    "serpentine_index": 0.15,
+    "carbonate_index": 0.45,
+    "chloride_index": 0.02,
+    "albedo": 0.2,
+    "thermal_inertia": 380
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.8711111111111112,
+    "confidence": 0.7261637028295358,
+    "coverage": 1.0,
+    "resolution_factor": 0.7261637028295358,
+    "per_criterion": {
+     "terrain": 0.8711111111111111,
+     "mineralogy": 0.9066666666666666,
+     "surface": 0.8
+    }
+   }
+  },
+  {
+   "earth": "dhofar_amadee18",
+   "target": "nili_fossae",
+   "raw_a": {
+    "slope_deg": 1.5,
+    "roughness_m": 5,
+    "relief_m": 60,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.35,
+    "chloride_index": 0.1,
+    "albedo": 0.32,
+    "thermal_inertia": 700
+   },
+   "raw_b": {
+    "slope_deg": 8,
+    "roughness_m": 40,
+    "relief_m": 700,
+    "serpentine_index": 0.4,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.02,
+    "albedo": 0.17,
+    "thermal_inertia": 450
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.7775,
+    "confidence": 0.7261637028295358,
+    "coverage": 1.0,
+    "resolution_factor": 0.7261637028295358,
+    "per_criterion": {
+     "terrain": 0.7433333333333333,
+     "mineralogy": 0.8066666666666666,
+     "surface": 0.7875
+    }
+   }
+  },
+  {
+   "earth": "dhofar_amadee18",
+   "target": "terra_sirenum_chlorides",
+   "raw_a": {
+    "slope_deg": 1.5,
+    "roughness_m": 5,
+    "relief_m": 60,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.35,
+    "chloride_index": 0.1,
+    "albedo": 0.32,
+    "thermal_inertia": 700
+   },
+   "raw_b": {
+    "slope_deg": 1.5,
+    "roughness_m": 6,
+    "relief_m": 80,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.02,
+    "chloride_index": 0.7,
+    "albedo": 0.24,
+    "thermal_inertia": 400
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 100,
+    "surface": 100
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.8361111111111112,
+    "confidence": 0.7661637028295358,
+    "coverage": 1.0,
+    "resolution_factor": 0.7661637028295358,
+    "per_criterion": {
+     "terrain": 0.9944444444444445,
+     "mineralogy": 0.6733333333333333,
+     "surface": 0.845
+    }
+   }
+  },
+  {
+   "earth": "dhofar_amadee18",
+   "target": "nili_patera_dunes",
+   "raw_a": {
+    "slope_deg": 1.5,
+    "roughness_m": 5,
+    "relief_m": 60,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.35,
+    "chloride_index": 0.1,
+    "albedo": 0.32,
+    "thermal_inertia": 700
+   },
+   "raw_b": {
+    "slope_deg": 2.5,
+    "roughness_m": 10,
+    "relief_m": 150,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.0,
+    "chloride_index": 0.0,
+    "albedo": 0.1,
+    "thermal_inertia": 250
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.8519444444444444,
+    "confidence": 0.7261637028295358,
+    "coverage": 1.0,
+    "resolution_factor": 0.7261637028295358,
+    "per_criterion": {
+     "terrain": 0.9627777777777777,
+     "mineralogy": 0.8333333333333334,
+     "surface": 0.6675
+    }
+   }
+  },
+  {
+   "earth": "dhofar_amadee18",
+   "target": "moon_south_pole",
+   "raw_a": {
+    "slope_deg": 1.5,
+    "roughness_m": 5,
+    "relief_m": 60,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.35,
+    "chloride_index": 0.1,
+    "albedo": 0.32,
+    "thermal_inertia": 700
+   },
+   "raw_b": {
+    "slope_deg": 18,
+    "roughness_m": 90,
+    "relief_m": 1900,
+    "serpentine_index": null,
+    "carbonate_index": null,
+    "chloride_index": null,
+    "albedo": null,
+    "thermal_inertia": null
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 20,
+    "mineralogy": null,
+    "surface": null
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.3211111111111112,
+    "confidence": 0.3766014999711538,
+    "coverage": 0.4,
+    "resolution_factor": 0.9415037499278844,
+    "per_criterion": {
+     "terrain": 0.3211111111111112,
+     "mineralogy": null,
+     "surface": null
+    }
+   }
+  },
+  {
+   "earth": "jebel_shams",
+   "target": "jezero_crater",
+   "raw_a": {
+    "slope_deg": 22,
+    "roughness_m": 110,
+    "relief_m": 1800,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.6,
+    "chloride_index": 0.0,
+    "albedo": 0.28,
+    "thermal_inertia": 1500
+   },
+   "raw_b": {
+    "slope_deg": 3,
+    "roughness_m": 15,
+    "relief_m": 600,
+    "serpentine_index": 0.15,
+    "carbonate_index": 0.45,
+    "chloride_index": 0.02,
+    "albedo": 0.2,
+    "thermal_inertia": 380
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.6431111111111112,
+    "confidence": 0.7261637028295358,
+    "coverage": 1.0,
+    "resolution_factor": 0.7261637028295358,
+    "per_criterion": {
+     "terrain": 0.37777777777777777,
+     "mineralogy": 0.91,
+     "surface": 0.6399999999999999
+    }
+   }
+  },
+  {
+   "earth": "jebel_shams",
+   "target": "nili_fossae",
+   "raw_a": {
+    "slope_deg": 22,
+    "roughness_m": 110,
+    "relief_m": 1800,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.6,
+    "chloride_index": 0.0,
+    "albedo": 0.28,
+    "thermal_inertia": 1500
+   },
+   "raw_b": {
+    "slope_deg": 8,
+    "roughness_m": 40,
+    "relief_m": 700,
+    "serpentine_index": 0.4,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.02,
+    "albedo": 0.17,
+    "thermal_inertia": 450
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.6650555555555555,
+    "confidence": 0.7261637028295358,
+    "coverage": 1.0,
+    "resolution_factor": 0.7261637028295358,
+    "per_criterion": {
+     "terrain": 0.5055555555555556,
+     "mineralogy": 0.8433333333333333,
+     "surface": 0.6275
+    }
+   }
+  },
+  {
+   "earth": "jebel_shams",
+   "target": "terra_sirenum_chlorides",
+   "raw_a": {
+    "slope_deg": 22,
+    "roughness_m": 110,
+    "relief_m": 1800,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.6,
+    "chloride_index": 0.0,
+    "albedo": 0.28,
+    "thermal_inertia": 1500
+   },
+   "raw_b": {
+    "slope_deg": 1.5,
+    "roughness_m": 6,
+    "relief_m": 80,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.02,
+    "chloride_index": 0.7,
+    "albedo": 0.24,
+    "thermal_inertia": 400
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 100,
+    "surface": 100
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.46144444444444455,
+    "confidence": 0.7661637028295358,
+    "coverage": 1.0,
+    "resolution_factor": 0.7661637028295358,
+    "per_criterion": {
+     "terrain": 0.25444444444444453,
+     "mineralogy": 0.5566666666666668,
+     "surface": 0.6849999999999999
+    }
+   }
+  },
+  {
+   "earth": "jebel_shams",
+   "target": "nili_patera_dunes",
+   "raw_a": {
+    "slope_deg": 22,
+    "roughness_m": 110,
+    "relief_m": 1800,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.6,
+    "chloride_index": 0.0,
+    "albedo": 0.28,
+    "thermal_inertia": 1500
+   },
+   "raw_b": {
+    "slope_deg": 2.5,
+    "roughness_m": 10,
+    "relief_m": 150,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.0,
+    "chloride_index": 0.0,
+    "albedo": 0.1,
+    "thermal_inertia": 250
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.5292777777777778,
+    "confidence": 0.7261637028295358,
+    "coverage": 1.0,
+    "resolution_factor": 0.7261637028295358,
+    "per_criterion": {
+     "terrain": 0.28611111111111115,
+     "mineralogy": 0.7833333333333333,
+     "surface": 0.5075
+    }
+   }
+  },
+  {
+   "earth": "jebel_shams",
+   "target": "moon_south_pole",
+   "raw_a": {
+    "slope_deg": 22,
+    "roughness_m": 110,
+    "relief_m": 1800,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.6,
+    "chloride_index": 0.0,
+    "albedo": 0.28,
+    "thermal_inertia": 1500
+   },
+   "raw_b": {
+    "slope_deg": 18,
+    "roughness_m": 90,
+    "relief_m": 1900,
+    "serpentine_index": null,
+    "carbonate_index": null,
+    "chloride_index": null,
+    "albedo": null,
+    "thermal_inertia": null
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 20,
+    "mineralogy": null,
+    "surface": null
+   },
+   "weights": null,
+   "expected": {
+    "overall": 0.8944444444444445,
+    "confidence": 0.3766014999711538,
+    "coverage": 0.4,
+    "resolution_factor": 0.9415037499278844,
+    "per_criterion": {
+     "terrain": 0.8944444444444445,
+     "mineralogy": null,
+     "surface": null
+    }
+   }
+  },
+  {
+   "earth": "samail_ophiolite",
+   "target": "jezero_crater",
+   "raw_a": {
+    "slope_deg": 12,
+    "roughness_m": 45,
+    "relief_m": 600,
+    "serpentine_index": 0.7,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.05,
+    "albedo": 0.18,
+    "thermal_inertia": 1200
+   },
+   "raw_b": {
+    "slope_deg": 3,
+    "roughness_m": 15,
+    "relief_m": 600,
+    "serpentine_index": 0.15,
+    "carbonate_index": 0.45,
+    "chloride_index": 0.02,
+    "albedo": 0.2,
+    "thermal_inertia": 380
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.8333333333333334,
+    "confidence": 0.6052022212348283,
+    "coverage": 1.0,
+    "resolution_factor": 0.6052022212348283,
+    "per_criterion": {
+     "terrain": 0.8333333333333334,
+     "mineralogy": 0.79,
+     "surface": 0.775
+    }
+   }
+  },
+  {
+   "earth": "samail_ophiolite",
+   "target": "nili_fossae",
+   "raw_a": {
+    "slope_deg": 12,
+    "roughness_m": 45,
+    "relief_m": 600,
+    "serpentine_index": 0.7,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.05,
+    "albedo": 0.18,
+    "thermal_inertia": 1200
+   },
+   "raw_b": {
+    "slope_deg": 8,
+    "roughness_m": 40,
+    "relief_m": 700,
+    "serpentine_index": 0.4,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.02,
+    "albedo": 0.17,
+    "thermal_inertia": 450
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.9277777777777777,
+    "confidence": 0.6052022212348283,
+    "coverage": 1.0,
+    "resolution_factor": 0.6052022212348283,
+    "per_criterion": {
+     "terrain": 0.9277777777777777,
+     "mineralogy": 0.89,
+     "surface": 0.8025
+    }
+   }
+  },
+  {
+   "earth": "samail_ophiolite",
+   "target": "terra_sirenum_chlorides",
+   "raw_a": {
+    "slope_deg": 12,
+    "roughness_m": 45,
+    "relief_m": 600,
+    "serpentine_index": 0.7,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.05,
+    "albedo": 0.18,
+    "thermal_inertia": 1200
+   },
+   "raw_b": {
+    "slope_deg": 1.5,
+    "roughness_m": 6,
+    "relief_m": 80,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.02,
+    "chloride_index": 0.7,
+    "albedo": 0.24,
+    "thermal_inertia": 400
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 100,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.71,
+    "confidence": 0.6052022212348283,
+    "coverage": 1.0,
+    "resolution_factor": 0.6052022212348283,
+    "per_criterion": {
+     "terrain": 0.71,
+     "mineralogy": 0.39000000000000007,
+     "surface": 0.74
+    }
+   }
+  },
+  {
+   "earth": "samail_ophiolite",
+   "target": "nili_patera_dunes",
+   "raw_a": {
+    "slope_deg": 12,
+    "roughness_m": 45,
+    "relief_m": 600,
+    "serpentine_index": 0.7,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.05,
+    "albedo": 0.18,
+    "thermal_inertia": 1200
+   },
+   "raw_b": {
+    "slope_deg": 2.5,
+    "roughness_m": 10,
+    "relief_m": 150,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.0,
+    "chloride_index": 0.0,
+    "albedo": 0.1,
+    "thermal_inertia": 250
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.7416666666666667,
+    "confidence": 0.6052022212348283,
+    "coverage": 1.0,
+    "resolution_factor": 0.6052022212348283,
+    "per_criterion": {
+     "terrain": 0.7416666666666667,
+     "mineralogy": 0.5833333333333334,
+     "surface": 0.6825000000000001
+    }
+   }
+  },
+  {
+   "earth": "samail_ophiolite",
+   "target": "moon_south_pole",
+   "raw_a": {
+    "slope_deg": 12,
+    "roughness_m": 45,
+    "relief_m": 600,
+    "serpentine_index": 0.7,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.05,
+    "albedo": 0.18,
+    "thermal_inertia": 1200
+   },
+   "raw_b": {
+    "slope_deg": 18,
+    "roughness_m": 90,
+    "relief_m": 1900,
+    "serpentine_index": null,
+    "carbonate_index": null,
+    "chloride_index": null,
+    "albedo": null,
+    "thermal_inertia": null
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 20,
+    "mineralogy": null,
+    "surface": null
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.6166666666666667,
+    "confidence": 0.9415037499278844,
+    "coverage": 1.0,
+    "resolution_factor": 0.9415037499278844,
+    "per_criterion": {
+     "terrain": 0.6166666666666667,
+     "mineralogy": null,
+     "surface": null
+    }
+   }
+  },
+  {
+   "earth": "umm_as_samim",
+   "target": "jezero_crater",
+   "raw_a": {
+    "slope_deg": 0.3,
+    "roughness_m": 1,
+    "relief_m": 15,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.15,
+    "chloride_index": 0.85,
+    "albedo": 0.42,
+    "thermal_inertia": 900
+   },
+   "raw_b": {
+    "slope_deg": 3,
+    "roughness_m": 15,
+    "relief_m": 600,
+    "serpentine_index": 0.15,
+    "carbonate_index": 0.45,
+    "chloride_index": 0.02,
+    "albedo": 0.2,
+    "thermal_inertia": 380
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.841388888888889,
+    "confidence": 0.6052022212348283,
+    "coverage": 1.0,
+    "resolution_factor": 0.6052022212348283,
+    "per_criterion": {
+     "terrain": 0.841388888888889,
+     "mineralogy": 0.5733333333333333,
+     "surface": 0.65
+    }
+   }
+  },
+  {
+   "earth": "umm_as_samim",
+   "target": "nili_fossae",
+   "raw_a": {
+    "slope_deg": 0.3,
+    "roughness_m": 1,
+    "relief_m": 15,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.15,
+    "chloride_index": 0.85,
+    "albedo": 0.42,
+    "thermal_inertia": 900
+   },
+   "raw_b": {
+    "slope_deg": 8,
+    "roughness_m": 40,
+    "relief_m": 700,
+    "serpentine_index": 0.4,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.02,
+    "albedo": 0.17,
+    "thermal_inertia": 450
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.7136111111111111,
+    "confidence": 0.6052022212348283,
+    "coverage": 1.0,
+    "resolution_factor": 0.6052022212348283,
+    "per_criterion": {
+     "terrain": 0.7136111111111111,
+     "mineralogy": 0.47333333333333333,
+     "surface": 0.6375
+    }
+   }
+  },
+  {
+   "earth": "umm_as_samim",
+   "target": "terra_sirenum_chlorides",
+   "raw_a": {
+    "slope_deg": 0.3,
+    "roughness_m": 1,
+    "relief_m": 15,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.15,
+    "chloride_index": 0.85,
+    "albedo": 0.42,
+    "thermal_inertia": 900
+   },
+   "raw_b": {
+    "slope_deg": 1.5,
+    "roughness_m": 6,
+    "relief_m": 80,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.02,
+    "chloride_index": 0.7,
+    "albedo": 0.24,
+    "thermal_inertia": 400
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 100,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.9647222222222224,
+    "confidence": 0.6052022212348283,
+    "coverage": 1.0,
+    "resolution_factor": 0.6052022212348283,
+    "per_criterion": {
+     "terrain": 0.9647222222222224,
+     "mineralogy": 0.9066666666666667,
+     "surface": 0.6950000000000001
+    }
+   }
+  },
+  {
+   "earth": "umm_as_samim",
+   "target": "nili_patera_dunes",
+   "raw_a": {
+    "slope_deg": 0.3,
+    "roughness_m": 1,
+    "relief_m": 15,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.15,
+    "chloride_index": 0.85,
+    "albedo": 0.42,
+    "thermal_inertia": 900
+   },
+   "raw_b": {
+    "slope_deg": 2.5,
+    "roughness_m": 10,
+    "relief_m": 150,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.0,
+    "chloride_index": 0.0,
+    "albedo": 0.1,
+    "thermal_inertia": 250
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.9330555555555556,
+    "confidence": 0.6052022212348283,
+    "coverage": 1.0,
+    "resolution_factor": 0.6052022212348283,
+    "per_criterion": {
+     "terrain": 0.9330555555555556,
+     "mineralogy": 0.6666666666666666,
+     "surface": 0.5175000000000001
+    }
+   }
+  },
+  {
+   "earth": "umm_as_samim",
+   "target": "moon_south_pole",
+   "raw_a": {
+    "slope_deg": 0.3,
+    "roughness_m": 1,
+    "relief_m": 15,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.15,
+    "chloride_index": 0.85,
+    "albedo": 0.42,
+    "thermal_inertia": 900
+   },
+   "raw_b": {
+    "slope_deg": 18,
+    "roughness_m": 90,
+    "relief_m": 1900,
+    "serpentine_index": null,
+    "carbonate_index": null,
+    "chloride_index": null,
+    "albedo": null,
+    "thermal_inertia": null
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 20,
+    "mineralogy": null,
+    "surface": null
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.2913888888888889,
+    "confidence": 0.9415037499278844,
+    "coverage": 1.0,
+    "resolution_factor": 0.9415037499278844,
+    "per_criterion": {
+     "terrain": 0.2913888888888889,
+     "mineralogy": null,
+     "surface": null
+    }
+   }
+  },
+  {
+   "earth": "sharqiya_sands",
+   "target": "jezero_crater",
+   "raw_a": {
+    "slope_deg": 3,
+    "roughness_m": 12,
+    "relief_m": 120,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.2,
+    "chloride_index": 0.02,
+    "albedo": 0.35,
+    "thermal_inertia": 350
+   },
+   "raw_b": {
+    "slope_deg": 3,
+    "roughness_m": 15,
+    "relief_m": 600,
+    "serpentine_index": 0.15,
+    "carbonate_index": 0.45,
+    "chloride_index": 0.02,
+    "albedo": 0.2,
+    "thermal_inertia": 380
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.9133333333333334,
+    "confidence": 0.6052022212348283,
+    "coverage": 1.0,
+    "resolution_factor": 0.6052022212348283,
+    "per_criterion": {
+     "terrain": 0.9133333333333334,
+     "mineralogy": 0.8666666666666667,
+     "surface": 0.8425
+    }
+   }
+  },
+  {
+   "earth": "sharqiya_sands",
+   "target": "nili_fossae",
+   "raw_a": {
+    "slope_deg": 3,
+    "roughness_m": 12,
+    "relief_m": 120,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.2,
+    "chloride_index": 0.02,
+    "albedo": 0.35,
+    "thermal_inertia": 350
+   },
+   "raw_b": {
+    "slope_deg": 8,
+    "roughness_m": 40,
+    "relief_m": 700,
+    "serpentine_index": 0.4,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.02,
+    "albedo": 0.17,
+    "thermal_inertia": 450
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.7855555555555555,
+    "confidence": 0.6052022212348283,
+    "coverage": 1.0,
+    "resolution_factor": 0.6052022212348283,
+    "per_criterion": {
+     "terrain": 0.7855555555555555,
+     "mineralogy": 0.7666666666666666,
+     "surface": 0.795
+    }
+   }
+  },
+  {
+   "earth": "sharqiya_sands",
+   "target": "terra_sirenum_chlorides",
+   "raw_a": {
+    "slope_deg": 3,
+    "roughness_m": 12,
+    "relief_m": 120,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.2,
+    "chloride_index": 0.02,
+    "albedo": 0.35,
+    "thermal_inertia": 350
+   },
+   "raw_b": {
+    "slope_deg": 1.5,
+    "roughness_m": 6,
+    "relief_m": 80,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.02,
+    "chloride_index": 0.7,
+    "albedo": 0.24,
+    "thermal_inertia": 400
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 100,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.9633333333333333,
+    "confidence": 0.6052022212348283,
+    "coverage": 1.0,
+    "resolution_factor": 0.6052022212348283,
+    "per_criterion": {
+     "terrain": 0.9633333333333333,
+     "mineralogy": 0.7133333333333333,
+     "surface": 0.8775
+    }
+   }
+  },
+  {
+   "earth": "sharqiya_sands",
+   "target": "nili_patera_dunes",
+   "raw_a": {
+    "slope_deg": 3,
+    "roughness_m": 12,
+    "relief_m": 120,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.2,
+    "chloride_index": 0.02,
+    "albedo": 0.35,
+    "thermal_inertia": 350
+   },
+   "raw_b": {
+    "slope_deg": 2.5,
+    "roughness_m": 10,
+    "relief_m": 150,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.0,
+    "chloride_index": 0.0,
+    "albedo": 0.1,
+    "thermal_inertia": 250
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.985,
+    "confidence": 0.6052022212348283,
+    "coverage": 1.0,
+    "resolution_factor": 0.6052022212348283,
+    "per_criterion": {
+     "terrain": 0.985,
+     "mineralogy": 0.9266666666666667,
+     "surface": 0.725
+    }
+   }
+  },
+  {
+   "earth": "sharqiya_sands",
+   "target": "moon_south_pole",
+   "raw_a": {
+    "slope_deg": 3,
+    "roughness_m": 12,
+    "relief_m": 120,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.2,
+    "chloride_index": 0.02,
+    "albedo": 0.35,
+    "thermal_inertia": 350
+   },
+   "raw_b": {
+    "slope_deg": 18,
+    "roughness_m": 90,
+    "relief_m": 1900,
+    "serpentine_index": null,
+    "carbonate_index": null,
+    "chloride_index": null,
+    "albedo": null,
+    "thermal_inertia": null
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 20,
+    "mineralogy": null,
+    "surface": null
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.36333333333333334,
+    "confidence": 0.9415037499278844,
+    "coverage": 1.0,
+    "resolution_factor": 0.9415037499278844,
+    "per_criterion": {
+     "terrain": 0.36333333333333334,
+     "mineralogy": null,
+     "surface": null
+    }
+   }
+  },
+  {
+   "earth": "dhofar_amadee18",
+   "target": "jezero_crater",
+   "raw_a": {
+    "slope_deg": 1.5,
+    "roughness_m": 5,
+    "relief_m": 60,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.35,
+    "chloride_index": 0.1,
+    "albedo": 0.32,
+    "thermal_inertia": 700
+   },
+   "raw_b": {
+    "slope_deg": 3,
+    "roughness_m": 15,
+    "relief_m": 600,
+    "serpentine_index": 0.15,
+    "carbonate_index": 0.45,
+    "chloride_index": 0.02,
+    "albedo": 0.2,
+    "thermal_inertia": 380
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.8711111111111111,
+    "confidence": 0.6052022212348283,
+    "coverage": 1.0,
+    "resolution_factor": 0.6052022212348283,
+    "per_criterion": {
+     "terrain": 0.8711111111111111,
+     "mineralogy": 0.9066666666666666,
+     "surface": 0.8
+    }
+   }
+  },
+  {
+   "earth": "dhofar_amadee18",
+   "target": "nili_fossae",
+   "raw_a": {
+    "slope_deg": 1.5,
+    "roughness_m": 5,
+    "relief_m": 60,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.35,
+    "chloride_index": 0.1,
+    "albedo": 0.32,
+    "thermal_inertia": 700
+   },
+   "raw_b": {
+    "slope_deg": 8,
+    "roughness_m": 40,
+    "relief_m": 700,
+    "serpentine_index": 0.4,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.02,
+    "albedo": 0.17,
+    "thermal_inertia": 450
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.7433333333333333,
+    "confidence": 0.6052022212348283,
+    "coverage": 1.0,
+    "resolution_factor": 0.6052022212348283,
+    "per_criterion": {
+     "terrain": 0.7433333333333333,
+     "mineralogy": 0.8066666666666666,
+     "surface": 0.7875
+    }
+   }
+  },
+  {
+   "earth": "dhofar_amadee18",
+   "target": "terra_sirenum_chlorides",
+   "raw_a": {
+    "slope_deg": 1.5,
+    "roughness_m": 5,
+    "relief_m": 60,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.35,
+    "chloride_index": 0.1,
+    "albedo": 0.32,
+    "thermal_inertia": 700
+   },
+   "raw_b": {
+    "slope_deg": 1.5,
+    "roughness_m": 6,
+    "relief_m": 80,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.02,
+    "chloride_index": 0.7,
+    "albedo": 0.24,
+    "thermal_inertia": 400
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 100,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.9944444444444445,
+    "confidence": 0.6052022212348283,
+    "coverage": 1.0,
+    "resolution_factor": 0.6052022212348283,
+    "per_criterion": {
+     "terrain": 0.9944444444444445,
+     "mineralogy": 0.6733333333333333,
+     "surface": 0.845
+    }
+   }
+  },
+  {
+   "earth": "dhofar_amadee18",
+   "target": "nili_patera_dunes",
+   "raw_a": {
+    "slope_deg": 1.5,
+    "roughness_m": 5,
+    "relief_m": 60,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.35,
+    "chloride_index": 0.1,
+    "albedo": 0.32,
+    "thermal_inertia": 700
+   },
+   "raw_b": {
+    "slope_deg": 2.5,
+    "roughness_m": 10,
+    "relief_m": 150,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.0,
+    "chloride_index": 0.0,
+    "albedo": 0.1,
+    "thermal_inertia": 250
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.9627777777777777,
+    "confidence": 0.6052022212348283,
+    "coverage": 1.0,
+    "resolution_factor": 0.6052022212348283,
+    "per_criterion": {
+     "terrain": 0.9627777777777777,
+     "mineralogy": 0.8333333333333334,
+     "surface": 0.6675
+    }
+   }
+  },
+  {
+   "earth": "dhofar_amadee18",
+   "target": "moon_south_pole",
+   "raw_a": {
+    "slope_deg": 1.5,
+    "roughness_m": 5,
+    "relief_m": 60,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.35,
+    "chloride_index": 0.1,
+    "albedo": 0.32,
+    "thermal_inertia": 700
+   },
+   "raw_b": {
+    "slope_deg": 18,
+    "roughness_m": 90,
+    "relief_m": 1900,
+    "serpentine_index": null,
+    "carbonate_index": null,
+    "chloride_index": null,
+    "albedo": null,
+    "thermal_inertia": null
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 20,
+    "mineralogy": null,
+    "surface": null
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.3211111111111112,
+    "confidence": 0.9415037499278844,
+    "coverage": 1.0,
+    "resolution_factor": 0.9415037499278844,
+    "per_criterion": {
+     "terrain": 0.3211111111111112,
+     "mineralogy": null,
+     "surface": null
+    }
+   }
+  },
+  {
+   "earth": "jebel_shams",
+   "target": "jezero_crater",
+   "raw_a": {
+    "slope_deg": 22,
+    "roughness_m": 110,
+    "relief_m": 1800,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.6,
+    "chloride_index": 0.0,
+    "albedo": 0.28,
+    "thermal_inertia": 1500
+   },
+   "raw_b": {
+    "slope_deg": 3,
+    "roughness_m": 15,
+    "relief_m": 600,
+    "serpentine_index": 0.15,
+    "carbonate_index": 0.45,
+    "chloride_index": 0.02,
+    "albedo": 0.2,
+    "thermal_inertia": 380
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.37777777777777777,
+    "confidence": 0.6052022212348283,
+    "coverage": 1.0,
+    "resolution_factor": 0.6052022212348283,
+    "per_criterion": {
+     "terrain": 0.37777777777777777,
+     "mineralogy": 0.91,
+     "surface": 0.6399999999999999
+    }
+   }
+  },
+  {
+   "earth": "jebel_shams",
+   "target": "nili_fossae",
+   "raw_a": {
+    "slope_deg": 22,
+    "roughness_m": 110,
+    "relief_m": 1800,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.6,
+    "chloride_index": 0.0,
+    "albedo": 0.28,
+    "thermal_inertia": 1500
+   },
+   "raw_b": {
+    "slope_deg": 8,
+    "roughness_m": 40,
+    "relief_m": 700,
+    "serpentine_index": 0.4,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.02,
+    "albedo": 0.17,
+    "thermal_inertia": 450
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.5055555555555556,
+    "confidence": 0.6052022212348283,
+    "coverage": 1.0,
+    "resolution_factor": 0.6052022212348283,
+    "per_criterion": {
+     "terrain": 0.5055555555555556,
+     "mineralogy": 0.8433333333333333,
+     "surface": 0.6275
+    }
+   }
+  },
+  {
+   "earth": "jebel_shams",
+   "target": "terra_sirenum_chlorides",
+   "raw_a": {
+    "slope_deg": 22,
+    "roughness_m": 110,
+    "relief_m": 1800,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.6,
+    "chloride_index": 0.0,
+    "albedo": 0.28,
+    "thermal_inertia": 1500
+   },
+   "raw_b": {
+    "slope_deg": 1.5,
+    "roughness_m": 6,
+    "relief_m": 80,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.02,
+    "chloride_index": 0.7,
+    "albedo": 0.24,
+    "thermal_inertia": 400
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 100,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.25444444444444453,
+    "confidence": 0.6052022212348283,
+    "coverage": 1.0,
+    "resolution_factor": 0.6052022212348283,
+    "per_criterion": {
+     "terrain": 0.25444444444444453,
+     "mineralogy": 0.5566666666666668,
+     "surface": 0.6849999999999999
+    }
+   }
+  },
+  {
+   "earth": "jebel_shams",
+   "target": "nili_patera_dunes",
+   "raw_a": {
+    "slope_deg": 22,
+    "roughness_m": 110,
+    "relief_m": 1800,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.6,
+    "chloride_index": 0.0,
+    "albedo": 0.28,
+    "thermal_inertia": 1500
+   },
+   "raw_b": {
+    "slope_deg": 2.5,
+    "roughness_m": 10,
+    "relief_m": 150,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.0,
+    "chloride_index": 0.0,
+    "albedo": 0.1,
+    "thermal_inertia": 250
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.28611111111111115,
+    "confidence": 0.6052022212348283,
+    "coverage": 1.0,
+    "resolution_factor": 0.6052022212348283,
+    "per_criterion": {
+     "terrain": 0.28611111111111115,
+     "mineralogy": 0.7833333333333333,
+     "surface": 0.5075
+    }
+   }
+  },
+  {
+   "earth": "jebel_shams",
+   "target": "moon_south_pole",
+   "raw_a": {
+    "slope_deg": 22,
+    "roughness_m": 110,
+    "relief_m": 1800,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.6,
+    "chloride_index": 0.0,
+    "albedo": 0.28,
+    "thermal_inertia": 1500
+   },
+   "raw_b": {
+    "slope_deg": 18,
+    "roughness_m": 90,
+    "relief_m": 1900,
+    "serpentine_index": null,
+    "carbonate_index": null,
+    "chloride_index": null,
+    "albedo": null,
+    "thermal_inertia": null
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 20,
+    "mineralogy": null,
+    "surface": null
+   },
+   "weights": {
+    "terrain": 1.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": 0.8944444444444445,
+    "confidence": 0.9415037499278844,
+    "coverage": 1.0,
+    "resolution_factor": 0.9415037499278844,
+    "per_criterion": {
+     "terrain": 0.8944444444444445,
+     "mineralogy": null,
+     "surface": null
+    }
+   }
+  },
+  {
+   "earth": "samail_ophiolite",
+   "target": "jezero_crater",
+   "raw_a": {
+    "slope_deg": 12,
+    "roughness_m": 45,
+    "relief_m": 600,
+    "serpentine_index": 0.7,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.05,
+    "albedo": 0.18,
+    "thermal_inertia": 1200
+   },
+   "raw_b": {
+    "slope_deg": 3,
+    "roughness_m": 15,
+    "relief_m": 600,
+    "serpentine_index": 0.15,
+    "carbonate_index": 0.45,
+    "chloride_index": 0.02,
+    "albedo": 0.2,
+    "thermal_inertia": 380
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.7956666666666667,
+    "confidence": 0.770383946699246,
+    "coverage": 1.0,
+    "resolution_factor": 0.770383946699246,
+    "per_criterion": {
+     "terrain": 0.8333333333333334,
+     "mineralogy": 0.79,
+     "surface": 0.775
+    }
+   }
+  },
+  {
+   "earth": "samail_ophiolite",
+   "target": "nili_fossae",
+   "raw_a": {
+    "slope_deg": 12,
+    "roughness_m": 45,
+    "relief_m": 600,
+    "serpentine_index": 0.7,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.05,
+    "albedo": 0.18,
+    "thermal_inertia": 1200
+   },
+   "raw_b": {
+    "slope_deg": 8,
+    "roughness_m": 40,
+    "relief_m": 700,
+    "serpentine_index": 0.4,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.02,
+    "albedo": 0.17,
+    "thermal_inertia": 450
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.8800555555555556,
+    "confidence": 0.770383946699246,
+    "coverage": 1.0,
+    "resolution_factor": 0.770383946699246,
+    "per_criterion": {
+     "terrain": 0.9277777777777777,
+     "mineralogy": 0.89,
+     "surface": 0.8025
+    }
+   }
+  },
+  {
+   "earth": "samail_ophiolite",
+   "target": "terra_sirenum_chlorides",
+   "raw_a": {
+    "slope_deg": 12,
+    "roughness_m": 45,
+    "relief_m": 600,
+    "serpentine_index": 0.7,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.05,
+    "albedo": 0.18,
+    "thermal_inertia": 1200
+   },
+   "raw_b": {
+    "slope_deg": 1.5,
+    "roughness_m": 6,
+    "relief_m": 80,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.02,
+    "chloride_index": 0.7,
+    "albedo": 0.24,
+    "thermal_inertia": 400
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 100,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.524,
+    "confidence": 0.8303839466992461,
+    "coverage": 1.0,
+    "resolution_factor": 0.8303839466992461,
+    "per_criterion": {
+     "terrain": 0.71,
+     "mineralogy": 0.39000000000000007,
+     "surface": 0.74
+    }
+   }
+  },
+  {
+   "earth": "samail_ophiolite",
+   "target": "nili_patera_dunes",
+   "raw_a": {
+    "slope_deg": 12,
+    "roughness_m": 45,
+    "relief_m": 600,
+    "serpentine_index": 0.7,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.05,
+    "albedo": 0.18,
+    "thermal_inertia": 1200
+   },
+   "raw_b": {
+    "slope_deg": 2.5,
+    "roughness_m": 10,
+    "relief_m": 150,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.0,
+    "chloride_index": 0.0,
+    "albedo": 0.1,
+    "thermal_inertia": 250
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.6348333333333335,
+    "confidence": 0.770383946699246,
+    "coverage": 1.0,
+    "resolution_factor": 0.770383946699246,
+    "per_criterion": {
+     "terrain": 0.7416666666666667,
+     "mineralogy": 0.5833333333333334,
+     "surface": 0.6825000000000001
+    }
+   }
+  },
+  {
+   "earth": "samail_ophiolite",
+   "target": "moon_south_pole",
+   "raw_a": {
+    "slope_deg": 12,
+    "roughness_m": 45,
+    "relief_m": 600,
+    "serpentine_index": 0.7,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.05,
+    "albedo": 0.18,
+    "thermal_inertia": 1200
+   },
+   "raw_b": {
+    "slope_deg": 18,
+    "roughness_m": 90,
+    "relief_m": 1900,
+    "serpentine_index": null,
+    "carbonate_index": null,
+    "chloride_index": null,
+    "albedo": null,
+    "thermal_inertia": null
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 20,
+    "mineralogy": null,
+    "surface": null
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.6166666666666667,
+    "confidence": 0.1883007499855769,
+    "coverage": 0.2,
+    "resolution_factor": 0.9415037499278844,
+    "per_criterion": {
+     "terrain": 0.6166666666666667,
+     "mineralogy": null,
+     "surface": null
+    }
+   }
+  },
+  {
+   "earth": "umm_as_samim",
+   "target": "jezero_crater",
+   "raw_a": {
+    "slope_deg": 0.3,
+    "roughness_m": 1,
+    "relief_m": 15,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.15,
+    "chloride_index": 0.85,
+    "albedo": 0.42,
+    "thermal_inertia": 900
+   },
+   "raw_b": {
+    "slope_deg": 3,
+    "roughness_m": 15,
+    "relief_m": 600,
+    "serpentine_index": 0.15,
+    "carbonate_index": 0.45,
+    "chloride_index": 0.02,
+    "albedo": 0.2,
+    "thermal_inertia": 380
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.6422777777777777,
+    "confidence": 0.770383946699246,
+    "coverage": 1.0,
+    "resolution_factor": 0.770383946699246,
+    "per_criterion": {
+     "terrain": 0.841388888888889,
+     "mineralogy": 0.5733333333333333,
+     "surface": 0.65
+    }
+   }
+  },
+  {
+   "earth": "umm_as_samim",
+   "target": "nili_fossae",
+   "raw_a": {
+    "slope_deg": 0.3,
+    "roughness_m": 1,
+    "relief_m": 15,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.15,
+    "chloride_index": 0.85,
+    "albedo": 0.42,
+    "thermal_inertia": 900
+   },
+   "raw_b": {
+    "slope_deg": 8,
+    "roughness_m": 40,
+    "relief_m": 700,
+    "serpentine_index": 0.4,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.02,
+    "albedo": 0.17,
+    "thermal_inertia": 450
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.5542222222222222,
+    "confidence": 0.770383946699246,
+    "coverage": 1.0,
+    "resolution_factor": 0.770383946699246,
+    "per_criterion": {
+     "terrain": 0.7136111111111111,
+     "mineralogy": 0.47333333333333333,
+     "surface": 0.6375
+    }
+   }
+  },
+  {
+   "earth": "umm_as_samim",
+   "target": "terra_sirenum_chlorides",
+   "raw_a": {
+    "slope_deg": 0.3,
+    "roughness_m": 1,
+    "relief_m": 15,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.15,
+    "chloride_index": 0.85,
+    "albedo": 0.42,
+    "thermal_inertia": 900
+   },
+   "raw_b": {
+    "slope_deg": 1.5,
+    "roughness_m": 6,
+    "relief_m": 80,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.02,
+    "chloride_index": 0.7,
+    "albedo": 0.24,
+    "thermal_inertia": 400
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 100,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.8759444444444445,
+    "confidence": 0.8303839466992461,
+    "coverage": 1.0,
+    "resolution_factor": 0.8303839466992461,
+    "per_criterion": {
+     "terrain": 0.9647222222222224,
+     "mineralogy": 0.9066666666666667,
+     "surface": 0.6950000000000001
+    }
+   }
+  },
+  {
+   "earth": "umm_as_samim",
+   "target": "nili_patera_dunes",
+   "raw_a": {
+    "slope_deg": 0.3,
+    "roughness_m": 1,
+    "relief_m": 15,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.15,
+    "chloride_index": 0.85,
+    "albedo": 0.42,
+    "thermal_inertia": 900
+   },
+   "raw_b": {
+    "slope_deg": 2.5,
+    "roughness_m": 10,
+    "relief_m": 150,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.0,
+    "chloride_index": 0.0,
+    "albedo": 0.1,
+    "thermal_inertia": 250
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.6901111111111111,
+    "confidence": 0.770383946699246,
+    "coverage": 1.0,
+    "resolution_factor": 0.770383946699246,
+    "per_criterion": {
+     "terrain": 0.9330555555555556,
+     "mineralogy": 0.6666666666666666,
+     "surface": 0.5175000000000001
+    }
+   }
+  },
+  {
+   "earth": "umm_as_samim",
+   "target": "moon_south_pole",
+   "raw_a": {
+    "slope_deg": 0.3,
+    "roughness_m": 1,
+    "relief_m": 15,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.15,
+    "chloride_index": 0.85,
+    "albedo": 0.42,
+    "thermal_inertia": 900
+   },
+   "raw_b": {
+    "slope_deg": 18,
+    "roughness_m": 90,
+    "relief_m": 1900,
+    "serpentine_index": null,
+    "carbonate_index": null,
+    "chloride_index": null,
+    "albedo": null,
+    "thermal_inertia": null
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 20,
+    "mineralogy": null,
+    "surface": null
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.2913888888888889,
+    "confidence": 0.1883007499855769,
+    "coverage": 0.2,
+    "resolution_factor": 0.9415037499278844,
+    "per_criterion": {
+     "terrain": 0.2913888888888889,
+     "mineralogy": null,
+     "surface": null
+    }
+   }
+  },
+  {
+   "earth": "sharqiya_sands",
+   "target": "jezero_crater",
+   "raw_a": {
+    "slope_deg": 3,
+    "roughness_m": 12,
+    "relief_m": 120,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.2,
+    "chloride_index": 0.02,
+    "albedo": 0.35,
+    "thermal_inertia": 350
+   },
+   "raw_b": {
+    "slope_deg": 3,
+    "roughness_m": 15,
+    "relief_m": 600,
+    "serpentine_index": 0.15,
+    "carbonate_index": 0.45,
+    "chloride_index": 0.02,
+    "albedo": 0.2,
+    "thermal_inertia": 380
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.8711666666666668,
+    "confidence": 0.770383946699246,
+    "coverage": 1.0,
+    "resolution_factor": 0.770383946699246,
+    "per_criterion": {
+     "terrain": 0.9133333333333334,
+     "mineralogy": 0.8666666666666667,
+     "surface": 0.8425
+    }
+   }
+  },
+  {
+   "earth": "sharqiya_sands",
+   "target": "nili_fossae",
+   "raw_a": {
+    "slope_deg": 3,
+    "roughness_m": 12,
+    "relief_m": 120,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.2,
+    "chloride_index": 0.02,
+    "albedo": 0.35,
+    "thermal_inertia": 350
+   },
+   "raw_b": {
+    "slope_deg": 8,
+    "roughness_m": 40,
+    "relief_m": 700,
+    "serpentine_index": 0.4,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.02,
+    "albedo": 0.17,
+    "thermal_inertia": 450
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.7761111111111111,
+    "confidence": 0.770383946699246,
+    "coverage": 1.0,
+    "resolution_factor": 0.770383946699246,
+    "per_criterion": {
+     "terrain": 0.7855555555555555,
+     "mineralogy": 0.7666666666666666,
+     "surface": 0.795
+    }
+   }
+  },
+  {
+   "earth": "sharqiya_sands",
+   "target": "terra_sirenum_chlorides",
+   "raw_a": {
+    "slope_deg": 3,
+    "roughness_m": 12,
+    "relief_m": 120,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.2,
+    "chloride_index": 0.02,
+    "albedo": 0.35,
+    "thermal_inertia": 350
+   },
+   "raw_b": {
+    "slope_deg": 1.5,
+    "roughness_m": 6,
+    "relief_m": 80,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.02,
+    "chloride_index": 0.7,
+    "albedo": 0.24,
+    "thermal_inertia": 400
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 100,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.7961666666666666,
+    "confidence": 0.8303839466992461,
+    "coverage": 1.0,
+    "resolution_factor": 0.8303839466992461,
+    "per_criterion": {
+     "terrain": 0.9633333333333333,
+     "mineralogy": 0.7133333333333333,
+     "surface": 0.8775
+    }
+   }
+  },
+  {
+   "earth": "sharqiya_sands",
+   "target": "nili_patera_dunes",
+   "raw_a": {
+    "slope_deg": 3,
+    "roughness_m": 12,
+    "relief_m": 120,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.2,
+    "chloride_index": 0.02,
+    "albedo": 0.35,
+    "thermal_inertia": 350
+   },
+   "raw_b": {
+    "slope_deg": 2.5,
+    "roughness_m": 10,
+    "relief_m": 150,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.0,
+    "chloride_index": 0.0,
+    "albedo": 0.1,
+    "thermal_inertia": 250
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.8980000000000001,
+    "confidence": 0.770383946699246,
+    "coverage": 1.0,
+    "resolution_factor": 0.770383946699246,
+    "per_criterion": {
+     "terrain": 0.985,
+     "mineralogy": 0.9266666666666667,
+     "surface": 0.725
+    }
+   }
+  },
+  {
+   "earth": "sharqiya_sands",
+   "target": "moon_south_pole",
+   "raw_a": {
+    "slope_deg": 3,
+    "roughness_m": 12,
+    "relief_m": 120,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.2,
+    "chloride_index": 0.02,
+    "albedo": 0.35,
+    "thermal_inertia": 350
+   },
+   "raw_b": {
+    "slope_deg": 18,
+    "roughness_m": 90,
+    "relief_m": 1900,
+    "serpentine_index": null,
+    "carbonate_index": null,
+    "chloride_index": null,
+    "albedo": null,
+    "thermal_inertia": null
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 20,
+    "mineralogy": null,
+    "surface": null
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.36333333333333334,
+    "confidence": 0.1883007499855769,
+    "coverage": 0.2,
+    "resolution_factor": 0.9415037499278844,
+    "per_criterion": {
+     "terrain": 0.36333333333333334,
+     "mineralogy": null,
+     "surface": null
+    }
+   }
+  },
+  {
+   "earth": "dhofar_amadee18",
+   "target": "jezero_crater",
+   "raw_a": {
+    "slope_deg": 1.5,
+    "roughness_m": 5,
+    "relief_m": 60,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.35,
+    "chloride_index": 0.1,
+    "albedo": 0.32,
+    "thermal_inertia": 700
+   },
+   "raw_b": {
+    "slope_deg": 3,
+    "roughness_m": 15,
+    "relief_m": 600,
+    "serpentine_index": 0.15,
+    "carbonate_index": 0.45,
+    "chloride_index": 0.02,
+    "albedo": 0.2,
+    "thermal_inertia": 380
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.8782222222222221,
+    "confidence": 0.770383946699246,
+    "coverage": 1.0,
+    "resolution_factor": 0.770383946699246,
+    "per_criterion": {
+     "terrain": 0.8711111111111111,
+     "mineralogy": 0.9066666666666666,
+     "surface": 0.8
+    }
+   }
+  },
+  {
+   "earth": "dhofar_amadee18",
+   "target": "nili_fossae",
+   "raw_a": {
+    "slope_deg": 1.5,
+    "roughness_m": 5,
+    "relief_m": 60,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.35,
+    "chloride_index": 0.1,
+    "albedo": 0.32,
+    "thermal_inertia": 700
+   },
+   "raw_b": {
+    "slope_deg": 8,
+    "roughness_m": 40,
+    "relief_m": 700,
+    "serpentine_index": 0.4,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.02,
+    "albedo": 0.17,
+    "thermal_inertia": 450
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.7901666666666667,
+    "confidence": 0.770383946699246,
+    "coverage": 1.0,
+    "resolution_factor": 0.770383946699246,
+    "per_criterion": {
+     "terrain": 0.7433333333333333,
+     "mineralogy": 0.8066666666666666,
+     "surface": 0.7875
+    }
+   }
+  },
+  {
+   "earth": "dhofar_amadee18",
+   "target": "terra_sirenum_chlorides",
+   "raw_a": {
+    "slope_deg": 1.5,
+    "roughness_m": 5,
+    "relief_m": 60,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.35,
+    "chloride_index": 0.1,
+    "albedo": 0.32,
+    "thermal_inertia": 700
+   },
+   "raw_b": {
+    "slope_deg": 1.5,
+    "roughness_m": 6,
+    "relief_m": 80,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.02,
+    "chloride_index": 0.7,
+    "albedo": 0.24,
+    "thermal_inertia": 400
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 100,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.7718888888888888,
+    "confidence": 0.8303839466992461,
+    "coverage": 1.0,
+    "resolution_factor": 0.8303839466992461,
+    "per_criterion": {
+     "terrain": 0.9944444444444445,
+     "mineralogy": 0.6733333333333333,
+     "surface": 0.845
+    }
+   }
+  },
+  {
+   "earth": "dhofar_amadee18",
+   "target": "nili_patera_dunes",
+   "raw_a": {
+    "slope_deg": 1.5,
+    "roughness_m": 5,
+    "relief_m": 60,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.35,
+    "chloride_index": 0.1,
+    "albedo": 0.32,
+    "thermal_inertia": 700
+   },
+   "raw_b": {
+    "slope_deg": 2.5,
+    "roughness_m": 10,
+    "relief_m": 150,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.0,
+    "chloride_index": 0.0,
+    "albedo": 0.1,
+    "thermal_inertia": 250
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.8260555555555555,
+    "confidence": 0.770383946699246,
+    "coverage": 1.0,
+    "resolution_factor": 0.770383946699246,
+    "per_criterion": {
+     "terrain": 0.9627777777777777,
+     "mineralogy": 0.8333333333333334,
+     "surface": 0.6675
+    }
+   }
+  },
+  {
+   "earth": "dhofar_amadee18",
+   "target": "moon_south_pole",
+   "raw_a": {
+    "slope_deg": 1.5,
+    "roughness_m": 5,
+    "relief_m": 60,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.35,
+    "chloride_index": 0.1,
+    "albedo": 0.32,
+    "thermal_inertia": 700
+   },
+   "raw_b": {
+    "slope_deg": 18,
+    "roughness_m": 90,
+    "relief_m": 1900,
+    "serpentine_index": null,
+    "carbonate_index": null,
+    "chloride_index": null,
+    "albedo": null,
+    "thermal_inertia": null
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 20,
+    "mineralogy": null,
+    "surface": null
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.3211111111111112,
+    "confidence": 0.1883007499855769,
+    "coverage": 0.2,
+    "resolution_factor": 0.9415037499278844,
+    "per_criterion": {
+     "terrain": 0.3211111111111112,
+     "mineralogy": null,
+     "surface": null
+    }
+   }
+  },
+  {
+   "earth": "jebel_shams",
+   "target": "jezero_crater",
+   "raw_a": {
+    "slope_deg": 22,
+    "roughness_m": 110,
+    "relief_m": 1800,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.6,
+    "chloride_index": 0.0,
+    "albedo": 0.28,
+    "thermal_inertia": 1500
+   },
+   "raw_b": {
+    "slope_deg": 3,
+    "roughness_m": 15,
+    "relief_m": 600,
+    "serpentine_index": 0.15,
+    "carbonate_index": 0.45,
+    "chloride_index": 0.02,
+    "albedo": 0.2,
+    "thermal_inertia": 380
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.7495555555555556,
+    "confidence": 0.770383946699246,
+    "coverage": 1.0,
+    "resolution_factor": 0.770383946699246,
+    "per_criterion": {
+     "terrain": 0.37777777777777777,
+     "mineralogy": 0.91,
+     "surface": 0.6399999999999999
+    }
+   }
+  },
+  {
+   "earth": "jebel_shams",
+   "target": "nili_fossae",
+   "raw_a": {
+    "slope_deg": 22,
+    "roughness_m": 110,
+    "relief_m": 1800,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.6,
+    "chloride_index": 0.0,
+    "albedo": 0.28,
+    "thermal_inertia": 1500
+   },
+   "raw_b": {
+    "slope_deg": 8,
+    "roughness_m": 40,
+    "relief_m": 700,
+    "serpentine_index": 0.4,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.02,
+    "albedo": 0.17,
+    "thermal_inertia": 450
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.7326111111111111,
+    "confidence": 0.770383946699246,
+    "coverage": 1.0,
+    "resolution_factor": 0.770383946699246,
+    "per_criterion": {
+     "terrain": 0.5055555555555556,
+     "mineralogy": 0.8433333333333333,
+     "surface": 0.6275
+    }
+   }
+  },
+  {
+   "earth": "jebel_shams",
+   "target": "terra_sirenum_chlorides",
+   "raw_a": {
+    "slope_deg": 22,
+    "roughness_m": 110,
+    "relief_m": 1800,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.6,
+    "chloride_index": 0.0,
+    "albedo": 0.28,
+    "thermal_inertia": 1500
+   },
+   "raw_b": {
+    "slope_deg": 1.5,
+    "roughness_m": 6,
+    "relief_m": 80,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.02,
+    "chloride_index": 0.7,
+    "albedo": 0.24,
+    "thermal_inertia": 400
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 100,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.521888888888889,
+    "confidence": 0.8303839466992461,
+    "coverage": 1.0,
+    "resolution_factor": 0.8303839466992461,
+    "per_criterion": {
+     "terrain": 0.25444444444444453,
+     "mineralogy": 0.5566666666666668,
+     "surface": 0.6849999999999999
+    }
+   }
+  },
+  {
+   "earth": "jebel_shams",
+   "target": "nili_patera_dunes",
+   "raw_a": {
+    "slope_deg": 22,
+    "roughness_m": 110,
+    "relief_m": 1800,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.6,
+    "chloride_index": 0.0,
+    "albedo": 0.28,
+    "thermal_inertia": 1500
+   },
+   "raw_b": {
+    "slope_deg": 2.5,
+    "roughness_m": 10,
+    "relief_m": 150,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.0,
+    "chloride_index": 0.0,
+    "albedo": 0.1,
+    "thermal_inertia": 250
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.6287222222222223,
+    "confidence": 0.770383946699246,
+    "coverage": 1.0,
+    "resolution_factor": 0.770383946699246,
+    "per_criterion": {
+     "terrain": 0.28611111111111115,
+     "mineralogy": 0.7833333333333333,
+     "surface": 0.5075
+    }
+   }
+  },
+  {
+   "earth": "jebel_shams",
+   "target": "moon_south_pole",
+   "raw_a": {
+    "slope_deg": 22,
+    "roughness_m": 110,
+    "relief_m": 1800,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.6,
+    "chloride_index": 0.0,
+    "albedo": 0.28,
+    "thermal_inertia": 1500
+   },
+   "raw_b": {
+    "slope_deg": 18,
+    "roughness_m": 90,
+    "relief_m": 1900,
+    "serpentine_index": null,
+    "carbonate_index": null,
+    "chloride_index": null,
+    "albedo": null,
+    "thermal_inertia": null
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 20,
+    "mineralogy": null,
+    "surface": null
+   },
+   "weights": {
+    "terrain": 0.2,
+    "mineralogy": 0.6,
+    "surface": 0.2
+   },
+   "expected": {
+    "overall": 0.8944444444444445,
+    "confidence": 0.1883007499855769,
+    "coverage": 0.2,
+    "resolution_factor": 0.9415037499278844,
+    "per_criterion": {
+     "terrain": 0.8944444444444445,
+     "mineralogy": null,
+     "surface": null
+    }
+   }
+  },
+  {
+   "earth": "samail_ophiolite",
+   "target": "jezero_crater",
+   "raw_a": {
+    "slope_deg": 12,
+    "roughness_m": 45,
+    "relief_m": 600,
+    "serpentine_index": 0.7,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.05,
+    "albedo": 0.18,
+    "thermal_inertia": 1200
+   },
+   "raw_b": {
+    "slope_deg": 3,
+    "roughness_m": 15,
+    "relief_m": 600,
+    "serpentine_index": 0.15,
+    "carbonate_index": 0.45,
+    "chloride_index": 0.02,
+    "albedo": 0.2,
+    "thermal_inertia": 380
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.8333333333333334,
+     "mineralogy": 0.79,
+     "surface": 0.775
+    }
+   }
+  },
+  {
+   "earth": "samail_ophiolite",
+   "target": "nili_fossae",
+   "raw_a": {
+    "slope_deg": 12,
+    "roughness_m": 45,
+    "relief_m": 600,
+    "serpentine_index": 0.7,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.05,
+    "albedo": 0.18,
+    "thermal_inertia": 1200
+   },
+   "raw_b": {
+    "slope_deg": 8,
+    "roughness_m": 40,
+    "relief_m": 700,
+    "serpentine_index": 0.4,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.02,
+    "albedo": 0.17,
+    "thermal_inertia": 450
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.9277777777777777,
+     "mineralogy": 0.89,
+     "surface": 0.8025
+    }
+   }
+  },
+  {
+   "earth": "samail_ophiolite",
+   "target": "terra_sirenum_chlorides",
+   "raw_a": {
+    "slope_deg": 12,
+    "roughness_m": 45,
+    "relief_m": 600,
+    "serpentine_index": 0.7,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.05,
+    "albedo": 0.18,
+    "thermal_inertia": 1200
+   },
+   "raw_b": {
+    "slope_deg": 1.5,
+    "roughness_m": 6,
+    "relief_m": 80,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.02,
+    "chloride_index": 0.7,
+    "albedo": 0.24,
+    "thermal_inertia": 400
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 100,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.71,
+     "mineralogy": 0.39000000000000007,
+     "surface": 0.74
+    }
+   }
+  },
+  {
+   "earth": "samail_ophiolite",
+   "target": "nili_patera_dunes",
+   "raw_a": {
+    "slope_deg": 12,
+    "roughness_m": 45,
+    "relief_m": 600,
+    "serpentine_index": 0.7,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.05,
+    "albedo": 0.18,
+    "thermal_inertia": 1200
+   },
+   "raw_b": {
+    "slope_deg": 2.5,
+    "roughness_m": 10,
+    "relief_m": 150,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.0,
+    "chloride_index": 0.0,
+    "albedo": 0.1,
+    "thermal_inertia": 250
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.7416666666666667,
+     "mineralogy": 0.5833333333333334,
+     "surface": 0.6825000000000001
+    }
+   }
+  },
+  {
+   "earth": "samail_ophiolite",
+   "target": "moon_south_pole",
+   "raw_a": {
+    "slope_deg": 12,
+    "roughness_m": 45,
+    "relief_m": 600,
+    "serpentine_index": 0.7,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.05,
+    "albedo": 0.18,
+    "thermal_inertia": 1200
+   },
+   "raw_b": {
+    "slope_deg": 18,
+    "roughness_m": 90,
+    "relief_m": 1900,
+    "serpentine_index": null,
+    "carbonate_index": null,
+    "chloride_index": null,
+    "albedo": null,
+    "thermal_inertia": null
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 20,
+    "mineralogy": null,
+    "surface": null
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.6166666666666667,
+     "mineralogy": null,
+     "surface": null
+    }
+   }
+  },
+  {
+   "earth": "umm_as_samim",
+   "target": "jezero_crater",
+   "raw_a": {
+    "slope_deg": 0.3,
+    "roughness_m": 1,
+    "relief_m": 15,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.15,
+    "chloride_index": 0.85,
+    "albedo": 0.42,
+    "thermal_inertia": 900
+   },
+   "raw_b": {
+    "slope_deg": 3,
+    "roughness_m": 15,
+    "relief_m": 600,
+    "serpentine_index": 0.15,
+    "carbonate_index": 0.45,
+    "chloride_index": 0.02,
+    "albedo": 0.2,
+    "thermal_inertia": 380
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.841388888888889,
+     "mineralogy": 0.5733333333333333,
+     "surface": 0.65
+    }
+   }
+  },
+  {
+   "earth": "umm_as_samim",
+   "target": "nili_fossae",
+   "raw_a": {
+    "slope_deg": 0.3,
+    "roughness_m": 1,
+    "relief_m": 15,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.15,
+    "chloride_index": 0.85,
+    "albedo": 0.42,
+    "thermal_inertia": 900
+   },
+   "raw_b": {
+    "slope_deg": 8,
+    "roughness_m": 40,
+    "relief_m": 700,
+    "serpentine_index": 0.4,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.02,
+    "albedo": 0.17,
+    "thermal_inertia": 450
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.7136111111111111,
+     "mineralogy": 0.47333333333333333,
+     "surface": 0.6375
+    }
+   }
+  },
+  {
+   "earth": "umm_as_samim",
+   "target": "terra_sirenum_chlorides",
+   "raw_a": {
+    "slope_deg": 0.3,
+    "roughness_m": 1,
+    "relief_m": 15,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.15,
+    "chloride_index": 0.85,
+    "albedo": 0.42,
+    "thermal_inertia": 900
+   },
+   "raw_b": {
+    "slope_deg": 1.5,
+    "roughness_m": 6,
+    "relief_m": 80,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.02,
+    "chloride_index": 0.7,
+    "albedo": 0.24,
+    "thermal_inertia": 400
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 100,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.9647222222222224,
+     "mineralogy": 0.9066666666666667,
+     "surface": 0.6950000000000001
+    }
+   }
+  },
+  {
+   "earth": "umm_as_samim",
+   "target": "nili_patera_dunes",
+   "raw_a": {
+    "slope_deg": 0.3,
+    "roughness_m": 1,
+    "relief_m": 15,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.15,
+    "chloride_index": 0.85,
+    "albedo": 0.42,
+    "thermal_inertia": 900
+   },
+   "raw_b": {
+    "slope_deg": 2.5,
+    "roughness_m": 10,
+    "relief_m": 150,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.0,
+    "chloride_index": 0.0,
+    "albedo": 0.1,
+    "thermal_inertia": 250
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.9330555555555556,
+     "mineralogy": 0.6666666666666666,
+     "surface": 0.5175000000000001
+    }
+   }
+  },
+  {
+   "earth": "umm_as_samim",
+   "target": "moon_south_pole",
+   "raw_a": {
+    "slope_deg": 0.3,
+    "roughness_m": 1,
+    "relief_m": 15,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.15,
+    "chloride_index": 0.85,
+    "albedo": 0.42,
+    "thermal_inertia": 900
+   },
+   "raw_b": {
+    "slope_deg": 18,
+    "roughness_m": 90,
+    "relief_m": 1900,
+    "serpentine_index": null,
+    "carbonate_index": null,
+    "chloride_index": null,
+    "albedo": null,
+    "thermal_inertia": null
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 20,
+    "mineralogy": null,
+    "surface": null
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.2913888888888889,
+     "mineralogy": null,
+     "surface": null
+    }
+   }
+  },
+  {
+   "earth": "sharqiya_sands",
+   "target": "jezero_crater",
+   "raw_a": {
+    "slope_deg": 3,
+    "roughness_m": 12,
+    "relief_m": 120,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.2,
+    "chloride_index": 0.02,
+    "albedo": 0.35,
+    "thermal_inertia": 350
+   },
+   "raw_b": {
+    "slope_deg": 3,
+    "roughness_m": 15,
+    "relief_m": 600,
+    "serpentine_index": 0.15,
+    "carbonate_index": 0.45,
+    "chloride_index": 0.02,
+    "albedo": 0.2,
+    "thermal_inertia": 380
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.9133333333333334,
+     "mineralogy": 0.8666666666666667,
+     "surface": 0.8425
+    }
+   }
+  },
+  {
+   "earth": "sharqiya_sands",
+   "target": "nili_fossae",
+   "raw_a": {
+    "slope_deg": 3,
+    "roughness_m": 12,
+    "relief_m": 120,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.2,
+    "chloride_index": 0.02,
+    "albedo": 0.35,
+    "thermal_inertia": 350
+   },
+   "raw_b": {
+    "slope_deg": 8,
+    "roughness_m": 40,
+    "relief_m": 700,
+    "serpentine_index": 0.4,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.02,
+    "albedo": 0.17,
+    "thermal_inertia": 450
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.7855555555555555,
+     "mineralogy": 0.7666666666666666,
+     "surface": 0.795
+    }
+   }
+  },
+  {
+   "earth": "sharqiya_sands",
+   "target": "terra_sirenum_chlorides",
+   "raw_a": {
+    "slope_deg": 3,
+    "roughness_m": 12,
+    "relief_m": 120,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.2,
+    "chloride_index": 0.02,
+    "albedo": 0.35,
+    "thermal_inertia": 350
+   },
+   "raw_b": {
+    "slope_deg": 1.5,
+    "roughness_m": 6,
+    "relief_m": 80,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.02,
+    "chloride_index": 0.7,
+    "albedo": 0.24,
+    "thermal_inertia": 400
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 100,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.9633333333333333,
+     "mineralogy": 0.7133333333333333,
+     "surface": 0.8775
+    }
+   }
+  },
+  {
+   "earth": "sharqiya_sands",
+   "target": "nili_patera_dunes",
+   "raw_a": {
+    "slope_deg": 3,
+    "roughness_m": 12,
+    "relief_m": 120,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.2,
+    "chloride_index": 0.02,
+    "albedo": 0.35,
+    "thermal_inertia": 350
+   },
+   "raw_b": {
+    "slope_deg": 2.5,
+    "roughness_m": 10,
+    "relief_m": 150,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.0,
+    "chloride_index": 0.0,
+    "albedo": 0.1,
+    "thermal_inertia": 250
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.985,
+     "mineralogy": 0.9266666666666667,
+     "surface": 0.725
+    }
+   }
+  },
+  {
+   "earth": "sharqiya_sands",
+   "target": "moon_south_pole",
+   "raw_a": {
+    "slope_deg": 3,
+    "roughness_m": 12,
+    "relief_m": 120,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.2,
+    "chloride_index": 0.02,
+    "albedo": 0.35,
+    "thermal_inertia": 350
+   },
+   "raw_b": {
+    "slope_deg": 18,
+    "roughness_m": 90,
+    "relief_m": 1900,
+    "serpentine_index": null,
+    "carbonate_index": null,
+    "chloride_index": null,
+    "albedo": null,
+    "thermal_inertia": null
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 20,
+    "mineralogy": null,
+    "surface": null
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.36333333333333334,
+     "mineralogy": null,
+     "surface": null
+    }
+   }
+  },
+  {
+   "earth": "dhofar_amadee18",
+   "target": "jezero_crater",
+   "raw_a": {
+    "slope_deg": 1.5,
+    "roughness_m": 5,
+    "relief_m": 60,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.35,
+    "chloride_index": 0.1,
+    "albedo": 0.32,
+    "thermal_inertia": 700
+   },
+   "raw_b": {
+    "slope_deg": 3,
+    "roughness_m": 15,
+    "relief_m": 600,
+    "serpentine_index": 0.15,
+    "carbonate_index": 0.45,
+    "chloride_index": 0.02,
+    "albedo": 0.2,
+    "thermal_inertia": 380
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.8711111111111111,
+     "mineralogy": 0.9066666666666666,
+     "surface": 0.8
+    }
+   }
+  },
+  {
+   "earth": "dhofar_amadee18",
+   "target": "nili_fossae",
+   "raw_a": {
+    "slope_deg": 1.5,
+    "roughness_m": 5,
+    "relief_m": 60,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.35,
+    "chloride_index": 0.1,
+    "albedo": 0.32,
+    "thermal_inertia": 700
+   },
+   "raw_b": {
+    "slope_deg": 8,
+    "roughness_m": 40,
+    "relief_m": 700,
+    "serpentine_index": 0.4,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.02,
+    "albedo": 0.17,
+    "thermal_inertia": 450
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.7433333333333333,
+     "mineralogy": 0.8066666666666666,
+     "surface": 0.7875
+    }
+   }
+  },
+  {
+   "earth": "dhofar_amadee18",
+   "target": "terra_sirenum_chlorides",
+   "raw_a": {
+    "slope_deg": 1.5,
+    "roughness_m": 5,
+    "relief_m": 60,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.35,
+    "chloride_index": 0.1,
+    "albedo": 0.32,
+    "thermal_inertia": 700
+   },
+   "raw_b": {
+    "slope_deg": 1.5,
+    "roughness_m": 6,
+    "relief_m": 80,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.02,
+    "chloride_index": 0.7,
+    "albedo": 0.24,
+    "thermal_inertia": 400
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 100,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.9944444444444445,
+     "mineralogy": 0.6733333333333333,
+     "surface": 0.845
+    }
+   }
+  },
+  {
+   "earth": "dhofar_amadee18",
+   "target": "nili_patera_dunes",
+   "raw_a": {
+    "slope_deg": 1.5,
+    "roughness_m": 5,
+    "relief_m": 60,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.35,
+    "chloride_index": 0.1,
+    "albedo": 0.32,
+    "thermal_inertia": 700
+   },
+   "raw_b": {
+    "slope_deg": 2.5,
+    "roughness_m": 10,
+    "relief_m": 150,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.0,
+    "chloride_index": 0.0,
+    "albedo": 0.1,
+    "thermal_inertia": 250
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.9627777777777777,
+     "mineralogy": 0.8333333333333334,
+     "surface": 0.6675
+    }
+   }
+  },
+  {
+   "earth": "dhofar_amadee18",
+   "target": "moon_south_pole",
+   "raw_a": {
+    "slope_deg": 1.5,
+    "roughness_m": 5,
+    "relief_m": 60,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.35,
+    "chloride_index": 0.1,
+    "albedo": 0.32,
+    "thermal_inertia": 700
+   },
+   "raw_b": {
+    "slope_deg": 18,
+    "roughness_m": 90,
+    "relief_m": 1900,
+    "serpentine_index": null,
+    "carbonate_index": null,
+    "chloride_index": null,
+    "albedo": null,
+    "thermal_inertia": null
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 20,
+    "mineralogy": null,
+    "surface": null
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.3211111111111112,
+     "mineralogy": null,
+     "surface": null
+    }
+   }
+  },
+  {
+   "earth": "jebel_shams",
+   "target": "jezero_crater",
+   "raw_a": {
+    "slope_deg": 22,
+    "roughness_m": 110,
+    "relief_m": 1800,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.6,
+    "chloride_index": 0.0,
+    "albedo": 0.28,
+    "thermal_inertia": 1500
+   },
+   "raw_b": {
+    "slope_deg": 3,
+    "roughness_m": 15,
+    "relief_m": 600,
+    "serpentine_index": 0.15,
+    "carbonate_index": 0.45,
+    "chloride_index": 0.02,
+    "albedo": 0.2,
+    "thermal_inertia": 380
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.37777777777777777,
+     "mineralogy": 0.91,
+     "surface": 0.6399999999999999
+    }
+   }
+  },
+  {
+   "earth": "jebel_shams",
+   "target": "nili_fossae",
+   "raw_a": {
+    "slope_deg": 22,
+    "roughness_m": 110,
+    "relief_m": 1800,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.6,
+    "chloride_index": 0.0,
+    "albedo": 0.28,
+    "thermal_inertia": 1500
+   },
+   "raw_b": {
+    "slope_deg": 8,
+    "roughness_m": 40,
+    "relief_m": 700,
+    "serpentine_index": 0.4,
+    "carbonate_index": 0.5,
+    "chloride_index": 0.02,
+    "albedo": 0.17,
+    "thermal_inertia": 450
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.5055555555555556,
+     "mineralogy": 0.8433333333333333,
+     "surface": 0.6275
+    }
+   }
+  },
+  {
+   "earth": "jebel_shams",
+   "target": "terra_sirenum_chlorides",
+   "raw_a": {
+    "slope_deg": 22,
+    "roughness_m": 110,
+    "relief_m": 1800,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.6,
+    "chloride_index": 0.0,
+    "albedo": 0.28,
+    "thermal_inertia": 1500
+   },
+   "raw_b": {
+    "slope_deg": 1.5,
+    "roughness_m": 6,
+    "relief_m": 80,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.02,
+    "chloride_index": 0.7,
+    "albedo": 0.24,
+    "thermal_inertia": 400
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 100,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.25444444444444453,
+     "mineralogy": 0.5566666666666668,
+     "surface": 0.6849999999999999
+    }
+   }
+  },
+  {
+   "earth": "jebel_shams",
+   "target": "nili_patera_dunes",
+   "raw_a": {
+    "slope_deg": 22,
+    "roughness_m": 110,
+    "relief_m": 1800,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.6,
+    "chloride_index": 0.0,
+    "albedo": 0.28,
+    "thermal_inertia": 1500
+   },
+   "raw_b": {
+    "slope_deg": 2.5,
+    "roughness_m": 10,
+    "relief_m": 150,
+    "serpentine_index": 0.0,
+    "carbonate_index": 0.0,
+    "chloride_index": 0.0,
+    "albedo": 0.1,
+    "thermal_inertia": 250
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 463,
+    "mineralogy": 18,
+    "surface": 100
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.28611111111111115,
+     "mineralogy": 0.7833333333333333,
+     "surface": 0.5075
+    }
+   }
+  },
+  {
+   "earth": "jebel_shams",
+   "target": "moon_south_pole",
+   "raw_a": {
+    "slope_deg": 22,
+    "roughness_m": 110,
+    "relief_m": 1800,
+    "serpentine_index": 0.05,
+    "carbonate_index": 0.6,
+    "chloride_index": 0.0,
+    "albedo": 0.28,
+    "thermal_inertia": 1500
+   },
+   "raw_b": {
+    "slope_deg": 18,
+    "roughness_m": 90,
+    "relief_m": 1900,
+    "serpentine_index": null,
+    "carbonate_index": null,
+    "chloride_index": null,
+    "albedo": null,
+    "thermal_inertia": null
+   },
+   "res_a": {
+    "terrain": 30,
+    "mineralogy": 60,
+    "surface": 500
+   },
+   "res_b": {
+    "terrain": 20,
+    "mineralogy": null,
+    "surface": null
+   },
+   "weights": {
+    "terrain": 0.0,
+    "mineralogy": 0.0,
+    "surface": 0.0
+   },
+   "expected": {
+    "overall": null,
+    "confidence": 0.0,
+    "coverage": 0.0,
+    "resolution_factor": 0.0,
+    "per_criterion": {
+     "terrain": 0.8944444444444445,
+     "mineralogy": null,
+     "surface": null
+    }
+   }
+  }
+ ]
+}

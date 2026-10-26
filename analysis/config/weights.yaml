@@ -1,0 +1,33 @@
+# Similarity criteria, their features, normalisation ranges and default weights.
+# The web UI lets users change the weights; Python and TypeScript must stay in sync
+# (see analysis/tests/test_parity.py and web/src/lib/similarity.test.ts).
+
+criteria:
+  terrain:
+    weight: 0.4
+    features: [slope_deg, roughness_m, relief_m]
+  mineralogy:
+    weight: 0.4
+    features: [serpentine_index, carbonate_index, chloride_index]
+  surface:
+    weight: 0.2
+    features: [albedo, thermal_inertia]
+
+# Fixed min/max used to map each raw metric to 0..1 (values outside are clipped).
+feature_ranges:
+  slope_deg:        [0, 30]       # mean slope, degrees, at the common 463 m baseline
+  roughness_m:      [0, 150]      # RMS detrended height, metres, ~1.4 km window
+  relief_m:         [0, 2000]     # max - min elevation inside a 5 km window
+  serpentine_index: [0, 1]        # 2.32 um band-depth based abundance proxy
+  carbonate_index:  [0, 1]        # 2.30-2.34 um + 2.5 um band-depth proxy
+  chloride_index:   [0, 1]        # featureless-bright spectral slope proxy
+  albedo:           [0, 0.5]      # broadband Lambert albedo
+  thermal_inertia:  [0, 2000]     # J m^-2 K^-1 s^-1/2 (TIU)
+
+# Terrain is compared after resampling every DEM to this ground sample distance.
+common_terrain_scale_m: 463
+
+# Confidence: per-criterion resolution factor = max(min_factor, 1 - k * |log2(res_a / res_b)|)
+confidence:
+  resolution_k: 0.1
+  resolution_min_factor: 0.5
