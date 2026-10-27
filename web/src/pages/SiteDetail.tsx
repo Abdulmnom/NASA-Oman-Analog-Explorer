@@ -123,15 +123,24 @@ export default function SiteDetail() {
         <div className="panel">
           <h2>
             {t('site.rawMetrics')}{' '}
-            <span className={`pill ${site.provisional ? 'warn' : 'ok'}`}>{t(site.provisional ? 'site.provisional' : 'site.measured')}</span>
+            <span className={`pill ${site.provisional ? 'warn' : 'ok'}`}>
+              {t(!site.provisional ? 'site.measured' : site.measured?.length ? 'site.partial' : 'site.provisional')}
+            </span>
           </h2>
           <div className="table-wrap flush"><table className="table">
             <tbody>
               {features.map((f) => {
                 const v = site.raw[f];
+                const hasValue = v !== null && v !== undefined;
+                const isMeasured = site.measured?.includes(f) ?? false;
                 return (
                   <tr key={f}>
-                    <td>{t(`features.${f}`)}</td>
+                    <td>
+                      {t(`features.${f}`)}{' '}
+                      {hasValue && (
+                        <span className={`pill ${isMeasured ? 'ok' : 'warn'}`}>{t(isMeasured ? 'site.tagMeasured' : 'site.tagEstimate')}</span>
+                      )}
+                    </td>
                     <td className="num-cell">{v === null || v === undefined ? t('site.none') : `${num(v, v < 1 ? 2 : v < 10 ? 1 : 0)} ${t(`units.${f}`)}`}</td>
                   </tr>
                 );

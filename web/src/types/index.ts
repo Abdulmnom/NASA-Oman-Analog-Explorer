@@ -28,6 +28,8 @@ export interface Site {
   sources: Record<string, string[]>;
   raw: RawMetrics;
   provisional: boolean;
+  /** Metric keys computed from real NASA data; the rest of `raw` are provisional estimates. */
+  measured?: string[];
   card: Record<Lang, SiteCardText>;
 }
 
@@ -66,6 +68,8 @@ export interface Validation {
 export interface Dataset {
   generated: string;
   provisional: boolean;
+  /** Fraction (0..1) of scored metric values that come from real data. */
+  measured_share?: number;
   config: SimilarityConfig;
   earth_sites: Site[];
   targets: Site[];

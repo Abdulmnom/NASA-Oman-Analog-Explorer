@@ -43,25 +43,34 @@ def load_config() -> dict[str, Any]:
     return load_yaml("weights.yaml")
 
 
-def resolve_metrics(site: dict[str, Any]) -> tuple[dict[str, Any], bool]:
-    """Prefer pipeline output in data/processed/metrics/<id>.json over provisional values."""
-    measured = METRICS_DIR / f"{site['id']}.json"
-    if measured.exists():
-        with open(measured, encoding="utf-8") as fh:
-            values = json.load(fh)
-        merged = {**site.get("provisional_metrics", {}), **values}
-        return merged, False
-    return dict(site.get("provisional_metrics", {})), True
+def load_measured(site_id: str) -> dict[str, Any]:
+    """Pipeline output from `python -m analog.compute`, or {} if the site has not been run."""
+    path = METRICS_DIR / f"{site_id}.json"
+    if not path.exists():
+        return {}
+    with open(path, encoding="utf-8") as fh:
+        return json.load(fh)
 
 
 def prepare_sites(raw_sites: list[dict[str, Any]], body: str | None = None) -> list[dict[str, Any]]:
+    """Merge measured metrics over provisional ones and record which values are real data.
+
+    A site is `provisional` while any metric it is scored on (non-null provisional value)
+    still comes from the placeholder estimates.
+    """
     sites = []
     for s in raw_sites:
-        metrics, provisional = resolve_metrics(s)
+        estimates = s.get("provisional_metrics", {})
+        measured_file = load_measured(s["id"])
+        measured = {k: v for k, v in measured_file.get("metrics", {}).items() if v is not None}
         site = {k: v for k, v in s.items() if k != "provisional_metrics"}
         site.setdefault("body", body)
-        site["raw"] = metrics
-        site["provisional"] = provisional
+        site["raw"] = {**estimates, **measured}
+        site["measured"] = sorted(measured)
+        site["provisional"] = any(v is not None and k not in measured for k, v in estimates.items())
+        # The pipeline may swap a criterion's dataset (e.g. TES albedo instead of THEMIS).
+        site["sources"] = {**site.get("sources", {}), **measured_file.get("sources", {})}
+        site["resolution_m"] = {**site.get("resolution_m", {}), **measured_file.get("resolution_m", {})}
         sites.append(site)
     return sites
 
@@ -110,6 +119,12 @@ def write_parity_fixtures(earth: list[dict], targets: list[dict], config: dict) 
         json.dump({"config": config, "cases": cases}, fh, ensure_ascii=False, indent=1)
 
 
+def measured_share(sites: list[dict[str, Any]]) -> float:
+    """Fraction of scored metric values that come from real data rather than estimates."""
+    scored = [(s, k) for s in sites for k, v in s["raw"].items() if v is not None]
+    return round(sum(k in s["measured"] for s, k in scored) / len(scored), 4) if scored else 0.0
+
+
 def build() -> dict[str, Any]:
     config = load_config()
     earth = prepare_sites(load_yaml("earth_sites.yaml")["sites"], body="earth")
@@ -118,6 +133,7 @@ def build() -> dict[str, Any]:
     return {
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "provisional": any(s["provisional"] for s in earth + targets),
+        "measured_share": measured_share(earth + targets),
         "config": config,
         "earth_sites": earth,
         "targets": targets,
@@ -137,7 +153,8 @@ def main() -> None:
 
     v = dataset["validation"]
     print(f"Wrote {OUT_FILE.relative_to(REPO_DIR)} and {WEB_FILE.relative_to(REPO_DIR)}")
-    print(f"{len(dataset['scores'])} pairs scored; provisional data: {dataset['provisional']}")
+    print(f"{len(dataset['scores'])} pairs scored; measured share: {dataset['measured_share']:.0%}; "
+          f"provisional data remaining: {dataset['provisional']}")
     print(f"Validation: reference '{v['reference_site']}' ranks {v['reference_rank']} of {len(v['ranking'])} by mean Mars similarity")
 
 

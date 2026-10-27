@@ -1,6 +1,7 @@
 {
-  "generated": "2026-10-22T09:31:22+00:00",
+  "generated": "2026-10-27T16:40:25+00:00",
   "provisional": true,
+  "measured_share": 0.52,
   "config": {
     "criteria": {
       "terrain": {
@@ -129,15 +130,21 @@
       },
       "body": "earth",
       "raw": {
-        "slope_deg": 12,
-        "roughness_m": 45,
-        "relief_m": 600,
+        "slope_deg": 5.0733,
+        "roughness_m": 19.8446,
+        "relief_m": 320.0327,
         "serpentine_index": 0.7,
         "carbonate_index": 0.5,
         "chloride_index": 0.05,
-        "albedo": 0.18,
+        "albedo": 0.1359,
         "thermal_inertia": 1200
       },
+      "measured": [
+        "albedo",
+        "relief_m",
+        "roughness_m",
+        "slope_deg"
+      ],
       "provisional": true
     },
     {
@@ -199,15 +206,21 @@
       },
       "body": "earth",
       "raw": {
-        "slope_deg": 0.3,
-        "roughness_m": 1,
-        "relief_m": 15,
+        "slope_deg": 0.3672,
+        "roughness_m": 0.4927,
+        "relief_m": 24.1893,
         "serpentine_index": 0.0,
         "carbonate_index": 0.15,
         "chloride_index": 0.85,
-        "albedo": 0.42,
+        "albedo": 0.3573,
         "thermal_inertia": 900
       },
+      "measured": [
+        "albedo",
+        "relief_m",
+        "roughness_m",
+        "slope_deg"
+      ],
       "provisional": true
     },
     {
@@ -269,15 +282,21 @@
       },
       "body": "earth",
       "raw": {
-        "slope_deg": 3,
-        "roughness_m": 12,
-        "relief_m": 120,
+        "slope_deg": 1.769,
+        "roughness_m": 7.1317,
+        "relief_m": 65.4667,
         "serpentine_index": 0.0,
         "carbonate_index": 0.2,
         "chloride_index": 0.02,
-        "albedo": 0.35,
+        "albedo": 0.3317,
         "thermal_inertia": 350
       },
+      "measured": [
+        "albedo",
+        "relief_m",
+        "roughness_m",
+        "slope_deg"
+      ],
       "provisional": true
     },
     {
@@ -338,15 +357,21 @@
       },
       "body": "earth",
       "raw": {
-        "slope_deg": 1.5,
-        "roughness_m": 5,
-        "relief_m": 60,
+        "slope_deg": 0.1912,
+        "roughness_m": 0.6161,
+        "relief_m": 12.9944,
         "serpentine_index": 0.05,
         "carbonate_index": 0.35,
         "chloride_index": 0.1,
-        "albedo": 0.32,
+        "albedo": 0.4803,
         "thermal_inertia": 700
       },
+      "measured": [
+        "albedo",
+        "relief_m",
+        "roughness_m",
+        "slope_deg"
+      ],
       "provisional": true
     },
     {
@@ -406,15 +431,21 @@
       },
       "body": "earth",
       "raw": {
-        "slope_deg": 22,
-        "roughness_m": 110,
-        "relief_m": 1800,
+        "slope_deg": 15.2797,
+        "roughness_m": 33.7844,
+        "relief_m": 1301.351,
         "serpentine_index": 0.05,
         "carbonate_index": 0.6,
         "chloride_index": 0.0,
-        "albedo": 0.28,
+        "albedo": 0.1648,
         "thermal_inertia": 1500
       },
+      "measured": [
+        "albedo",
+        "relief_m",
+        "roughness_m",
+        "slope_deg"
+      ],
       "provisional": true
     }
   ],
@@ -432,19 +463,17 @@
       "resolution_m": {
         "terrain": 463,
         "mineralogy": 18,
-        "surface": 100
+        "surface": 7410
       },
       "sources": {
         "terrain": [
-          "MOLA",
-          "HiRISE DTM"
+          "MOLA"
         ],
         "mineralogy": [
           "CRISM"
         ],
         "surface": [
-          "THEMIS",
-          "TES"
+          "TES albedo"
         ]
       },
       "card": {
@@ -456,15 +485,21 @@
         }
       },
       "raw": {
-        "slope_deg": 3,
-        "roughness_m": 15,
-        "relief_m": 600,
+        "slope_deg": 2.7443,
+        "roughness_m": 1.9812,
+        "relief_m": 197.5694,
         "serpentine_index": 0.15,
         "carbonate_index": 0.45,
         "chloride_index": 0.02,
-        "albedo": 0.2,
+        "albedo": 0.1713,
         "thermal_inertia": 380
       },
+      "measured": [
+        "albedo",
+        "relief_m",
+        "roughness_m",
+        "slope_deg"
+      ],
       "provisional": true
     },
     {
@@ -480,7 +515,7 @@
       "resolution_m": {
         "terrain": 463,
         "mineralogy": 18,
-        "surface": 100
+        "surface": 7410
       },
       "sources": {
         "terrain": [
@@ -490,8 +525,7 @@
           "CRISM"
         ],
         "surface": [
-          "THEMIS",
-          "TES"
+          "TES albedo"
         ]
       },
       "card": {
@@ -503,15 +537,21 @@
         }
       },
       "raw": {
-        "slope_deg": 8,
-        "roughness_m": 40,
-        "relief_m": 700,
+        "slope_deg": 2.9966,
+        "roughness_m": 1.9438,
+        "relief_m": 279.5819,
         "serpentine_index": 0.4,
         "carbonate_index": 0.5,
         "chloride_index": 0.02,
-        "albedo": 0.17,
+        "albedo": 0.1234,
         "thermal_inertia": 450
       },
+      "measured": [
+        "albedo",
+        "relief_m",
+        "roughness_m",
+        "slope_deg"
+      ],
       "provisional": true
     },
     {
@@ -527,7 +567,7 @@
       "resolution_m": {
         "terrain": 463,
         "mineralogy": 100,
-        "surface": 100
+        "surface": 7410
       },
       "sources": {
         "terrain": [
@@ -538,8 +578,7 @@
           "CRISM"
         ],
         "surface": [
-          "THEMIS",
-          "TES"
+          "TES albedo"
         ]
       },
       "card": {
@@ -551,15 +590,21 @@
         }
       },
       "raw": {
-        "slope_deg": 1.5,
-        "roughness_m": 6,
-        "relief_m": 80,
+        "slope_deg": 5.3892,
+        "roughness_m": 4.5315,
+        "relief_m": 509.7588,
         "serpentine_index": 0.0,
         "carbonate_index": 0.02,
         "chloride_index": 0.7,
-        "albedo": 0.24,
+        "albedo": 0.1443,
         "thermal_inertia": 400
       },
+      "measured": [
+        "albedo",
+        "relief_m",
+        "roughness_m",
+        "slope_deg"
+      ],
       "provisional": true
     },
     {
@@ -575,19 +620,17 @@
       "resolution_m": {
         "terrain": 463,
         "mineralogy": 18,
-        "surface": 100
+        "surface": 7410
       },
       "sources": {
         "terrain": [
-          "MOLA",
-          "HiRISE DTM"
+          "MOLA"
         ],
         "mineralogy": [
           "CRISM"
         ],
         "surface": [
-          "THEMIS",
-          "TES"
+          "TES albedo"
         ]
       },
       "card": {
@@ -599,15 +642,21 @@
         }
       },
       "raw": {
-        "slope_deg": 2.5,
-        "roughness_m": 10,
-        "relief_m": 150,
+        "slope_deg": 1.1891,
+        "roughness_m": 1.5232,
+        "relief_m": 104.9004,
         "serpentine_index": 0.0,
         "carbonate_index": 0.0,
         "chloride_index": 0.0,
-        "albedo": 0.1,
+        "albedo": 0.1159,
         "thermal_inertia": 250
       },
+      "measured": [
+        "albedo",
+        "relief_m",
+        "roughness_m",
+        "slope_deg"
+      ],
       "provisional": true
     },
     {
@@ -641,275 +690,280 @@
         }
       },
       "raw": {
-        "slope_deg": 18,
-        "roughness_m": 90,
-        "relief_m": 1900,
+        "slope_deg": 19.8746,
+        "roughness_m": 8.0411,
+        "relief_m": 1814.7607,
         "serpentine_index": null,
         "carbonate_index": null,
         "chloride_index": null,
         "albedo": null,
         "thermal_inertia": null
       },
-      "provisional": true
+      "measured": [
+        "relief_m",
+        "roughness_m",
+        "slope_deg"
+      ],
+      "provisional": false
     }
   ],
   "scores": [
     {
       "earth": "samail_ophiolite",
       "target": "jezero_crater",
-      "overall": 0.8043333333333335,
-      "confidence": 0.7261637028295358,
+      "overall": 0.8335260911111113,
+      "confidence": 0.6948127938766608,
       "coverage": 1.0,
-      "resolution_factor": 0.7261637028295358,
+      "resolution_factor": 0.6948127938766608,
       "per_criterion": {
-        "terrain": 0.8333333333333334,
+        "terrain": 0.9140152277777779,
         "mineralogy": 0.79,
-        "surface": 0.775
+        "surface": 0.7596
       }
     },
     {
       "earth": "samail_ophiolite",
       "target": "nili_fossae",
-      "overall": 0.8876111111111111,
-      "confidence": 0.7261637028295358,
+      "overall": 0.8881616800000001,
+      "confidence": 0.6948127938766608,
       "coverage": 1.0,
-      "resolution_factor": 0.7261637028295358,
+      "resolution_factor": 0.6948127938766608,
       "per_criterion": {
-        "terrain": 0.9277777777777777,
+        "terrain": 0.9304041999999999,
         "mineralogy": 0.89,
-        "surface": 0.8025
-      }
-    },
-    {
-      "earth": "samail_ophiolite",
-      "target": "terra_sirenum_chlorides",
-      "overall": 0.588,
-      "confidence": 0.7661637028295358,
-      "coverage": 1.0,
-      "resolution_factor": 0.7661637028295358,
-      "per_criterion": {
-        "terrain": 0.71,
-        "mineralogy": 0.39000000000000007,
-        "surface": 0.74
-      }
-    },
-    {
-      "earth": "samail_ophiolite",
-      "target": "nili_patera_dunes",
-      "overall": 0.6665000000000001,
-      "confidence": 0.7261637028295358,
-      "coverage": 1.0,
-      "resolution_factor": 0.7261637028295358,
-      "per_criterion": {
-        "terrain": 0.7416666666666667,
-        "mineralogy": 0.5833333333333334,
-        "surface": 0.6825000000000001
-      }
-    },
-    {
-      "earth": "samail_ophiolite",
-      "target": "moon_south_pole",
-      "overall": 0.6166666666666667,
-      "confidence": 0.3766014999711538,
-      "coverage": 0.4,
-      "resolution_factor": 0.9415037499278844,
-      "per_criterion": {
-        "terrain": 0.6166666666666667,
-        "mineralogy": null,
-        "surface": null
-      }
-    },
-    {
-      "earth": "umm_as_samim",
-      "target": "jezero_crater",
-      "overall": 0.6958888888888889,
-      "confidence": 0.7261637028295358,
-      "coverage": 1.0,
-      "resolution_factor": 0.7261637028295358,
-      "per_criterion": {
-        "terrain": 0.841388888888889,
-        "mineralogy": 0.5733333333333333,
-        "surface": 0.65
-      }
-    },
-    {
-      "earth": "umm_as_samim",
-      "target": "nili_fossae",
-      "overall": 0.6022777777777778,
-      "confidence": 0.7261637028295358,
-      "coverage": 1.0,
-      "resolution_factor": 0.7261637028295358,
-      "per_criterion": {
-        "terrain": 0.7136111111111111,
-        "mineralogy": 0.47333333333333333,
-        "surface": 0.6375
-      }
-    },
-    {
-      "earth": "umm_as_samim",
-      "target": "terra_sirenum_chlorides",
-      "overall": 0.8875555555555557,
-      "confidence": 0.7661637028295358,
-      "coverage": 1.0,
-      "resolution_factor": 0.7661637028295358,
-      "per_criterion": {
-        "terrain": 0.9647222222222224,
-        "mineralogy": 0.9066666666666667,
-        "surface": 0.6950000000000001
-      }
-    },
-    {
-      "earth": "umm_as_samim",
-      "target": "nili_patera_dunes",
-      "overall": 0.743388888888889,
-      "confidence": 0.7261637028295358,
-      "coverage": 1.0,
-      "resolution_factor": 0.7261637028295358,
-      "per_criterion": {
-        "terrain": 0.9330555555555556,
-        "mineralogy": 0.6666666666666666,
-        "surface": 0.5175000000000001
-      }
-    },
-    {
-      "earth": "umm_as_samim",
-      "target": "moon_south_pole",
-      "overall": 0.2913888888888889,
-      "confidence": 0.3766014999711538,
-      "coverage": 0.4,
-      "resolution_factor": 0.9415037499278844,
-      "per_criterion": {
-        "terrain": 0.2913888888888889,
-        "mineralogy": null,
-        "surface": null
-      }
-    },
-    {
-      "earth": "sharqiya_sands",
-      "target": "jezero_crater",
-      "overall": 0.8805000000000001,
-      "confidence": 0.7261637028295358,
-      "coverage": 1.0,
-      "resolution_factor": 0.7261637028295358,
-      "per_criterion": {
-        "terrain": 0.9133333333333334,
-        "mineralogy": 0.8666666666666667,
-        "surface": 0.8425
-      }
-    },
-    {
-      "earth": "sharqiya_sands",
-      "target": "nili_fossae",
-      "overall": 0.7798888888888889,
-      "confidence": 0.7261637028295358,
-      "coverage": 1.0,
-      "resolution_factor": 0.7261637028295358,
-      "per_criterion": {
-        "terrain": 0.7855555555555555,
-        "mineralogy": 0.7666666666666666,
-        "surface": 0.795
-      }
-    },
-    {
-      "earth": "sharqiya_sands",
-      "target": "terra_sirenum_chlorides",
-      "overall": 0.8461666666666666,
-      "confidence": 0.7661637028295358,
-      "coverage": 1.0,
-      "resolution_factor": 0.7661637028295358,
-      "per_criterion": {
-        "terrain": 0.9633333333333333,
-        "mineralogy": 0.7133333333333333,
-        "surface": 0.8775
-      }
-    },
-    {
-      "earth": "sharqiya_sands",
-      "target": "nili_patera_dunes",
-      "overall": 0.9096666666666667,
-      "confidence": 0.7261637028295358,
-      "coverage": 1.0,
-      "resolution_factor": 0.7261637028295358,
-      "per_criterion": {
-        "terrain": 0.985,
-        "mineralogy": 0.9266666666666667,
-        "surface": 0.725
-      }
-    },
-    {
-      "earth": "sharqiya_sands",
-      "target": "moon_south_pole",
-      "overall": 0.36333333333333334,
-      "confidence": 0.3766014999711538,
-      "coverage": 0.4,
-      "resolution_factor": 0.9415037499278844,
-      "per_criterion": {
-        "terrain": 0.36333333333333334,
-        "mineralogy": null,
-        "surface": null
-      }
-    },
-    {
-      "earth": "dhofar_amadee18",
-      "target": "jezero_crater",
-      "overall": 0.8711111111111112,
-      "confidence": 0.7261637028295358,
-      "coverage": 1.0,
-      "resolution_factor": 0.7261637028295358,
-      "per_criterion": {
-        "terrain": 0.8711111111111111,
-        "mineralogy": 0.9066666666666666,
         "surface": 0.8
       }
     },
     {
+      "earth": "samail_ophiolite",
+      "target": "terra_sirenum_chlorides",
+      "overall": 0.6866559488888889,
+      "confidence": 0.7348127938766609,
+      "coverage": 1.0,
+      "resolution_factor": 0.7348127938766609,
+      "per_criterion": {
+        "terrain": 0.9308398722222222,
+        "mineralogy": 0.39000000000000007,
+        "surface": 0.7916000000000001
+      }
+    },
+    {
+      "earth": "samail_ophiolite",
+      "target": "nili_patera_dunes",
+      "overall": 0.7339423800000001,
+      "confidence": 0.6948127938766608,
+      "coverage": 1.0,
+      "resolution_factor": 0.6948127938766608,
+      "per_criterion": {
+        "terrain": 0.8802726166666668,
+        "mineralogy": 0.5833333333333334,
+        "surface": 0.7424999999999999
+      }
+    },
+    {
+      "earth": "samail_ophiolite",
+      "target": "moon_south_pole",
+      "overall": 0.5601897777777777,
+      "confidence": 0.3766014999711538,
+      "coverage": 0.4,
+      "resolution_factor": 0.9415037499278844,
+      "per_criterion": {
+        "terrain": 0.5601897777777777,
+        "mineralogy": null,
+        "surface": null
+      }
+    },
+    {
+      "earth": "umm_as_samim",
+      "target": "jezero_crater",
+      "overall": 0.74268666,
+      "confidence": 0.6948127938766608,
+      "coverage": 1.0,
+      "resolution_factor": 0.6948127938766608,
+      "per_criterion": {
+        "terrain": 0.9413833166666667,
+        "mineralogy": 0.5733333333333333,
+        "surface": 0.6839999999999999
+      }
+    },
+    {
+      "earth": "umm_as_samim",
+      "target": "nili_fossae",
+      "overall": 0.6900510711111112,
+      "confidence": 0.6948127938766608,
+      "coverage": 1.0,
+      "resolution_factor": 0.6948127938766608,
+      "per_criterion": {
+        "terrain": 0.9249943444444444,
+        "mineralogy": 0.47333333333333333,
+        "surface": 0.6536
+      }
+    },
+    {
+      "earth": "umm_as_samim",
+      "target": "terra_sirenum_chlorides",
+      "overall": 0.8367853222222223,
+      "confidence": 0.7348127938766609,
+      "coverage": 1.0,
+      "resolution_factor": 0.7348127938766609,
+      "per_criterion": {
+        "terrain": 0.8542966388888887,
+        "mineralogy": 0.9066666666666667,
+        "surface": 0.662
+      }
+    },
+    {
+      "earth": "umm_as_samim",
+      "target": "nili_patera_dunes",
+      "overall": 0.7759370377777778,
+      "confidence": 0.6948127938766608,
+      "coverage": 1.0,
+      "resolution_factor": 0.6948127938766608,
+      "per_criterion": {
+        "terrain": 0.9751259277777778,
+        "mineralogy": 0.6666666666666666,
+        "surface": 0.5961000000000001
+      }
+    },
+    {
+      "earth": "umm_as_samim",
+      "target": "moon_south_pole",
+      "overall": 0.4680483222222223,
+      "confidence": 0.3766014999711538,
+      "coverage": 0.4,
+      "resolution_factor": 0.9415037499278844,
+      "per_criterion": {
+        "terrain": 0.46804832222222226,
+        "mineralogy": null,
+        "surface": null
+      }
+    },
+    {
+      "earth": "sharqiya_sands",
+      "target": "jezero_crater",
+      "overall": 0.8953669311111112,
+      "confidence": 0.6948127938766608,
+      "coverage": 1.0,
+      "resolution_factor": 0.6948127938766608,
+      "per_criterion": {
+        "terrain": 0.9557006611111111,
+        "mineralogy": 0.8666666666666667,
+        "surface": 0.8321000000000001
+      }
+    },
+    {
+      "earth": "sharqiya_sands",
+      "target": "nili_fossae",
+      "overall": 0.8356648533333333,
+      "confidence": 0.6948127938766608,
+      "coverage": 1.0,
+      "resolution_factor": 0.6948127938766608,
+      "per_criterion": {
+        "terrain": 0.9391454666666667,
+        "mineralogy": 0.7666666666666666,
+        "surface": 0.7666999999999999
+      }
+    },
+    {
+      "earth": "sharqiya_sands",
+      "target": "terra_sirenum_chlorides",
+      "overall": 0.7973327933333334,
+      "confidence": 0.7348127938766609,
+      "coverage": 1.0,
+      "resolution_factor": 0.7348127938766609,
+      "per_criterion": {
+        "terrain": 0.8799486499999999,
+        "mineralogy": 0.7133333333333333,
+        "surface": 0.8001
+      }
+    },
+    {
+      "earth": "sharqiya_sands",
+      "target": "nili_patera_dunes",
+      "overall": 0.9123150866666667,
+      "confidence": 0.6948127938766608,
+      "coverage": 1.0,
+      "resolution_factor": 0.6948127938766608,
+      "per_criterion": {
+        "terrain": 0.97452105,
+        "mineralogy": 0.9266666666666667,
+        "surface": 0.7592
+      }
+    },
+    {
+      "earth": "sharqiya_sands",
+      "target": "moon_south_pole",
+      "overall": 0.5052567777777778,
+      "confidence": 0.3766014999711538,
+      "coverage": 0.4,
+      "resolution_factor": 0.9415037499278844,
+      "per_criterion": {
+        "terrain": 0.5052567777777778,
+        "mineralogy": null,
+        "surface": null
+      }
+    },
+    {
+      "earth": "dhofar_amadee18",
+      "target": "jezero_crater",
+      "overall": 0.8600011333333334,
+      "confidence": 0.6948127938766608,
+      "coverage": 1.0,
+      "resolution_factor": 0.6948127938766608,
+      "per_criterion": {
+        "terrain": 0.9378361666666667,
+        "mineralogy": 0.9066666666666666,
+        "surface": 0.611
+      }
+    },
+    {
       "earth": "dhofar_amadee18",
       "target": "nili_fossae",
-      "overall": 0.7775,
-      "confidence": 0.7261637028295358,
+      "overall": 0.8073655444444445,
+      "confidence": 0.6948127938766608,
       "coverage": 1.0,
-      "resolution_factor": 0.7261637028295358,
+      "resolution_factor": 0.6948127938766608,
       "per_criterion": {
-        "terrain": 0.7433333333333333,
+        "terrain": 0.9214471944444446,
         "mineralogy": 0.8066666666666666,
-        "surface": 0.7875
+        "surface": 0.5806
       }
     },
     {
       "earth": "dhofar_amadee18",
       "target": "terra_sirenum_chlorides",
-      "overall": 0.8361111111111112,
-      "confidence": 0.7661637028295358,
+      "overall": 0.727433128888889,
+      "confidence": 0.7348127938766609,
       "coverage": 1.0,
-      "resolution_factor": 0.7661637028295358,
+      "resolution_factor": 0.7348127938766609,
       "per_criterion": {
-        "terrain": 0.9944444444444445,
+        "terrain": 0.8507494888888889,
         "mineralogy": 0.6733333333333333,
-        "surface": 0.845
+        "surface": 0.5890000000000001
       }
     },
     {
       "earth": "dhofar_amadee18",
       "target": "nili_patera_dunes",
-      "overall": 0.8519444444444444,
-      "confidence": 0.7261637028295358,
+      "overall": 0.8265848444444446,
+      "confidence": 0.6948127938766608,
       "coverage": 1.0,
-      "resolution_factor": 0.7261637028295358,
+      "resolution_factor": 0.6948127938766608,
       "per_criterion": {
-        "terrain": 0.9627777777777777,
+        "terrain": 0.9715787777777778,
         "mineralogy": 0.8333333333333334,
-        "surface": 0.6675
+        "surface": 0.5231
       }
     },
     {
       "earth": "dhofar_amadee18",
       "target": "moon_south_pole",
-      "overall": 0.3211111111111112,
+      "overall": 0.46450117222222215,
       "confidence": 0.3766014999711538,
       "coverage": 0.4,
       "resolution_factor": 0.9415037499278844,
       "per_criterion": {
-        "terrain": 0.3211111111111112,
+        "terrain": 0.46450117222222215,
         "mineralogy": null,
         "surface": null
       }
@@ -917,64 +971,64 @@
     {
       "earth": "jebel_shams",
       "target": "jezero_crater",
-      "overall": 0.6431111111111112,
-      "confidence": 0.7261637028295358,
+      "overall": 0.74913216,
+      "confidence": 0.6948127938766608,
       "coverage": 1.0,
-      "resolution_factor": 0.7261637028295358,
+      "resolution_factor": 0.6948127938766608,
       "per_criterion": {
-        "terrain": 0.37777777777777777,
+        "terrain": 0.6060804,
         "mineralogy": 0.91,
-        "surface": 0.6399999999999999
+        "surface": 0.7135
       }
     },
     {
       "earth": "jebel_shams",
       "target": "nili_fossae",
-      "overall": 0.6650555555555555,
-      "confidence": 0.7261637028295358,
+      "overall": 0.7255410822222222,
+      "confidence": 0.6948127938766608,
       "coverage": 1.0,
-      "resolution_factor": 0.7261637028295358,
+      "resolution_factor": 0.6948127938766608,
       "per_criterion": {
-        "terrain": 0.5055555555555556,
+        "terrain": 0.6224693722222222,
         "mineralogy": 0.8433333333333333,
-        "surface": 0.6275
+        "surface": 0.6960999999999999
       }
     },
     {
       "earth": "jebel_shams",
       "target": "terra_sirenum_chlorides",
-      "overall": 0.46144444444444455,
-      "confidence": 0.7661637028295358,
+      "overall": 0.6408334977777779,
+      "confidence": 0.7348127938766609,
       "coverage": 1.0,
-      "resolution_factor": 0.7661637028295358,
+      "resolution_factor": 0.7348127938766609,
       "per_criterion": {
-        "terrain": 0.25444444444444453,
+        "terrain": 0.6931670777777778,
         "mineralogy": 0.5566666666666668,
-        "surface": 0.6849999999999999
+        "surface": 0.7045
       }
     },
     {
       "earth": "jebel_shams",
       "target": "nili_patera_dunes",
-      "overall": 0.5292777777777778,
-      "confidence": 0.7261637028295358,
+      "overall": 0.669988448888889,
+      "confidence": 0.6948127938766608,
       "coverage": 1.0,
-      "resolution_factor": 0.7261637028295358,
+      "resolution_factor": 0.6948127938766608,
       "per_criterion": {
-        "terrain": 0.28611111111111115,
+        "terrain": 0.5723377888888889,
         "mineralogy": 0.7833333333333333,
-        "surface": 0.5075
+        "surface": 0.6386000000000001
       }
     },
     {
       "earth": "jebel_shams",
       "target": "moon_south_pole",
-      "overall": 0.8944444444444445,
+      "overall": 0.806169938888889,
       "confidence": 0.3766014999711538,
       "coverage": 0.4,
       "resolution_factor": 0.9415037499278844,
       "per_criterion": {
-        "terrain": 0.8944444444444445,
+        "terrain": 0.806169938888889,
         "mineralogy": null,
         "surface": null
       }
@@ -983,11 +1037,11 @@
   "validation": {
     "reference_site": "dhofar_amadee18",
     "mean_mars_similarity": {
-      "samail_ophiolite": 0.7366111111111111,
-      "umm_as_samim": 0.7322777777777778,
-      "sharqiya_sands": 0.8540555555555556,
-      "dhofar_amadee18": 0.8341666666666667,
-      "jebel_shams": 0.5747222222222222
+      "samail_ophiolite": 0.7855715250000002,
+      "umm_as_samim": 0.7613650227777778,
+      "sharqiya_sands": 0.8601699161111112,
+      "dhofar_amadee18": 0.8053461627777778,
+      "jebel_shams": 0.6963737972222223
     },
     "ranking": [
       "sharqiya_sands",

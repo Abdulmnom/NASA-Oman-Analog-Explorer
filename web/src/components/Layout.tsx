@@ -34,7 +34,11 @@ export default function Layout() {
           {t('lang.switch')}
         </button>
       </header>
-      {data.provisional && <div className="banner">{t('app.provisional')}</div>}
+      {data.provisional && (
+        <div className="banner">
+          {data.measured_share ? t('app.partial', { pct: Math.round(data.measured_share * 100) }) : t('app.provisional')}
+        </div>
+      )}
       <main>
         <Outlet />
       </main>

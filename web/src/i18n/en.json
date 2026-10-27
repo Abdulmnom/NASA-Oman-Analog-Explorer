@@ -2,6 +2,7 @@
   "app": {
     "title": "Oman Analog Explorer",
     "provisional": "Preview data: metric values are provisional estimates until the NASA data pipeline is run. Scores show how the method works, not final results.",
+    "partial": "{pct}% of metric values now come from NASA data (terrain from NASADEM, MOLA and LOLA; albedo from MODIS and TES). Mineral indices and thermal inertia are still provisional estimates.",
     "loading": "Loading data…",
     "loadError": "Could not load data/sites.json. Run `python -m analog.export` in analysis/."
   },
@@ -111,6 +112,9 @@
     "value": "Value",
     "provisional": "provisional estimate",
     "measured": "measured",
+    "partial": "partly measured",
+    "tagMeasured": "NASA data",
+    "tagEstimate": "estimate",
     "compare": "Compare",
     "back": "Back to explorer",
     "notFound": "Site not found.",
@@ -153,7 +157,7 @@
     "validationText": "The Dhofar AMADEE-18 site was chosen by experts as a Mars analog. If our index ranks it highly against Mars targets, the method is working. Current rank: #{rank} of {total}.",
     "limitsTitle": "Limitations",
     "limits": [
-      "Current values are provisional estimates; they will be replaced by metrics computed from NASADEM, EMIT, MODIS, MOLA, CRISM, THEMIS and LOLA.",
+      "Terrain (NASADEM, MOLA, LOLA) and albedo (MODIS, TES) are computed from NASA data. Mineral indices (EMIT, CRISM) and thermal inertia are still provisional estimates and are marked as such on each site page.",
       "Earth's atmosphere, water and gravity mean no site reproduces Mars or Moon conditions; we compare surface form and composition only.",
       "Thermal inertia on Earth is estimated from apparent thermal inertia and needs local calibration.",
       "Mineral indices are band-depth proxies, not quantitative abundances.",

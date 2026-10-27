@@ -3,6 +3,22 @@
 Owner: Abdulmunim. We clip a small window around each site (`bbox_km` in the site YAML) and never
 download whole scenes. Product keys refer to `analysis/src/analog/download/fetch.py`.
 
+## What is measured today
+
+`python -m analog.compute` (needs `rasterio`) reads only the site window over HTTP, reprojects it to a
+local azimuthal-equidistant grid (square metres, also at the lunar pole) and writes
+`data/processed/metrics/<id>.json`. No Earthdata login is needed for these sources:
+
+| Metric | Earth | Mars | Moon |
+|---|---|---|---|
+| Slope, roughness, relief | NASADEM_HGT v001, 30 m (Planetary Computer mirror) | MOLA 463 m global mosaic (USGS) | LOLA LDEM_875S_20M (PDS Geosciences) |
+| Albedo | MODIS MCD43A4 v061 NBAR → Liang (2001) broadband, median of 12 monthly composites (2023) | TES Lambert albedo 7.4 km (USGS) | not scored |
+| Mineral indices | still provisional (needs EMIT, Earthdata login) | still provisional (needs CRISM) | not scored |
+| Thermal inertia | still provisional (ATI calibration pending) | still provisional (THEMIS/TES TI) | not scored |
+
+`export.py` merges these over the provisional values and records, per site, which metrics are
+measured (`measured`) and the overall share of real values (`measured_share`).
+
 | Key | Dataset | Body | Criterion | Native res. | Access |
 |---|---|---|---|---|---|
 | NASADEM | NASADEM_HGT v001 | Earth | Terrain | 30 m | Earthdata (LP DAAC) |
