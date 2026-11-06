@@ -1,0 +1,767 @@
+From 6e4381f49a8f28f3e3548534b4517f021ec34df8 Mon Sep 17 00:00:00 2001
+From: Saeed Al Balushi <saeedsami559@gmail.com>
+Date: Sat, 7 Nov 2026 00:38:59 +0400
+Subject: [PATCH] Redesign home page: Oman/Mars slider, impact, how it works
+
+- Add an Oman <-> Mars before/after slider using the existing NASA
+  elevation layers (NASADEM and MOLA), one tab per intended pair
+- Add "How it works" and "Why it matters" sections (impact criterion)
+- Show a shaded-relief thumbnail on every site card
+- Replace the 87% "highest match" stat with the best Mars average, so
+  the headline number follows the same ranking as the cards
+- Turn the AMADEE-18 sanity check into a rank strip and explain why
+  Dhofar ranks lower (no cloud-free EMIT minerals data)
+- Add a site footer: Team VEX, challenge, data credits, GitHub link
+- Icons for the ground rules, quieter "not available" flags,
+  shorter hero chip, soft planet glow while textures load
+- English and Arabic strings for everything new
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01PKf9FXgx2mUELuaeWkfGG5
+---
+ web/src/components/Layout.tsx          |  25 +++
+ web/src/components/hero/SpaceHero.tsx  |   4 +-
+ web/src/components/home/TwinSlider.tsx | 118 ++++++++++++
+ web/src/components/site/SiteCard.tsx   |   9 +-
+ web/src/i18n/ar.json                   |  37 +++-
+ web/src/i18n/en.json                   |  37 +++-
+ web/src/pages/Home.tsx                 | 246 +++++++++++++++++++------
+ web/src/styles.css                     | 146 +++++++++++++++
+ 8 files changed, 558 insertions(+), 64 deletions(-)
+ create mode 100644 web/src/components/home/TwinSlider.tsx
+
+diff --git a/web/src/components/Layout.tsx b/web/src/components/Layout.tsx
+index 15ae8d3..bfaf646 100644
+--- a/web/src/components/Layout.tsx
++++ b/web/src/components/Layout.tsx
+@@ -35,6 +35,31 @@ export default function Layout() {
+       <main>
+         <Outlet />
+       </main>
++      <footer className="site-footer">
++        <div className="footer-inner">
++          <div className="footer-brand">
++            <span className="vex-mark" aria-hidden="true">VEX</span>
++            <div>
++              <p className="footer-built">{t('home.footerBuilt')}</p>
++              <p className="muted small">{t('home.footerTeam')}</p>
++            </div>
++          </div>
++          <p className="footer-challenge">
++            <span className="muted">{t('home.footerChallenge')}:</span> {t('home.kicker')}
++            <span className="footer-theme">The Next Frontier</span>
++          </p>
++          <p className="muted small">{t('home.footerData')}</p>
++          <div className="footer-links">
++            <a href="https://github.com/Abdulmnom/NASA-Oman-Analog-Explorer" target="_blank" rel="noreferrer">
++              {t('home.footerCode')}
++            </a>
++            <a href="https://www.spaceappschallenge.org" target="_blank" rel="noreferrer">
++              {t('home.footerSpaceApps')}
++            </a>
++          </div>
++          <p className="muted small footer-note">{t('home.footerNote')}</p>
++        </div>
++      </footer>
+     </div>
+   );
+ }
+diff --git a/web/src/components/hero/SpaceHero.tsx b/web/src/components/hero/SpaceHero.tsx
+index 6e26e20..58f035c 100644
+--- a/web/src/components/hero/SpaceHero.tsx
++++ b/web/src/components/hero/SpaceHero.tsx
+@@ -490,9 +490,9 @@ export default function SpaceHero({ earthSites, marsTargets }: { earthSites: num
+ 
+       <div className="space-hero-inner">
+         <div className="space-copy">
+-          <p className="kicker chip">
++          <p className="kicker chip" title={t('home.kicker')}>
+             <span className="pulse" aria-hidden="true" />
+-            {t('home.kicker')}
++            {t('home.kickerShort')}
+           </p>
+           <h1 id="hero-title">{t('home.heroTitle')}</h1>
+           <p className="lead">{t('home.heroText')}</p>
+diff --git a/web/src/components/home/TwinSlider.tsx b/web/src/components/home/TwinSlider.tsx
+new file mode 100644
+index 0000000..3efaf4b
+--- /dev/null
++++ b/web/src/components/home/TwinSlider.tsx
+@@ -0,0 +1,118 @@
++import { useEffect, useState, type CSSProperties } from 'react';
++import { Link } from 'react-router-dom';
++import { useI18n } from '../../i18n';
++import { findSite, scoreFor } from '../../lib/data';
++import type { Dataset, Site } from '../../types';
++
++const layerUrl = (id: string) => `${import.meta.env.BASE_URL}layers/${id}/elevation.png`;
++
++interface Pair {
++  earth: Site;
++  target: Site;
++}
++
++/** Earth sites paired with their best-scoring intended Mars target (Mars targets all have terrain layers). */
++function marsPairs(data: Dataset): Pair[] {
++  return data.earth_sites.flatMap((earth) => {
++    const target = (earth.intended_targets ?? [])
++      .map((id) => findSite(data, id))
++      .filter((s): s is Site => !!s && s.body === 'mars')
++      .sort((a, b) => (scoreFor(data, earth.id, b.id)?.overall ?? -1) - (scoreFor(data, earth.id, a.id)?.overall ?? -1))[0];
++    return target ? [{ earth, target }] : [];
++  });
++}
++
++/** Window size (km) of a terrain layer, read from its meta.json; null until loaded or if missing. */
++function useWindowKm(id: string): number | null {
++  const [km, setKm] = useState<number | null>(null);
++  useEffect(() => {
++    let alive = true;
++    setKm(null);
++    if (!id) return;
++    fetch(`${import.meta.env.BASE_URL}layers/${id}/meta.json`)
++      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
++      .then((m: { half_km?: number }) => alive && setKm(typeof m.half_km === 'number' ? m.half_km * 2 : null))
++      .catch(() => alive && setKm(null));
++    return () => {
++      alive = false;
++    };
++  }, [id]);
++  return km;
++}
++
++/** Before/after slider: an Omani site and its Mars counterpart in the same shaded-relief style. */
++export default function TwinSlider({ data }: { data: Dataset }) {
++  const { t, loc, num } = useI18n();
++  const pairs = marsPairs(data);
++  const [index, setIndex] = useState(0);
++  const [split, setSplit] = useState(50);
++  const pair = pairs[Math.min(index, pairs.length - 1)];
++  const earthKm = useWindowKm(pair?.earth.id ?? '');
++  const marsKm = useWindowKm(pair?.target.id ?? '');
++  if (!pair) return null;
++  const score = scoreFor(data, pair.earth.id, pair.target.id);
++
++  return (
++    <section className="twin" aria-labelledby="twin-title">
++      <div className="section-head">
++        <h2 id="twin-title">{t('home.twinTitle')}</h2>
++        <p className="muted">{t('home.twinSubtitle')}</p>
++      </div>
++
++      <div className="twin-tabs" role="tablist">
++        {pairs.map((p, i) => (
++          <button
++            key={p.earth.id}
++            type="button"
++            role="tab"
++            aria-selected={i === index}
++            className={`twin-tab${i === index ? ' active' : ''}`}
++            onClick={() => {
++              setIndex(i);
++              setSplit(50);
++            }}
++          >
++            <span className="dot earth" /> {loc(p.earth.name)}
++            <span className="twin-arrow" aria-hidden="true">↔</span>
++            <span className="dot mars" /> {loc(p.target.name)}
++          </button>
++        ))}
++      </div>
++
++      <div className="twin-stage" dir="ltr" style={{ '--split': `${split}%` } as CSSProperties}>
++        <img className="twin-img" src={layerUrl(pair.target.id)} alt={loc(pair.target.name)} draggable={false} />
++        <img className="twin-img twin-top" src={layerUrl(pair.earth.id)} alt={loc(pair.earth.name)} draggable={false} />
++        <span className="twin-label earth">
++          <span className="dot earth" /> {loc(pair.earth.name)}
++          {earthKm !== null && <small>{t('home.twinWindow', { n: num(earthKm) })}</small>}
++        </span>
++        <span className="twin-label mars">
++          <span className="dot mars" /> {loc(pair.target.name)}
++          {marsKm !== null && <small>{t('home.twinWindow', { n: num(marsKm) })}</small>}
++        </span>
++        <span className="twin-handle" aria-hidden="true">
++          <span>‹ ›</span>
++        </span>
++        <input
++          className="twin-range"
++          type="range"
++          min={0}
++          max={100}
++          value={split}
++          onChange={(e) => setSplit(Number(e.target.value))}
++          aria-label={t('home.twinHandle')}
++        />
++      </div>
++
++      <div className="twin-foot">
++        <p className="muted small">{t('home.twinCredit')}</p>
++        <div className="twin-actions">
++          {score?.overall != null && <span className="twin-score">{t('home.twinScore', { v: num(score.overall * 100) })}</span>}
++          <Link to={`/explorer?site=${pair.earth.id}&target=${pair.target.id}`} className="btn ghost small">
++            {t('home.twinOpen')}
++          </Link>
++        </div>
++      </div>
++    </section>
++  );
++}
+diff --git a/web/src/components/site/SiteCard.tsx b/web/src/components/site/SiteCard.tsx
+index 729f3b2..befbfa0 100644
+--- a/web/src/components/site/SiteCard.tsx
++++ b/web/src/components/site/SiteCard.tsx
+@@ -30,6 +30,11 @@ export default function SiteCard({ site, best, bestTarget, intended, others = []
+   ].filter((f): f is { label: string; text: string } => Boolean(f));
+   return (
+     <Link to={`/site/${site.id}`} className={`site-card${featured ? ' featured' : ''}${site.role === 'reference' ? ' is-ref' : ''}`}>
++      {site.body === 'earth' && (
++        <div className="site-thumb" aria-hidden="true">
++          <img src={`${import.meta.env.BASE_URL}layers/${site.id}/elevation.png`} alt="" loading="lazy" draggable={false} />
++        </div>
++      )}
+       <div className="site-card-head">
+         {rank !== undefined && (
+           <span className="rank" title={t('home.rankTitle')}>
+@@ -44,9 +49,9 @@ export default function SiteCard({ site, best, bestTarget, intended, others = []
+       </div>
+       <p className="card-flags">
+         {site.coords_approximate && (
+-          <span className="pill warn" title={site.coords_note ? loc(site.coords_note) : undefined}>{t('site.coordsApprox')}</span>
++          <span className="pill soft" title={site.coords_note ? loc(site.coords_note) : undefined}>{t('site.coordsApprox')}</span>
+         )}
+-        <span className={`pill ${unavailable ? 'warn' : 'ok'}`}>
++        <span className={`pill ${unavailable ? 'soft' : 'ok'}`}>
+           {unavailable ? t('site.someMissing', { n: unavailable }) : t('site.allMeasured')}
+         </span>
+       </p>
+diff --git a/web/src/i18n/ar.json b/web/src/i18n/ar.json
+index 8607f10..c72c04d 100644
+--- a/web/src/i18n/ar.json
++++ b/web/src/i18n/ar.json
+@@ -95,8 +95,41 @@
+     "differences": "أبرز الاختلافات",
+     "bestMatch": "أفضل تطابق",
+     "validationTitle": "اختبار المنهجية: موقع AMADEE-18",
+-    "validationText": "اختار الخبراء صحراء ظفار لمحاكاة المريخ AMADEE-18 (2018). باستخدام البيانات المقاسة فقط، يضعه مؤشرنا في المرتبة #{rank} من {total} مواقع عُمانية حسب متوسط التشابه مع أهداف المريخ. المنهجية التي تلتقط ما يبحث عنه الخبراء يُفترض أن تضعه قريباً من القمة؛ والنتيجة معروضة كما حُسبت دون تعديل.",
+-    "intended": "النظير المقصود"
++    "validationText": "اختار الخبراء صحراء ظفار لمحاكاة المريخ AMADEE-18 (2018). باستخدام البيانات المقاسة فقط، يضعه مؤشرنا في المرتبة #{rank} من {total} مواقع عُمانية حسب متوسط التشابه مع أهداف المريخ.",
++    "intended": "النظير المقصود",
++    "kickerShort": "تحدي ناسا لتطبيقات الفضاء 2026 · The Next Frontier",
++    "twinTitle": "عُمان والمريخ جنباً إلى جنب",
++    "twinSubtitle": "اسحب المقبض لمقارنة موقع عُماني بهدفه المقصود على المريخ. الجانبان معروضان بالأسلوب نفسه من تظليل التضاريس المأخوذ من بيانات ارتفاع ناسا.",
++    "twinHandle": "حرّك للمقارنة بين عُمان والمريخ",
++    "twinWindow": "نافذة {n} × {n} كم",
++    "twinScore": "التشابه {v}%",
++    "twinOpen": "افتح هذا الزوج في المستكشف",
++    "twinCredit": "الارتفاع: NASADEM (الأرض، 30 م) و MGS MOLA (المريخ، 463 م). الألوان تمثل الارتفاع النسبي داخل كل نافذة، فالجانبان ليسا على مقياس ارتفاع واحد.",
++    "howTitle": "كيف يعمل",
++    "how1Title": "بيانات ناسا",
++    "how1Text": "الارتفاع وأطياف المعادن وسطوع السطح لكل موقع، من مجموعات بيانات ناسا مسمّاة مثل NASADEM و EMIT و MODIS و MOLA و CRISM و LOLA.",
++    "how2Title": "مقاييس على مقياس موحّد",
++    "how2Text": "يُحسب الانحدار والخشونة والتضاريس النسبية على شبكة واحدة بدقة 463 م، وتؤخذ أعماق النطاقات المعدنية والألبيدو من نوافذ التحليل نفسها.",
++    "how3Title": "درجة تشابه ودرجة ثقة",
++    "how3Text": "تشابه موزون يمكنك تعديل أوزانه، مع درجة ثقة تنخفض كلما نقصت البيانات أو اختلفت الدقة المكانية.",
++    "impactTitle": "لماذا يهم هذا",
++    "impactSubtitle": "المواقع المماثلة هي حيث تتدرّب الطواقم وتُختبر المعدات قبل الذهاب إلى المريخ أو القمر، واختيارها ما زال يعتمد كثيراً على تقدير الخبراء والعمل الميداني.",
++    "impact1Title": "مخططو البعثات",
++    "impact1Text": "فرز أولي سريع وشفاف: أي المواقع العُمانية يشبه هدفاً معيّناً على المريخ أو القمر، وفي أي المعايير، وإلى أي حد يمكن الوثوق بالبيانات.",
++    "impact2Title": "عُمان",
++    "impact2Text": "استضافت عُمان محاكاة المريخ AMADEE-18 في ظفار عام 2018. خريطة مدعومة بالبيانات لمواقعها المماثلة يمكن أن تساعد في جذب اختبارات ميدانية وأبحاث وسياحة علمية في المستقبل.",
++    "impact3Title": "الطلبة والباحثون",
++    "impact3Text": "كود مفتوح وبيانات ناسا مفتوحة: كل رقم يعود إلى مصدره، والأوزان قابلة للتعديل، ويمكن إعادة تشغيل المعالجة لمواقع جديدة.",
++    "statBestMean": "أفضل متوسط مع المريخ: {site}",
++    "validationWhy": "لماذا ليس أعلى؟ لا يوجد مشهد EMIT خالٍ من السحب يغطي نافذة ظفار، فلا توجد له بيانات معادن ويُقيَّم على التضاريس والألبيدو فقط. نعرض النتيجة كما حُسبت بدلاً من تعديل الأوزان حتى يأتي أولاً.",
++    "validationRef": "الموقع المرجعي",
++    "footerBuilt": "من إعداد فريق VEX لتحدي ناسا لتطبيقات الفضاء 2026 · إبراء، عُمان",
++    "footerChallenge": "التحدي",
++    "footerTeam": "عبدالمنعم · سعيد · عبدالرحمن · نرجس",
++    "footerData": "البيانات: NASA EMIT و NASADEM و MODIS و MGS MOLA و MRO CRISM و MGS TES و Mars Odyssey THEMIS و LRO LOLA.",
++    "footerCode": "الكود المصدري على GitHub",
++    "footerSpaceApps": "تحدي ناسا لتطبيقات الفضاء",
++    "footerNote": "مشروع طلابي ضمن هاكثون، وليس منتجاً رسمياً من ناسا."
+   },
+   "explorer": {
+     "title": "المستكشف",
+diff --git a/web/src/i18n/en.json b/web/src/i18n/en.json
+index 5b489a6..2d56bcb 100644
+--- a/web/src/i18n/en.json
++++ b/web/src/i18n/en.json
+@@ -95,8 +95,41 @@
+     "differences": "Key differences",
+     "bestMatch": "Best match",
+     "validationTitle": "Sanity check: the AMADEE-18 site",
+-    "validationText": "Experts chose the Dhofar desert for the AMADEE-18 Mars simulation (2018). With measured data only, our index ranks it #{rank} of {total} Omani sites by mean similarity to Mars targets. A method that captures what experts look for should rank it near the top; the result is shown as computed, not tuned.",
+-    "intended": "Intended analog"
++    "validationText": "Experts chose the Dhofar desert for the AMADEE-18 Mars simulation (2018). With measured data only, our index ranks it #{rank} of {total} Omani sites by mean similarity to Mars targets.",
++    "intended": "Intended analog",
++    "kickerShort": "NASA Space Apps 2026 · The Next Frontier",
++    "twinTitle": "Oman and Mars, side by side",
++    "twinSubtitle": "Drag the handle to compare an Omani site with its intended Mars target. Both sides use the same shaded-relief rendering of NASA elevation data.",
++    "twinHandle": "Move to compare Oman and Mars",
++    "twinWindow": "{n} × {n} km window",
++    "twinScore": "Similarity {v}%",
++    "twinOpen": "Open this pair in the explorer",
++    "twinCredit": "Elevation: NASADEM (Earth, 30 m) and MGS MOLA (Mars, 463 m). Colours show relative height within each window, so the two sides are not on one height scale.",
++    "howTitle": "How it works",
++    "how1Title": "NASA data in",
++    "how1Text": "Elevation, mineral spectra and surface brightness for every site, read from named NASA datasets such as NASADEM, EMIT, MODIS, MOLA, CRISM and LOLA.",
++    "how2Title": "Same-scale metrics",
++    "how2Text": "Slope, roughness and relief are computed on one 463 m grid; mineral band depths and albedo come from the same analysis windows.",
++    "how3Title": "Score and confidence",
++    "how3Text": "A weighted similarity you can adjust, with a confidence value that drops whenever data are missing or resolutions differ.",
++    "impactTitle": "Why it matters",
++    "impactSubtitle": "Analog sites are where crews and hardware rehearse before going to Mars or the Moon. Choosing them still relies largely on expert judgement and fieldwork.",
++    "impact1Title": "Mission planners",
++    "impact1Text": "A fast, transparent first filter: which Omani sites resemble a given Mars or Moon target, on which criteria, and how far the data can be trusted.",
++    "impact2Title": "Oman",
++    "impact2Text": "Oman already hosted the AMADEE-18 Mars simulation in Dhofar (2018). A data-backed map of its analog sites can help attract future field tests, research and science tourism.",
++    "impact3Title": "Students and researchers",
++    "impact3Text": "Open code and open NASA data: every number traces to its source, the weights can be changed, and the pipeline can be rerun for new sites.",
++    "statBestMean": "Best Mars average: {site}",
++    "validationWhy": "Why not higher? No cloud-free EMIT scene covers the Dhofar window, so it has no mineral data and is scored on terrain and albedo only. We show the result as computed instead of tuning the weights until it ranks first.",
++    "validationRef": "reference site",
++    "footerBuilt": "Built by Team VEX for the NASA Space Apps Challenge 2026 · Ibra, Oman",
++    "footerChallenge": "Challenge",
++    "footerTeam": "Abdulmunim · Saeed · Abdulrahman · Narjis",
++    "footerData": "Data: NASA EMIT, NASADEM, MODIS, MGS MOLA, MRO CRISM, MGS TES, Mars Odyssey THEMIS and LRO LOLA.",
++    "footerCode": "Source code on GitHub",
++    "footerSpaceApps": "NASA Space Apps Challenge",
++    "footerNote": "A student hackathon project; not an official NASA product."
+   },
+   "explorer": {
+     "title": "Explorer",
+diff --git a/web/src/pages/Home.tsx b/web/src/pages/Home.tsx
+index ee82d18..53f2332 100644
+--- a/web/src/pages/Home.tsx
++++ b/web/src/pages/Home.tsx
+@@ -1,8 +1,85 @@
++import type { ReactNode } from 'react';
+ import SpaceHero from '../components/hero/SpaceHero';
++import TwinSlider from '../components/home/TwinSlider';
+ import SiteCard from '../components/site/SiteCard';
+ import { useI18n } from '../i18n';
+ import { bestMatch, findSite, intendedMatch, matchesFor, useDataset } from '../lib/data';
+ 
++const svg = (children: ReactNode) => (
++  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
++    {children}
++  </svg>
++);
++
++/** Icons for the ground rules: Mars first, same scale, honest about limits. */
++const RULE_ICONS = [
++  svg(
++    <>
++      <circle cx="12" cy="12" r="7" />
++      <path d="M3 14c3-1.2 6.5-1.6 10-1.2s6.5 1.2 8 2" />
++    </>,
++  ),
++  svg(
++    <>
++      <rect x="4" y="4" width="16" height="16" rx="2" />
++      <path d="M4 9.3h16M4 14.7h16M9.3 4v16M14.7 4v16" />
++    </>,
++  ),
++  svg(
++    <>
++      <path d="M12 4v16M7 20h10M5 7h14" />
++      <path d="M5 7l-3 6a3 3 0 006 0zM19 7l-3 6a3 3 0 006 0z" />
++    </>,
++  ),
++];
++
++/** Icons for "How it works": data in, common grid, score with confidence. */
++const HOW_ICONS = [
++  svg(
++    <>
++      <path d="M4 15a8 8 0 0116 0" />
++      <path d="M12 15l4-5" />
++      <circle cx="12" cy="15" r="1.3" />
++      <path d="M8 20h8" />
++    </>,
++  ),
++  svg(
++    <>
++      <path d="M3 17l5-6 4 3 4-6 5 6" />
++      <path d="M3 21h18" />
++    </>,
++  ),
++  svg(
++    <>
++      <circle cx="12" cy="12" r="8" />
++      <path d="M12 4a8 8 0 018 8h-8z" fill="currentColor" stroke="none" opacity="0.35" />
++      <path d="M8.5 12.5l2.3 2.3 4.7-5" />
++    </>,
++  ),
++];
++
++/** Icons for "Why it matters": mission planners, Oman, open research. */
++const IMPACT_ICONS = [
++  svg(
++    <>
++      <path d="M12 3c3 2.5 4.5 6 4.5 10l-2 3h-5l-2-3C7.5 9 9 5.5 12 3z" />
++      <circle cx="12" cy="10" r="1.6" />
++      <path d="M9.5 16l-2 4M14.5 16l2 4" />
++    </>,
++  ),
++  svg(
++    <>
++      <path d="M12 21s-6-5.3-6-10a6 6 0 0112 0c0 4.7-6 10-6 10z" />
++      <circle cx="12" cy="11" r="2.2" />
++    </>,
++  ),
++  svg(
++    <>
++      <path d="M8 8l-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14" />
++    </>,
++  ),
++];
++
+ export default function Home() {
+   const { t, loc, num } = useI18n();
+   const data = useDataset();
+@@ -24,74 +101,131 @@ export default function Home() {
+     const intended = im && imTarget && im.target !== best?.target ? { score: im, target: imTarget } : undefined;
+     return { site: s, best, bestTarget: findSite(data, best?.target), intended, others };
+   });
+-  const top = cards.reduce<(typeof cards)[number] | undefined>(
+-    (acc, c) => ((c.best?.overall ?? -1) > (acc?.best?.overall ?? -1) ? c : acc),
+-    undefined,
+-  );
++  // Headline stat follows the same ranking as the cards: the site with the best mean Mars similarity.
++  const top = sites.find((s) => meanMars[s.id] != null);
++  const topMean = top ? meanMars[top.id] : null;
+   const marsCount = data.targets.filter((x) => x.body === 'mars').length;
+   const moonCount = data.targets.filter((x) => x.body === 'moon').length;
++  const ranked = v.ranking.flatMap((id) => {
++    const site = findSite(data, id);
++    return site ? [{ site, mean: meanMars[id] ?? null }] : [];
++  });
+ 
+   return (
+     <>
+-    <SpaceHero earthSites={data.earth_sites.length} marsTargets={marsCount} />
+-    <div className="page">
+-      <section id="rules">
+-        <h2>{t('home.principlesTitle')}</h2>
+-        <div className="grid three">
+-          {[1, 2, 3].map((i) => (
+-            <div key={i} className="panel principle">
+-              <span className="num">{i}</span>
+-              <h3>{t(`home.p${i}Title`)}</h3>
+-              <p>{t(`home.p${i}Text`)}</p>
+-            </div>
+-          ))}
+-        </div>
+-      </section>
++      <SpaceHero earthSites={data.earth_sites.length} marsTargets={marsCount} />
++      <div className="page">
++        <section id="rules">
++          <h2>{t('home.principlesTitle')}</h2>
++          <div className="grid three">
++            {[1, 2, 3].map((i) => (
++              <div key={i} className="panel principle">
++                <span className="icon-badge">{RULE_ICONS[i - 1]}</span>
++                <h3>{t(`home.p${i}Title`)}</h3>
++                <p>{t(`home.p${i}Text`)}</p>
++              </div>
++            ))}
++          </div>
++        </section>
+ 
+-      <section id="sites">
+-        <div className="section-head">
+-          <h2>{t('home.sitesTitle')}</h2>
+-          <p className="muted">{t('home.sitesSubtitle')}</p>
+-        </div>
+-        <ul className="stats">
+-          <li>
+-            <span className="stat-val">{num(data.earth_sites.length)}</span>
+-            <span className="stat-label">{t('home.statSites')}</span>
+-          </li>
+-          <li>
+-            <span className="stat-val">{num(data.targets.length)}</span>
+-            <span className="stat-label">{t('home.statTargets', { mars: marsCount, moon: moonCount })}</span>
+-          </li>
+-          {top?.best?.overall != null && (
++        <TwinSlider data={data} />
++
++        <section className="how" aria-labelledby="how-title">
++          <h2 id="how-title">{t('home.howTitle')}</h2>
++          <ol className="how-steps">
++            {[1, 2, 3].map((i) => (
++              <li key={i} className="how-step">
++                <span className="icon-badge earth">{HOW_ICONS[i - 1]}</span>
++                <div>
++                  <h3>
++                    <span className="how-num">{num(i)}</span> {t(`home.how${i}Title`)}
++                  </h3>
++                  <p>{t(`home.how${i}Text`)}</p>
++                </div>
++              </li>
++            ))}
++          </ol>
++        </section>
++
++        <section id="sites">
++          <div className="section-head">
++            <h2>{t('home.sitesTitle')}</h2>
++            <p className="muted">{t('home.sitesSubtitle')}</p>
++          </div>
++          <ul className="stats">
+             <li>
+-              <span className="stat-val">{num(top.best.overall * 100)}%</span>
+-              <span className="stat-label">{t('home.statTop', { site: loc(top.site.name) })}</span>
++              <span className="stat-val">{num(data.earth_sites.length)}</span>
++              <span className="stat-label">{t('home.statSites')}</span>
+             </li>
+-          )}
+-          {v.reference_rank !== null && (
+             <li>
+-              <span className="stat-val">
+-                #{v.reference_rank}
+-                <small> / {v.ranking.length}</small>
+-              </span>
+-              <span className="stat-label">{t('home.statRef')}</span>
++              <span className="stat-val">{num(data.targets.length)}</span>
++              <span className="stat-label">{t('home.statTargets', { mars: marsCount, moon: moonCount })}</span>
+             </li>
+-          )}
+-        </ul>
+-        <div className="grid sites">
+-          {cards.map((c, i) => (
+-            <SiteCard key={c.site.id} {...c} rank={i + 1} meanMars={meanMars[c.site.id]} featured={i === 0} />
+-          ))}
+-        </div>
+-      </section>
++            {top && topMean != null && (
++              <li>
++                <span className="stat-val">{num(topMean * 100)}%</span>
++                <span className="stat-label">{t('home.statBestMean', { site: loc(top.name) })}</span>
++              </li>
++            )}
++            {v.reference_rank !== null && (
++              <li>
++                <span className="stat-val">
++                  #{v.reference_rank}
++                  <small> / {v.ranking.length}</small>
++                </span>
++                <span className="stat-label">{t('home.statRef')}</span>
++              </li>
++            )}
++          </ul>
++          <div className="grid sites">
++            {cards.map((c, i) => (
++              <SiteCard key={c.site.id} {...c} rank={i + 1} meanMars={meanMars[c.site.id]} featured={i === 0} />
++            ))}
++          </div>
++        </section>
++
++        {v.reference_rank !== null && (
++          <section className="panel callout validation">
++            <h2>{t('home.validationTitle')}</h2>
++            <p>{t('home.validationText', { rank: v.reference_rank, total: v.ranking.length })}</p>
++            <ol className="rank-strip">
++              {ranked.map(({ site, mean }, i) => {
++                const isRef = site.id === v.reference_site;
++                return (
++                  <li key={site.id} className={isRef ? 'is-ref' : undefined}>
++                    <span className="rank-pos">#{i + 1}</span>
++                    <span className="rank-name">
++                      {loc(site.name)}
++                      {isRef && <span className="pill ref">{t('home.validationRef')}</span>}
++                    </span>
++                    <span className="rank-bar" aria-hidden="true">
++                      <i style={{ width: `${Math.max(0, (mean ?? 0) * 100)}%` }} />
++                    </span>
++                    <span className="rank-val">{mean == null ? t('metric.notAvailable') : `${num(mean * 100)}%`}</span>
++                  </li>
++                );
++              })}
++            </ol>
++            <p className="muted small">{t('home.validationWhy')}</p>
++          </section>
++        )}
+ 
+-      {v.reference_rank !== null && (
+-        <section className="panel callout">
+-          <h2>{t('home.validationTitle')}</h2>
+-          <p>{t('home.validationText', { rank: v.reference_rank, total: v.ranking.length })}</p>
++        <section className="impact" aria-labelledby="impact-title">
++          <div className="section-head">
++            <h2 id="impact-title">{t('home.impactTitle')}</h2>
++            <p className="muted">{t('home.impactSubtitle')}</p>
++          </div>
++          <div className="grid three">
++            {[1, 2, 3].map((i) => (
++              <div key={i} className="panel impact-card">
++                <span className="icon-badge mars">{IMPACT_ICONS[i - 1]}</span>
++                <h3>{t(`home.impact${i}Title`)}</h3>
++                <p>{t(`home.impact${i}Text`)}</p>
++              </div>
++            ))}
++          </div>
+         </section>
+-      )}
+-    </div>
++      </div>
+     </>
+   );
+ }
+diff --git a/web/src/styles.css b/web/src/styles.css
+index 6d33ace..1715ca2 100644
+--- a/web/src/styles.css
++++ b/web/src/styles.css
+@@ -544,3 +544,149 @@ html[dir='rtl'] .ramp-cell { margin-inline-start: 0; }
+   .terrain-table thead th:first-child { width: 38%; }
+   .share-bar .track { display: none; }
+ }
++
++/* ---------- home: redesign (NEW-THE-HOME-PAGE) ---------- */
++/* Quieter data flags on cards: missing values are explained elsewhere, not shouted on every card. */
++.pill.soft { background: transparent; color: var(--muted); border: 1px solid var(--border); font-weight: 500; }
++
++/* Soft glow where the planets appear, so the hero is never empty while their textures load. */
++@media (min-width: 900px) {
++  .space-hero {
++    background:
++      radial-gradient(circle at 66% 62%, rgba(63, 182, 168, 0.16) 0, transparent 22%),
++      radial-gradient(circle at 87% 28%, rgba(224, 112, 63, 0.16) 0, transparent 13%),
++      radial-gradient(120% 90% at 75% 40%, #0e1830 0%, #080c18 55%, #05070e 100%);
++  }
++}
++
++/* icon badges (ground rules, how it works, impact) */
++.icon-badge {
++  display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; flex: none;
++  background: rgba(224, 112, 63, 0.1); color: var(--accent); border: 1px solid rgba(224, 112, 63, 0.22); margin-bottom: 12px;
++}
++.icon-badge.earth { background: rgba(63, 182, 168, 0.1); color: var(--earth); border-color: rgba(63, 182, 168, 0.25); }
++.icon-badge.mars { background: rgba(224, 112, 63, 0.1); color: var(--mars); }
++.principle h3, .impact-card h3 { margin-bottom: 6px; }
++.impact-card p { color: #c3cbdb; margin: 0; font-size: 0.95rem; }
++
++/* Oman <-> Mars comparison slider */
++.twin-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
++.twin-tab {
++  display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 0.85rem; cursor: pointer;
++  padding: 7px 14px; border-radius: 999px; color: var(--muted); background: var(--surface); border: 1px solid var(--border);
++  transition: color 0.15s, border-color 0.15s, background 0.15s;
++}
++.twin-tab:hover { color: var(--text); border-color: #34446a; }
++.twin-tab.active { color: var(--text); background: var(--surface-2); border-color: rgba(224, 112, 63, 0.55); }
++.twin-arrow { color: var(--muted); }
++.twin-stage {
++  --split: 50%;
++  position: relative; aspect-ratio: 16 / 7; min-height: 260px; overflow: hidden; border-radius: var(--radius);
++  border: 1px solid var(--border); background: var(--surface); user-select: none; touch-action: pan-y;
++}
++.twin-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
++.twin-top { clip-path: inset(0 calc(100% - var(--split)) 0 0); }
++.twin-label {
++  position: absolute; top: 14px; z-index: 2; display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; max-width: 44%;
++  padding: 6px 12px; border-radius: 999px; font-size: 0.82rem; font-weight: 600; color: var(--text);
++  background: rgba(8, 12, 24, 0.72); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(6px);
++}
++.twin-label small { color: var(--muted); font-weight: 500; }
++.twin-label.earth { left: 14px; }
++.twin-label.mars { right: 14px; }
++.twin-handle {
++  position: absolute; top: 0; bottom: 0; left: var(--split); z-index: 2; width: 2px; margin-left: -1px;
++  background: rgba(255, 255, 255, 0.85); box-shadow: 0 0 12px rgba(0, 0, 0, 0.5); pointer-events: none;
++}
++.twin-handle span {
++  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
++  display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
++  background: #f1f4fa; color: #0b0f17; font-weight: 700; font-size: 0.9rem; letter-spacing: 2px;
++  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
++}
++.twin-range {
++  position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; margin: 0;
++  opacity: 0; cursor: ew-resize; -webkit-appearance: none; appearance: none;
++}
++.twin-stage:has(.twin-range:focus-visible) { outline: 2px solid var(--accent); outline-offset: 3px; }
++.twin-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px 20px; flex-wrap: wrap; margin-top: 12px; }
++.twin-foot p { margin: 0; max-width: 70ch; }
++.twin-actions { display: flex; align-items: center; gap: 12px; }
++.twin-score { font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
++
++/* How it works */
++.how-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; counter-reset: none; }
++.how-step {
++  position: relative; display: flex; gap: 14px; align-items: flex-start; padding: 18px;
++  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
++}
++.how-step .icon-badge { margin-bottom: 0; }
++.how-step h3 { margin: 0 0 6px; display: flex; align-items: baseline; gap: 8px; }
++.how-step p { margin: 0; color: #c3cbdb; font-size: 0.92rem; }
++.how-num { color: var(--earth); font-variant-numeric: tabular-nums; }
++.how-step:not(:last-child)::after {
++  content: ''; position: absolute; top: 50%; inset-inline-end: -13px; width: 10px; height: 10px; z-index: 1;
++  border-top: 2px solid var(--border); border-inline-end: 2px solid var(--border); transform: translateY(-50%) rotate(45deg);
++}
++html[dir='rtl'] .how-step:not(:last-child)::after { transform: translateY(-50%) rotate(-135deg); }
++
++/* site card thumbnail: NASADEM shaded relief of the analysis window */
++.site-thumb {
++  position: relative; height: 112px; margin: -20px -20px 0; overflow: hidden;
++  border-radius: var(--radius) var(--radius) 0 0; background: var(--surface-2);
++}
++.site-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
++.site-thumb::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgba(18, 24, 38, 0.95)); }
++.site-card:hover .site-thumb img { transform: scale(1.04); }
++.site-card.featured .site-thumb { height: 150px; margin: -20px 0 0 -20px; border-radius: var(--radius) 0 0 0; }
++html[dir='rtl'] .site-card.featured .site-thumb { margin: -20px -20px 0 0; border-radius: 0 var(--radius) 0 0; }
++.site-card.featured { align-content: start; }
++
++/* validation rank strip */
++.rank-strip { list-style: none; margin: 4px 0 14px; padding: 0; display: flex; flex-direction: column; gap: 6px; }
++.rank-strip li {
++  display: grid; grid-template-columns: 34px minmax(140px, 230px) 1fr 52px; align-items: center; gap: 12px;
++  padding: 6px 10px; border-radius: 8px; font-size: 0.88rem;
++}
++.rank-strip li.is-ref { background: rgba(169, 193, 255, 0.08); border: 1px solid rgba(169, 193, 255, 0.3); }
++.rank-pos { color: var(--muted); font-weight: 700; font-variant-numeric: tabular-nums; }
++.rank-name { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-width: 0; }
++.rank-bar { height: 8px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
++.rank-bar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--earth), var(--mars)); }
++html[dir='rtl'] .rank-bar i { background: linear-gradient(270deg, var(--earth), var(--mars)); }
++.rank-strip li.is-ref .rank-bar i { background: #a9c1ff; }
++.rank-val { text-align: end; font-variant-numeric: tabular-nums; font-weight: 600; }
++
++/* footer */
++.site-footer { border-top: 1px solid var(--border); background: #080c15; margin-top: 24px; }
++.footer-inner { max-width: 1120px; margin: 0 auto; padding: 32px 24px 40px; display: flex; flex-direction: column; gap: 10px; }
++.footer-inner p { margin: 0; }
++.footer-brand { display: flex; align-items: center; gap: 16px; margin-bottom: 4px; }
++.vex-mark {
++  display: inline-grid; place-items: center; padding: 8px 14px; border-radius: 10px; flex: none;
++  font-weight: 800; letter-spacing: 0.18em; font-size: 1.05rem; color: #f1f4fa;
++  background: linear-gradient(135deg, rgba(90, 160, 255, 0.25), rgba(224, 112, 63, 0.35));
++  border: 1px solid rgba(255, 255, 255, 0.14);
++}
++.footer-built { font-weight: 600; }
++.footer-challenge { font-size: 0.88rem; color: #c3cbdb; }
++.footer-theme {
++  display: inline-block; margin-inline-start: 10px; padding: 1px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 600;
++  color: #f3b896; background: rgba(224, 112, 63, 0.1); border: 1px solid rgba(224, 112, 63, 0.28); vertical-align: middle;
++}
++.footer-links { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 0.9rem; }
++.footer-note { opacity: 0.8; }
++
++@media (max-width: 960px) {
++  .how-steps { grid-template-columns: 1fr; }
++  .how-step:not(:last-child)::after { display: none; }
++  .twin-stage { aspect-ratio: 4 / 3; }
++}
++@media (max-width: 640px) {
++  .site-card.featured .site-thumb, html[dir='rtl'] .site-card.featured .site-thumb { margin: -20px -20px 0; border-radius: var(--radius) var(--radius) 0 0; height: 112px; }
++  .rank-strip li { grid-template-columns: 30px 1fr 48px; }
++  .rank-bar { grid-column: 2 / 4; grid-row: 2; }
++  .twin-label { font-size: 0.74rem; padding: 4px 9px; }
++  .twin-stage { aspect-ratio: 1 / 1; }
++}
++.site-card.featured > .best { grid-row: 1 / span 8; }
+-- 
+2.43.0
+
