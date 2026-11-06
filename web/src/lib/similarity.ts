@@ -4,11 +4,37 @@
 
 import type { RawMetrics, Resolutions, SimilarityConfig, SimilarityResult, Weights } from '../types';
 
-export function normalizeValue(value: number | null | undefined, range: [number, number]): number | null {
-  if (value === null || value === undefined || Number.isNaN(value)) return null;
+/** Apply the feature's scale (undefined = linear, "log10"). */
+export function transform(value: number, scale: string | null | undefined): number {
+  if (scale === null || scale === undefined || scale === 'linear') return value;
+  if (scale === 'log10') {
+    if (value <= 0) throw new Error(`log10 scale needs positive values, got ${value}`);
+    return Math.log10(value);
+  }
+  throw new Error(`unknown scale ${scale}`);
+}
+
+/** Map a raw value to 0..1 with a range in transformed units; null value or range -> null. */
+export function normalizeValue(
+  value: number | null | undefined,
+  range: [number, number] | null | undefined,
+  scale?: string | null,
+): number | null {
+  if (value === null || value === undefined || Number.isNaN(value) || !range) return null;
   const [lo, hi] = range;
-  const t = (value - lo) / (hi - lo);
+  if (hi === lo) return null;
+  const t = (transform(value, scale) - lo) / (hi - lo);
   return Math.min(1, Math.max(0, t));
+}
+
+/**
+ * Normalisation range for one site's value. Mineral indices come from different instruments per
+ * body (EMIT on Earth, CRISM on Mars), so they use that body's own range; mirrors normalize.range_for.
+ */
+export function rangeFor(config: SimilarityConfig, feature: string, body?: string | null): [number, number] | null | undefined {
+  const byBody = config.feature_ranges_by_body?.[feature];
+  if (byBody && body) return byBody[body] ?? null;
+  return config.feature_ranges[feature];
 }
 
 export function resolutionFactor(
@@ -28,8 +54,11 @@ export function similarity(
   resB: Resolutions,
   config: SimilarityConfig,
   weights?: Weights | null,
+  bodyA?: string | null,
+  bodyB?: string | null,
 ): SimilarityResult {
-  const { criteria, feature_ranges: ranges } = config;
+  const { criteria } = config;
+  const scales = config.feature_scale ?? {};
   const k = config.confidence.resolution_k;
   const minFactor = config.confidence.resolution_min_factor;
 
@@ -37,6 +66,7 @@ export function similarity(
   let num = 0;
   let den = 0;
   let total = 0;
+  let covNum = 0;
   let resNum = 0;
 
   for (const [name, spec] of Object.entries(criteria)) {
@@ -46,8 +76,9 @@ export function similarity(
     let diffsSum = 0;
     let count = 0;
     for (const feature of spec.features) {
-      const na = normalizeValue(rawA[feature], ranges[feature]);
-      const nb = normalizeValue(rawB[feature], ranges[feature]);
+      const scale = scales[feature];
+      const na = normalizeValue(rawA[feature], rangeFor(config, feature, bodyA), scale);
+      const nb = normalizeValue(rawB[feature], rangeFor(config, feature, bodyB), scale);
       if (na === null || nb === null) continue;
       diffsSum += 1 - Math.abs(na - nb);
       count += 1;
@@ -63,12 +94,13 @@ export function similarity(
     if (w > 0) {
       num += w * score;
       den += w;
+      covNum += (w * count) / spec.features.length;
       resNum += w * resolutionFactor(resA[name], resB[name], k, minFactor);
     }
   }
 
   const overall = den > 0 ? num / den : null;
-  const coverage = total > 0 ? den / total : 0;
+  const coverage = total > 0 ? covNum / total : 0;
   const resMean = den > 0 ? resNum / den : 0;
   return {
     overall,

@@ -1,30 +1,14 @@
 """Terrain metrics from a DEM (2-D numpy array of elevations in metres).
 
-All functions are pure numpy so they work the same on NASADEM, MOLA, HiRISE DTM or LOLA
-once the DEM has been clipped and resampled to the common scale (see `resample_block_mean`).
+All functions are pure numpy so they work the same on NASADEM, MOLA or LOLA once the DEM has
+been reprojected onto the common grid. compute.py does that with GDAL area-weighted averaging
+straight to `common_terrain_scale_m` (exactly 463 m), because fine grids always look rougher and
+a whole-pixel block factor (round(463/30) = 15 -> 450 m) would not land on the same spacing.
 """
 
 from __future__ import annotations
 
 import numpy as np
-
-
-def resample_block_mean(dem: np.ndarray, src_res_m: float, dst_res_m: float) -> np.ndarray:
-    """Downsample a DEM to a coarser grid by averaging whole blocks.
-
-    Comparing a 30 m DEM directly with a 463 m DEM is misleading (fine grids always look
-    rougher), so every DEM is brought to the same ground sample distance first.
-    """
-    if dst_res_m < src_res_m:
-        raise ValueError("Only downsampling is supported; pick the coarser dataset's scale.")
-    factor = int(round(dst_res_m / src_res_m))
-    if factor <= 1:
-        return dem.astype(float)
-    rows = (dem.shape[0] // factor) * factor
-    cols = (dem.shape[1] // factor) * factor
-    trimmed = dem[:rows, :cols].astype(float)
-    blocks = trimmed.reshape(rows // factor, factor, cols // factor, factor)
-    return np.nanmean(blocks, axis=(1, 3))
 
 
 def slope_deg(dem: np.ndarray, res_m: float) -> np.ndarray:
@@ -66,12 +50,10 @@ def relief_m(dem: np.ndarray, res_m: float, window_m: float = 5000.0) -> float:
     return float(np.median(ranges))
 
 
-def terrain_metrics(dem: np.ndarray, native_res_m: float, common_res_m: float) -> dict[str, float]:
-    """Compute the three terrain features used by the similarity index."""
-    grid = resample_block_mean(dem, native_res_m, common_res_m) if native_res_m < common_res_m else dem
-    res = max(native_res_m, common_res_m)
+def terrain_metrics(dem: np.ndarray, res_m: float) -> dict[str, float]:
+    """Compute the three terrain features from a DEM already on the common grid."""
     return {
-        "slope_deg": float(np.nanmean(slope_deg(grid, res))),
-        "roughness_m": roughness_rms_m(grid, res),
-        "relief_m": relief_m(grid, res),
+        "slope_deg": float(np.nanmean(slope_deg(dem, res_m))),
+        "roughness_m": roughness_rms_m(dem, res_m),
+        "relief_m": relief_m(dem, res_m),
     }

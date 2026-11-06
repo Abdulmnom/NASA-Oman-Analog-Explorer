@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import type { Dataset, Score, Site } from '../types';
+import type { Dataset, MissingMetric, Score, Site } from '../types';
 
 type State = { status: 'loading' } | { status: 'error' } | { status: 'ready'; data: Dataset };
 
@@ -47,10 +47,21 @@ export function scoreFor(data: Dataset, earthId: string, targetId: string): Scor
   return data.scores.find((s) => s.earth === earthId && s.target === targetId);
 }
 
-/** Headline match: best of the site's intended targets, else best Mars target (Moon is terrain-only). */
+/** Headline match: the highest-scoring Mars target, whatever the site was originally chosen for.
+ *  Sites intended only for the Moon (terrain-only comparison) use their best Moon target. */
 export function bestMatch(data: Dataset, earth: Site): Score | undefined {
-  const pool = matchesFor(data, earth.id);
-  if (earth.intended_targets?.length) return pool.find((s) => earth.intended_targets!.includes(s.target));
-  const mars = new Set(data.targets.filter((t) => t.body === 'mars').map((t) => t.id));
-  return pool.find((s) => mars.has(s.target));
+  const pool = matchesFor(data, earth.id).filter((s) => s.overall !== null);
+  const bodyOf = (id: string) => data.targets.find((t) => t.id === id)?.body;
+  const moonOnly = !!earth.intended_targets?.length && earth.intended_targets.every((id) => bodyOf(id) === 'moon');
+  return pool.find((s) => bodyOf(s.target) === (moonOnly ? 'moon' : 'mars'));
+}
+
+/** Best-scoring of the targets the site was originally chosen for (may differ from bestMatch). */
+export function intendedMatch(data: Dataset, earth: Site): Score | undefined {
+  if (!earth.intended_targets?.length) return undefined;
+  return matchesFor(data, earth.id).find((s) => earth.intended_targets!.includes(s.target));
+}
+
+export function missingFor(site: Site, feature: string): MissingMetric | undefined {
+  return site.missing.find((m) => m.feature === feature);
 }

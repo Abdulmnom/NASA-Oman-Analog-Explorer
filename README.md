@@ -29,10 +29,10 @@ NASA data ──► analysis/ (Python) ──► data/processed/sites.json ─�
   A parity test runs the same cases through both and fails if they ever differ.
 * Terrain is compared on a **common 463 m grid** — mixing 30 m and 463 m data directly is misleading.
 
-> **Status:** the pipeline, website and tests are complete. Metric values in
-> `analysis/config/*_sites.yaml` are **provisional estimates** (flagged in the UI) until Phase 1–2
-> downloads real data. Dropping `data/processed/metrics/<site_id>.json` files in place makes the
-> export use measured values automatically.
+> **Status:** every metric value comes from a named NASA dataset via `python -m analog.compute`
+> and carries its provenance (dataset, version, product IDs, dates). No values are written by hand.
+> Values that cannot be computed yet are `null` with a reason in English and Arabic (for example
+> Dhofar has no cloud-free EMIT pixels; chloride and Earth thermal inertia have no cited calibration). See `docs/data-sources.md`.
 
 ## Quick start
 
@@ -68,9 +68,22 @@ python -m analog.download.fetch --all --list-only          # coverage check for 
 python -m analog.download.fetch --site samail_ophiolite --product EMIT
 ```
 
-Earth products need a free [NASA Earthdata Login](https://urs.earthdata.nasa.gov/).
+Earth products need a free [NASA Earthdata Login](https://urs.earthdata.nasa.gov/). Put an Earthdata
+user token in the git-ignored `.env.local` at the repo root as `EARTHDATA_TOKEN=...` (the older name
+`ETHINA_LOGIN` also works); `analog.compute` passes it to earthaccess.
 Mars/Moon products are searched through the PDS ODE REST API (no login).
 **Decision point:** if EMIT or CRISM do not cover a site, change the site before more UI work.
+
+### 4 · Terrain map layers (DEM, slope, drainage)
+
+```bash
+python -m analog.layers           # all Earth + Mars sites -> web/public/layers/<site>/
+```
+
+Reads the same NASADEM (30 m) and MOLA (463 m) DEMs as the scores, over a wider context window, and
+writes elevation (hypsometric tint + hillshade), slope classes, and topographic drainage
+(Priority-Flood fill + D8 flow accumulation) as PNG overlays plus a `meta.json` with the legend values.
+Drainage shows where water *would* flow on today's surface, not where water is. No layers for the Moon.
 
 ## Repository layout
 
@@ -112,4 +125,5 @@ oman-analog-explorer/
 
 1. **التحليل:** داخل مجلد `analysis` أنشئ بيئة Python وثبّت المتطلبات، ثم شغّل `python -m analog.export` لإنتاج `data/processed/sites.json` ونسخه إلى الواجهة، ثم `pytest`.
 2. **الواجهة:** داخل مجلد `web` شغّل `npm install` ثم `npm run dev` وافتح `http://localhost:5173`. الأمر `npm test` يتأكد أن معادلة TypeScript تعطي نفس نتائج Python.
-3. **البيانات الحقيقية:** بعد إنشاء حساب NASA Earthdata شغّل `python -m analog.download.fetch --all --list-only` لفحص التغطية (المرحلة 1). القيم الحالية في ملفات YAML **تقديرات مؤقتة** وتظهر كذلك في الموقع.
+3. **البيانات الحقيقية:** شغّل `python -m analog.compute` لحساب المقاييس من بيانات ناسا مع توثيق مصدر كل قيمة، ثم `python -m analog.export`. لا توجد أي قيم مكتوبة يدوياً؛ القيمة التي لا يمكن حسابها تظهر "غير متاحة" مع السبب. قراءة EMIT تحتاج رمز NASA Earthdata في ملف `.env.local` باسم `EARTHDATA_TOKEN` (أو `ETHINA_LOGIN`).
+4. **طبقات التضاريس:** شغّل `python -m analog.layers` لإنتاج خرائط الارتفاع والانحدار والتصريف لمواقع عُمان والمريخ في `web/public/layers`.

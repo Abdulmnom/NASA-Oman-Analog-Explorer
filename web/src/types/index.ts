@@ -15,6 +15,38 @@ export interface SiteCardText {
 export type RawMetrics = Record<string, number | null | undefined>;
 export type Resolutions = Record<string, number | null | undefined>;
 
+export type ReasonCode =
+  | 'no_coverage'
+  | 'needs_login'
+  | 'not_implemented'
+  | 'calibration_missing'
+  | 'not_applicable'
+  | 'download_failed';
+
+/** Where a measured value came from (written by analysis/src/analog/compute.py). */
+export interface Provenance {
+  dataset: string;
+  version: string;
+  products: string[];
+  urls: string[];
+  acquired: string[];
+  native_resolution_m: number;
+  processing: string;
+  window_coverage?: number;
+  [extra: string]: unknown;
+}
+
+/** A metric that is null, and why. */
+export interface MissingMetric {
+  feature: string;
+  status: 'unavailable' | 'not_applicable';
+  reason_code: ReasonCode;
+  reason_en: string;
+  reason_ar: string;
+  needed: string;
+  needed_ar: string;
+}
+
 export interface Site {
   id: string;
   body: Body;
@@ -24,12 +56,17 @@ export interface Site {
   bbox_km: number;
   role?: 'analog' | 'reference';
   intended_targets?: string[];
-  resolution_m: Resolutions;
+  coords_approximate?: boolean;
+  coords_note?: Localized;
+  /** Per criterion: datasets actually used (from provenance). */
   sources: Record<string, string[]>;
+  /** Per criterion: resolution used by the confidence penalty (terrain = common grid). */
+  resolution_m: Resolutions;
+  /** Measured value, or null when the metric is missing (see `missing`). */
   raw: RawMetrics;
-  provisional: boolean;
-  /** Metric keys computed from real NASA data; the rest of `raw` are provisional estimates. */
-  measured?: string[];
+  provenance: Record<string, Provenance>;
+  missing: MissingMetric[];
+  measured: string[];
   card: Record<Lang, SiteCardText>;
 }
 
@@ -40,7 +77,12 @@ export interface CriterionSpec {
 
 export interface SimilarityConfig {
   criteria: Record<string, CriterionSpec>;
-  feature_ranges: Record<string, [number, number]>;
+  /** Pooled min..max of measured values (after `feature_scale`); null = fewer than two measured sites. */
+  feature_ranges: Record<string, [number, number] | null>;
+  /** Per-body ranges for features whose instruments differ by body (mineral band depths). */
+  feature_ranges_by_body?: Record<string, Record<string, [number, number] | null>>;
+  body_relative_features?: string[];
+  feature_scale?: Record<string, string>;
   common_terrain_scale_m: number;
   confidence: { resolution_k: number; resolution_min_factor: number };
 }
@@ -63,13 +105,22 @@ export interface Validation {
   mean_mars_similarity: Record<string, number | null>;
   ranking: string[];
   reference_rank: number | null;
+  best_mars_target: Record<string, string | null>;
+}
+
+export interface Coverage {
+  measured: number;
+  unavailable: number;
+  not_applicable: number;
+  /** measured / (measured + unavailable) */
+  share: number;
+  by_feature: Record<string, { measured: number; unavailable: number; not_applicable: number }>;
 }
 
 export interface Dataset {
   generated: string;
-  provisional: boolean;
-  /** Fraction (0..1) of scored metric values that come from real data. */
-  measured_share?: number;
+  coverage: Coverage;
+  score_spread: number | null;
   config: SimilarityConfig;
   earth_sites: Site[];
   targets: Site[];

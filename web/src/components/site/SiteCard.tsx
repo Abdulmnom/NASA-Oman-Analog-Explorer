@@ -8,6 +8,8 @@ interface Props {
   site: Site;
   best?: Score;
   bestTarget?: Site;
+  /** Best of the originally intended targets, shown when it is not the best match. */
+  intended?: { score: Score; target: Site };
   /** Next-best targets after the headline match. */
   others?: { score: Score; target: Site }[];
   rank?: number;
@@ -16,13 +18,14 @@ interface Props {
 }
 
 /** Card for the home page grid: headline match, its per-criterion breakdown and quick terrain facts. */
-export default function SiteCard({ site, best, bestTarget, others = [], rank, meanMars, featured }: Props) {
+export default function SiteCard({ site, best, bestTarget, intended, others = [], rank, meanMars, featured }: Props) {
   const { t, loc, lang, num } = useI18n();
   const { relief_m, slope_deg } = site.raw;
+  const unavailable = site.missing.filter((m) => m.status === 'unavailable').length;
   const facts = [
-    relief_m != null && { label: t('features.relief_m'), text: `${num(relief_m)} ${t('units.relief_m')}` },
-    slope_deg != null && { label: t('features.slope_deg'), text: `${num(slope_deg, 1)}${t('units.slope_deg')}` },
-    { label: t('home.area'), text: t('home.areaValue', { n: num(site.bbox_km) }) },
+    { label: t('features.relief_m'), text: relief_m != null ? `${num(relief_m)} ${t('units.relief_m')}` : t('metric.notAvailable') },
+    { label: t('features.slope_deg'), text: slope_deg != null ? `${num(slope_deg, 1)}${t('units.slope_deg')}` : t('metric.notAvailable') },
+    { label: t('home.area'), text: t('home.areaValue', { n: num(site.bbox_km * 2) }) },
     meanMars != null && { label: t('home.meanMars'), text: `${num(meanMars * 100)}%` },
   ].filter((f): f is { label: string; text: string } => Boolean(f));
   return (
@@ -39,6 +42,14 @@ export default function SiteCard({ site, best, bestTarget, others = [], rank, me
         </div>
         {site.role === 'reference' && <span className="pill ref">{t('explorer.reference')}</span>}
       </div>
+      <p className="card-flags">
+        {site.coords_approximate && (
+          <span className="pill warn" title={site.coords_note ? loc(site.coords_note) : undefined}>{t('site.coordsApprox')}</span>
+        )}
+        <span className={`pill ${unavailable ? 'warn' : 'ok'}`}>
+          {unavailable ? t('site.someMissing', { n: unavailable }) : t('site.allMeasured')}
+        </span>
+      </p>
 
       <ul className="facts">
         {facts.map((f) => (
@@ -87,6 +98,19 @@ export default function SiteCard({ site, best, bestTarget, others = [], rank, me
               </div>
             ))}
           </dl>
+          {intended && (
+            <div className="also">
+              <span className="muted">{t('home.intended')}</span>
+              <ul>
+                <li>
+                  <span>
+                    <span className={`dot ${intended.target.body}`} /> {loc(intended.target.name)}
+                  </span>
+                  <span className="also-val">{intended.score.overall === null ? t('metric.notAvailable') : `${num(intended.score.overall * 100)}%`}</span>
+                </li>
+              </ul>
+            </div>
+          )}
           {others.length > 0 && (
             <div className="also">
               <span className="muted">{t('home.alsoMatches')}</span>
@@ -96,7 +120,7 @@ export default function SiteCard({ site, best, bestTarget, others = [], rank, me
                     <span>
                       <span className={`dot ${target.body}`} /> {loc(target.name)}
                     </span>
-                    <span className="also-val">{score.overall === null ? '–' : `${num(score.overall * 100)}%`}</span>
+                    <span className="also-val">{score.overall === null ? t('metric.notAvailable') : `${num(score.overall * 100)}%`}</span>
                   </li>
                 ))}
               </ul>

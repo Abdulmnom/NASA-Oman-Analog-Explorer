@@ -1,8 +1,13 @@
 import { Link, useSearchParams } from 'react-router-dom';
+import CompareView from '../components/explorer/CompareView';
+import SitesTable from '../components/explorer/SitesTable';
 import TwinMaps from '../components/map/TwinMaps';
 import ScoreBadge, { ScoreBar } from '../components/similarity/ScoreBadge';
 import { useI18n } from '../i18n';
 import { bestMatch, findSite, matchesFor, scoreFor, useDataset } from '../lib/data';
+
+type View = 'map' | 'compare' | 'table';
+const VIEWS: View[] = ['map', 'compare', 'table'];
 
 export default function Explorer() {
   const { t, loc, lang } = useI18n();
@@ -15,17 +20,32 @@ export default function Explorer() {
     data.targets.find((s) => s.id === params.get('target')) ?? findSite(data, bestMatch(data, earth)?.target) ?? data.targets[0];
   const score = scoreFor(data, earth.id, target.id);
 
-  const select = (site: string, tgt?: string) => {
+  const view: View = VIEWS.includes(params.get('view') as View) ? (params.get('view') as View) : 'map';
+
+  const select = (site: string, tgt?: string, nextView: View = view) => {
     const next = new URLSearchParams({ site });
     if (tgt) next.set('target', tgt);
+    if (nextView !== 'map') next.set('view', nextView);
     setParams(next, { replace: true });
   };
+  const show = (v: View) => select(earth.id, target.id, v);
 
   return (
     <div className="page wide">
       <h1>{t('explorer.title')}</h1>
       <p className="lead">{t('explorer.intro')}</p>
 
+      <div className="tabs" role="tablist">
+        {VIEWS.map((v) => (
+          <button key={v} type="button" role="tab" aria-selected={view === v} className={view === v ? 'active' : ''} onClick={() => show(v)}>
+            {t(`explorer.tab_${v}`)}
+          </button>
+        ))}
+      </div>
+
+      {view === 'table' ? (
+        <SitesTable onOpen={(site, tgt) => select(site, tgt, tgt ? 'compare' : 'map')} />
+      ) : (
       <div className="explorer">
         <aside className="panel site-list">
           <h2 className="small-title">{t('explorer.pickSite')}</h2>
@@ -68,10 +88,13 @@ export default function Explorer() {
             {score && <ScoreBadge overall={score.overall} confidence={score.confidence} />}
             <div className="toolbar-links">
               <Link className="btn ghost small" to={`/site/${earth.id}`}>{t('explorer.openDetails')}</Link>
-              <Link className="btn primary small" to={`/compare?earth=${earth.id}&target=${target.id}`}>{t('explorer.openCompare')}</Link>
             </div>
           </div>
 
+          {view === 'compare' ? (
+            <CompareView earth={earth} target={target} />
+          ) : (
+          <>
           <TwinMaps
             earthSites={data.earth_sites}
             earth={earth}
@@ -91,8 +114,11 @@ export default function Explorer() {
               <p>{target.card[lang].summary}</p>
             </div>
           </div>
+          </>
+          )}
         </section>
       </div>
+      )}
     </div>
   );
 }

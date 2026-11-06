@@ -1,18 +1,16 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import { useI18n } from '../i18n';
-import { useDataset } from '../lib/data';
 
 const NAV = [
   { to: '/', key: 'home', end: true },
   { to: '/explorer', key: 'explorer' },
-  { to: '/compare', key: 'compare' },
+  { to: '/minerals', key: 'minerals' },
   { to: '/methodology', key: 'methodology' },
   { to: '/sources', key: 'sources' },
 ];
 
 export default function Layout() {
   const { t, toggle } = useI18n();
-  const data = useDataset();
   return (
     <div className="app">
       <header className="topbar">
@@ -34,11 +32,6 @@ export default function Layout() {
           {t('lang.switch')}
         </button>
       </header>
-      {data.provisional && (
-        <div className="banner">
-          {data.measured_share ? t('app.partial', { pct: Math.round(data.measured_share * 100) }) : t('app.provisional')}
-        </div>
-      )}
       <main>
         <Outlet />
       </main>

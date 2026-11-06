@@ -34,7 +34,7 @@ EARTHDATA_PRODUCTS = {
 
 # PDS ODE queries (ihid = instrument host, iid = instrument, pt = product type)
 ODE_PRODUCTS = {
-    "CRISM": {"target": "mars", "ihid": "MRO", "iid": "CRISM", "pt": "TRDR"},
+    "CRISM": {"target": "mars", "ihid": "MRO", "iid": "CRISM", "pt": "MTRDR"},
     "HIRISE_DTM": {"target": "mars", "ihid": "MRO", "iid": "HIRISE", "pt": "DTM"},
     "THEMIS_TI": {"target": "mars", "ihid": "ODY", "iid": "THEMIS", "pt": "IRGEO"},
     "LOLA": {"target": "moon", "ihid": "LRO", "iid": "LOLA", "pt": "GDRDEM"},
@@ -42,7 +42,7 @@ ODE_PRODUCTS = {
 }
 # Global mosaics are downloaded once and clipped locally rather than searched per site.
 GLOBAL_PRODUCTS = {
-    "MOLA": "https://planetarymaps.usgs.gov/mosaic/Mars_MGS_MOLA_DEM_mosaic_global_463m.tif",
+    "MOLA": "https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/Mars_MGS_MOLA_DEM_mosaic_global_463m.tif",
 }
 
 ODE_URL = "https://oderest.rsl.wustl.edu/live2/"

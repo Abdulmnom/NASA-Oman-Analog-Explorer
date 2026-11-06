@@ -1,8 +1,20 @@
-"""Mineral indices from reflectance cubes (EMIT, ASTER SWIR, CRISM).
+"""Mineral indices from reflectance cubes (EMIT L2A reflectance, CRISM MTRDR I/F).
 
 A cube is a numpy array shaped (bands, rows, cols) with matching `wavelengths_um`.
-Indices are band depths (0 = no absorption) turned into a 0..1 abundance proxy by taking
-the fraction of valid pixels above a detection threshold, weighted by mean depth.
+The same code runs on Earth and Mars data so the two sides are processed identically.
+
+Site index = mean band depth over all valid pixels in the window. There is deliberately no
+detection threshold or saturation constant: we have no cited calibration for one, and a mean
+depth already grows with both how much of the window shows the absorption and how strong it is.
+The result is a spectral proxy, not a mineral abundance.
+
+Band positions (centre, shoulders):
+  serpentine  2.32 um Mg-OH combination band (Ehlmann et al. 2010, GRL 37, L06201)
+  carbonate   2.30-2.34 um AND 2.50-2.55 um CO3 bands; requiring both separates carbonate from
+              serpentine, which has no 2.5 um band (Ehlmann et al. 2008, Science 322, 1828)
+
+Chlorides have no diagnostic absorption between 0.4 and 2.5 um; mapping them needs brightness and
+slope thresholds for which we have no cited calibration, so no chloride index is computed.
 """
 
 from __future__ import annotations
@@ -13,6 +25,9 @@ import numpy as np
 SERPENTINE_BAND = (2.32, 2.25, 2.38)
 CARBONATE_BAND = (2.33, 2.27, 2.40)
 CARBONATE_BAND_2 = (2.50, 2.43, 2.56)
+
+# Every wavelength the indices read; readers fetch only these bands.
+REQUIRED_WAVELENGTHS_UM = sorted({w for band in (SERPENTINE_BAND, CARBONATE_BAND, CARBONATE_BAND_2) for w in band})
 
 
 def _band(cube: np.ndarray, wavelengths_um: np.ndarray, target: float) -> np.ndarray:
@@ -30,40 +45,19 @@ def band_depth(cube: np.ndarray, wavelengths_um: np.ndarray, band: tuple[float, 
     return np.clip(depth, 0.0, 1.0)
 
 
-def abundance_proxy(depth: np.ndarray, threshold: float = 0.02, saturation: float = 0.15) -> float:
-    """Fraction of pixels with detectable absorption, scaled by how deep it is (0..1)."""
+def mean_band_depth(depth: np.ndarray) -> tuple[float, int]:
+    """Mean depth over finite pixels, and how many pixels that mean is based on."""
     valid = depth[np.isfinite(depth)]
-    if valid.size == 0:
-        return float("nan")
-    detected = valid > threshold
-    if not detected.any():
-        return 0.0
-    strength = min(1.0, float(np.mean(valid[detected])) / saturation)
-    return float(detected.mean() * strength)
+    return (float(valid.mean()) if valid.size else float("nan")), int(valid.size)
 
 
-def chloride_index(cube: np.ndarray, wavelengths_um: np.ndarray) -> float:
-    """Chlorides are bright and spectrally featureless with a blue SWIR slope.
-
-    Proxy: fraction of pixels that are bright (R_1.6 > 0.35), have a negative 1.6->2.2 um
-    slope, and show no 2.3 um absorption.
-    """
-    r16 = _band(cube, wavelengths_um, 1.60)
-    r22 = _band(cube, wavelengths_um, 2.20)
-    no_feature = band_depth(cube, wavelengths_um, CARBONATE_BAND) < 0.02
-    mask = (r16 > 0.35) & (r22 < r16) & no_feature
-    valid = np.isfinite(r16) & np.isfinite(r22)
-    return float(mask[valid].mean()) if valid.any() else float("nan")
-
-
-def mineral_metrics(cube: np.ndarray, wavelengths_um: np.ndarray) -> dict[str, float]:
-    serp = abundance_proxy(band_depth(cube, wavelengths_um, SERPENTINE_BAND))
+def mineral_metrics(cube: np.ndarray, wavelengths_um: np.ndarray) -> dict[str, tuple[float, int]]:
+    """{feature: (mean depth, valid pixel count)} for serpentine and carbonate."""
     carb_depth = np.minimum(
         band_depth(cube, wavelengths_um, CARBONATE_BAND),
         band_depth(cube, wavelengths_um, CARBONATE_BAND_2),
     )  # carbonates need BOTH bands; serpentine alone has no 2.5 um feature
     return {
-        "serpentine_index": serp,
-        "carbonate_index": abundance_proxy(carb_depth),
-        "chloride_index": chloride_index(cube, wavelengths_um),
+        "serpentine_index": mean_band_depth(band_depth(cube, wavelengths_um, SERPENTINE_BAND)),
+        "carbonate_index": mean_band_depth(carb_depth),
     }

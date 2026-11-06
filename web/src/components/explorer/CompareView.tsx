@@ -1,60 +1,39 @@
 import { useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import CriteriaRadar from '../components/charts/CriteriaRadar';
-import FeatureBars from '../components/charts/FeatureBars';
-import ScoreBadge, { ScoreBar } from '../components/similarity/ScoreBadge';
-import WeightSliders from '../components/similarity/WeightSliders';
-import { useI18n } from '../i18n';
-import { bestMatch, useDataset } from '../lib/data';
-import { defaultWeights, similarity } from '../lib/similarity';
-import type { Weights } from '../types';
+import CriteriaRadar from '../charts/CriteriaRadar';
+import FeatureBars from '../charts/FeatureBars';
+import MetricValue from '../site/MetricValue';
+import ScoreBadge, { ScoreBar } from '../similarity/ScoreBadge';
+import WeightSliders from '../similarity/WeightSliders';
+import { useI18n } from '../../i18n';
+import { useDataset } from '../../lib/data';
+import { defaultWeights, similarity } from '../../lib/similarity';
+import type { Site, Weights } from '../../types';
 
 const EARTH_HEX = '#3fb6a8';
 const BODY_HEX = { earth: EARTH_HEX, mars: '#e0703f', moon: '#b8c2d6' } as const;
 
-export default function Compare() {
+interface Props {
+  earth: Site;
+  target: Site;
+}
+
+/** Weight sliders, per-criterion scores and raw values for one Oman site and one target (Explorer tab). */
+export default function CompareView({ earth, target }: Props) {
   const { t, loc, num } = useI18n();
   const data = useDataset();
-  const [params, setParams] = useSearchParams();
   const [weights, setWeights] = useState<Weights>(() => defaultWeights(data.config));
 
-  const earth = data.earth_sites.find((s) => s.id === params.get('earth')) ?? data.earth_sites[0];
-  const target =
-    data.targets.find((s) => s.id === params.get('target')) ??
-    data.targets.find((s) => s.id === bestMatch(data, earth)?.target) ??
-    data.targets[0];
-
   const result = useMemo(
-    () => similarity(earth.raw, target.raw, earth.resolution_m, target.resolution_m, data.config, weights),
+    () => similarity(earth.raw, target.raw, earth.resolution_m, target.resolution_m, data.config, weights, earth.body, target.body),
     [earth, target, data.config, weights],
   );
 
-  const setPair = (e: string, tg: string) => setParams({ earth: e, target: tg }, { replace: true });
   const criteria = Object.keys(data.config.criteria);
   const features = Object.values(data.config.criteria).flatMap((c) => c.features);
-  const fmt = (v: number | null | undefined, f: string) =>
-    v === null || v === undefined ? '—' : `${num(v, v < 1 ? 2 : v < 10 ? 1 : 0)} ${t(`units.${f}`)}`;
 
   return (
-    <div className="page">
-      <h1>{t('compare.title')}</h1>
+    <div className="compare-view">
       <p className="lead">{t('compare.intro')}</p>
-
-      <div className="panel toolbar">
-        <label className="field">
-          <span>{t('compare.earthSite')}</span>
-          <select value={earth.id} onChange={(e) => setPair(e.target.value, target.id)}>
-            {data.earth_sites.map((s) => <option key={s.id} value={s.id}>{loc(s.name)}</option>)}
-          </select>
-        </label>
-        <span className="vs">↔</span>
-        <label className="field">
-          <span>{t('compare.target')}</span>
-          <select value={target.id} onChange={(e) => setPair(earth.id, e.target.value)}>
-            {data.targets.map((s) => <option key={s.id} value={s.id}>{t(`body.${s.body}`)} · {loc(s.name)}</option>)}
-          </select>
-        </label>
-      </div>
 
       <div className="grid compare-top">
         <div className="panel">
@@ -111,8 +90,8 @@ export default function Compare() {
             {features.map((f) => (
               <tr key={f}>
                 <td>{t(`features.${f}`)}</td>
-                <td className="num-cell">{fmt(earth.raw[f], f)}</td>
-                <td className="num-cell">{fmt(target.raw[f], f)}</td>
+                <td><MetricValue site={earth} feature={f} /></td>
+                <td><MetricValue site={target} feature={f} /></td>
               </tr>
             ))}
           </tbody>

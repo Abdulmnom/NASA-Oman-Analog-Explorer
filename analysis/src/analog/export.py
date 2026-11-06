@@ -6,12 +6,16 @@ Writes:
   data/processed/sites.json          - canonical output (tracked in git)
   web/public/data/sites.json         - copy served by the frontend
   analysis/tests/fixtures/parity_cases.json - inputs/outputs for the Python<->TS parity test
+
+Only values from data/processed/metrics/<id>.json (written by `python -m analog.compute`) are used.
+A feature without a measured value is null and carries the pipeline's reason.
 """
 
 from __future__ import annotations
 
 import json
 import shutil
+import statistics
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -19,6 +23,7 @@ from typing import Any
 import yaml
 
 from . import ANALYSIS_DIR, CONFIG_DIR, DATA_DIR, REPO_DIR
+from .normalize import pooled_range
 from .similarity import similarity
 
 METRICS_DIR = DATA_DIR / "processed" / "metrics"
@@ -43,6 +48,10 @@ def load_config() -> dict[str, Any]:
     return load_yaml("weights.yaml")
 
 
+def features_of(config: dict[str, Any]) -> list[str]:
+    return [f for c in config["criteria"].values() for f in c["features"]]
+
+
 def load_measured(site_id: str) -> dict[str, Any]:
     """Pipeline output from `python -m analog.compute`, or {} if the site has not been run."""
     path = METRICS_DIR / f"{site_id}.json"
@@ -52,34 +61,71 @@ def load_measured(site_id: str) -> dict[str, Any]:
         return json.load(fh)
 
 
-def prepare_sites(raw_sites: list[dict[str, Any]], body: str | None = None) -> list[dict[str, Any]]:
-    """Merge measured metrics over provisional ones and record which values are real data.
+def _not_run(feature: str) -> dict[str, Any]:
+    return {
+        "feature": feature, "status": "unavailable", "reason_code": "not_implemented",
+        "reason_en": "The data pipeline has not been run for this site yet.",
+        "reason_ar": "لم يُشغَّل خط معالجة البيانات لهذا الموقع بعد.",
+        "needed": "Run `python -m analog.compute --site <id>`.",
+        "needed_ar": "تشغيل ‎python -m analog.compute --site <id>‎.",
+    }
 
-    A site is `provisional` while any metric it is scored on (non-null provisional value)
-    still comes from the placeholder estimates.
-    """
+
+def prepare_sites(raw_sites: list[dict[str, Any]], config: dict[str, Any], body: str | None = None) -> list[dict[str, Any]]:
+    """Attach measured values (with provenance) and missing reasons to each configured site."""
+    features = features_of(config)
     sites = []
     for s in raw_sites:
-        estimates = s.get("provisional_metrics", {})
-        measured_file = load_measured(s["id"])
-        measured = {k: v for k, v in measured_file.get("metrics", {}).items() if v is not None}
-        site = {k: v for k, v in s.items() if k != "provisional_metrics"}
+        result = load_measured(s["id"])
+        measured = result.get("measured", {})
+        missing = {m["feature"]: m for m in result.get("missing", [])}
+        site = dict(s)
         site.setdefault("body", body)
-        site["raw"] = {**estimates, **measured}
-        site["measured"] = sorted(measured)
-        site["provisional"] = any(v is not None and k not in measured for k, v in estimates.items())
-        # The pipeline may swap a criterion's dataset (e.g. TES albedo instead of THEMIS).
-        site["sources"] = {**site.get("sources", {}), **measured_file.get("sources", {})}
-        site["resolution_m"] = {**site.get("resolution_m", {}), **measured_file.get("resolution_m", {})}
+        site["raw"] = {f: measured[f]["value"] if f in measured else None for f in features}
+        site["provenance"] = {f: measured[f]["provenance"] for f in features if f in measured}
+        site["missing"] = [missing.get(f) or _not_run(f) for f in features if f not in measured]
+        site["measured"] = sorted(site["provenance"])
+        site["resolution_m"] = resolutions(site["provenance"], config)
+        site["sources"] = {c: sorted({site["provenance"][f]["dataset"] for f in spec["features"] if f in site["provenance"]})
+                           for c, spec in config["criteria"].items()}
         sites.append(site)
     return sites
+
+
+def resolutions(provenance: dict[str, Any], config: dict[str, Any]) -> dict[str, float | None]:
+    """Per-criterion resolution used by the confidence penalty.
+
+    Terrain is compared on the common grid, so it gets the common scale on every site (no
+    penalty). Other criteria use the coarsest native resolution among their measured features.
+    """
+    out: dict[str, float | None] = {}
+    for name, spec in config["criteria"].items():
+        if name == "terrain":
+            out[name] = config["common_terrain_scale_m"] if any(f in provenance for f in spec["features"]) else None
+            continue
+        res = [provenance[f]["native_resolution_m"] for f in spec["features"] if f in provenance]
+        out[name] = max(res) if res else None
+    return out
+
+
+def scoring_config(config: dict[str, Any], sites: list[dict[str, Any]]) -> dict[str, Any]:
+    """Config with data-driven normalisation ranges (pooled min..max of measured values)."""
+    scales = config.get("feature_scale") or {}
+    ranges = {f: pooled_range((s["raw"][f] for s in sites), scales.get(f)) for f in features_of(config)}
+    bodies = sorted({s.get("body") for s in sites if s.get("body")})
+    by_body = {
+        f: {b: pooled_range((s["raw"][f] for s in sites if s.get("body") == b), scales.get(f)) for b in bodies}
+        for f in config.get("body_relative_features") or []
+    }
+    return {**config, "feature_scale": scales, "feature_ranges": ranges, "feature_ranges_by_body": by_body}
 
 
 def score_pairs(earth: list[dict], targets: list[dict], config: dict) -> list[dict[str, Any]]:
     scores = []
     for e in earth:
         for t in targets:
-            result = similarity(e["raw"], t["raw"], e["resolution_m"], t["resolution_m"], config)
+            result = similarity(e["raw"], t["raw"], e["resolution_m"], t["resolution_m"], config,
+                                body_a=e["body"], body_b=t["body"])
             scores.append({"earth": e["id"], "target": t["id"], **result})
     return scores
 
@@ -93,12 +139,41 @@ def validation_summary(earth: list[dict], targets: list[dict], scores: list[dict
         mean_mars[e["id"]] = sum(vals) / len(vals) if vals else None
     ranking = sorted((k for k, v in mean_mars.items() if v is not None), key=lambda k: -mean_mars[k])
     ref = next((e["id"] for e in earth if e.get("role") == "reference"), None)
+    best = {}
+    for e in earth:
+        mars = [s for s in scores if s["earth"] == e["id"] and s["target"] in mars_ids and s["overall"] is not None]
+        best[e["id"]] = max(mars, key=lambda s: s["overall"])["target"] if mars else None
     return {
         "reference_site": ref,
         "mean_mars_similarity": mean_mars,
         "ranking": ranking,
         "reference_rank": ranking.index(ref) + 1 if ref in ranking else None,
+        "best_mars_target": best,
     }
+
+
+def coverage_summary(sites: list[dict[str, Any]], config: dict[str, Any]) -> dict[str, Any]:
+    """How many site x feature values are measured, unavailable, or not applicable."""
+    by_feature = {}
+    for f in features_of(config):
+        m = sum(f in s["provenance"] for s in sites)
+        na = sum(1 for s in sites for x in s["missing"] if x["feature"] == f and x["status"] == "not_applicable")
+        by_feature[f] = {"measured": m, "unavailable": len(sites) - m - na, "not_applicable": na}
+    measured = sum(v["measured"] for v in by_feature.values())
+    na = sum(v["not_applicable"] for v in by_feature.values())
+    applicable = len(sites) * len(by_feature) - na
+    return {
+        "measured": measured,
+        "unavailable": applicable - measured,
+        "not_applicable": na,
+        "share": round(measured / applicable, 4) if applicable else 0.0,
+        "by_feature": by_feature,
+    }
+
+
+def score_spread(scores: list[dict[str, Any]]) -> float | None:
+    vals = [s["overall"] for s in scores if s["overall"] is not None]
+    return round(statistics.pstdev(vals), 4) if len(vals) > 1 else None
 
 
 def write_parity_fixtures(earth: list[dict], targets: list[dict], config: dict) -> None:
@@ -112,28 +187,25 @@ def write_parity_fixtures(earth: list[dict], targets: list[dict], config: dict) 
                     "raw_a": e["raw"], "raw_b": t["raw"],
                     "res_a": e["resolution_m"], "res_b": t["resolution_m"],
                     "weights": weights,
-                    "expected": similarity(e["raw"], t["raw"], e["resolution_m"], t["resolution_m"], config, weights),
+                    "body_a": e["body"], "body_b": t["body"],
+                    "expected": similarity(e["raw"], t["raw"], e["resolution_m"], t["resolution_m"], config, weights,
+                                           e["body"], t["body"]),
                 })
     PARITY_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(PARITY_FILE, "w", encoding="utf-8") as fh:
         json.dump({"config": config, "cases": cases}, fh, ensure_ascii=False, indent=1)
 
 
-def measured_share(sites: list[dict[str, Any]]) -> float:
-    """Fraction of scored metric values that come from real data rather than estimates."""
-    scored = [(s, k) for s in sites for k, v in s["raw"].items() if v is not None]
-    return round(sum(k in s["measured"] for s, k in scored) / len(scored), 4) if scored else 0.0
-
-
 def build() -> dict[str, Any]:
-    config = load_config()
-    earth = prepare_sites(load_yaml("earth_sites.yaml")["sites"], body="earth")
-    targets = prepare_sites(load_yaml("target_sites.yaml")["sites"])
+    base = load_config()
+    earth = prepare_sites(load_yaml("earth_sites.yaml")["sites"], base, body="earth")
+    targets = prepare_sites(load_yaml("target_sites.yaml")["sites"], base)
+    config = scoring_config(base, earth + targets)
     scores = score_pairs(earth, targets, config)
     return {
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "provisional": any(s["provisional"] for s in earth + targets),
-        "measured_share": measured_share(earth + targets),
+        "coverage": coverage_summary(earth + targets, config),
+        "score_spread": score_spread(scores),
         "config": config,
         "earth_sites": earth,
         "targets": targets,
@@ -151,10 +223,11 @@ def main() -> None:
     shutil.copyfile(OUT_FILE, WEB_FILE)
     write_parity_fixtures(dataset["earth_sites"], dataset["targets"], dataset["config"])
 
-    v = dataset["validation"]
+    v, c = dataset["validation"], dataset["coverage"]
     print(f"Wrote {OUT_FILE.relative_to(REPO_DIR)} and {WEB_FILE.relative_to(REPO_DIR)}")
-    print(f"{len(dataset['scores'])} pairs scored; measured share: {dataset['measured_share']:.0%}; "
-          f"provisional data remaining: {dataset['provisional']}")
+    print(f"{len(dataset['scores'])} pairs scored; measured {c['measured']}, unavailable {c['unavailable']}, "
+          f"not applicable {c['not_applicable']} (share of applicable values measured: {c['share']:.0%})")
+    print(f"Score spread (std of overall): {dataset['score_spread']}")
     print(f"Validation: reference '{v['reference_site']}' ranks {v['reference_rank']} of {len(v['ranking'])} by mean Mars similarity")
 
 

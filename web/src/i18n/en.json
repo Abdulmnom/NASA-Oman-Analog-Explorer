@@ -1,21 +1,32 @@
 {
   "app": {
     "title": "Oman Analog Explorer",
-    "provisional": "Preview data: metric values are provisional estimates until the NASA data pipeline is run. Scores show how the method works, not final results.",
-    "partial": "{pct}% of metric values now come from NASA data (terrain from NASADEM, MOLA and LOLA; albedo from MODIS and TES). Mineral indices and thermal inertia are still provisional estimates.",
     "loading": "Loading data…",
-    "loadError": "Could not load data/sites.json. Run `python -m analog.export` in analysis/."
+    "loadError": "Could not load data/sites.json. Run `python -m analog.export` in analysis/.",
+    "coverage": "{measured} of {applicable} metric values are computed from NASA data; {unavailable} are not available yet. Each missing value shows why on the site pages and on Sources."
   },
   "nav": {
     "home": "Home",
     "explorer": "Explorer",
     "compare": "Compare",
     "methodology": "Methodology",
-    "sources": "Sources"
+    "sources": "Sources",
+    "minerals": "Minerals"
   },
-  "lang": { "switch": "العربية", "switchLabel": "Switch language to Arabic" },
-  "body": { "earth": "Earth", "mars": "Mars", "moon": "Moon" },
-  "criteria": { "terrain": "Terrain", "mineralogy": "Minerals", "surface": "Surface physics" },
+  "lang": {
+    "switch": "العربية",
+    "switchLabel": "Switch language to Arabic"
+  },
+  "body": {
+    "earth": "Earth",
+    "mars": "Mars",
+    "moon": "Moon"
+  },
+  "criteria": {
+    "terrain": "Terrain",
+    "mineralogy": "Minerals",
+    "surface": "Surface physics"
+  },
   "features": {
     "slope_deg": "Mean slope",
     "roughness_m": "Roughness",
@@ -52,13 +63,23 @@
     "heroText": "Oman holds some of the planet's best exposures of rocks, salts and dunes that resemble what orbiters see on Mars. We compare five Omani sites with Mars landing regions, and one with the lunar south pole, using NASA data and an open, adjustable similarity index.",
     "ctaExplore": "Open the explorer",
     "ctaMethod": "How the score works",
+    "liveDistance": "Earth ↔ Mars right now",
+    "live": "Live",
+    "km": "km",
+    "lightDelay": "A radio signal takes {min} min {sec} s one way",
+    "closing": "Closing in at {v} km/s",
+    "receding": "Drifting apart at {v} km/s",
+    "earthTag": "{n} Omani analog sites",
+    "marsTag": "{n} Mars target regions",
+    "dragHint": "Drag a planet to spin it · click to explore",
+    "scrollLabel": "Scroll to the content",
     "principlesTitle": "Three ground rules",
     "p1Title": "Mars first",
     "p1Text": "Mars is the main target. The Moon is a secondary comparison, for terrain only and with a single region.",
     "p2Title": "Same scale, fair comparison",
-    "p2Text": "All terrain is resampled to the same 463 m grid before comparing, because fine-resolution data always looks rougher.",
+    "p2Text": "All terrain is reprojected to exactly the same 463 m grid before comparing, because fine-resolution data always looks rougher.",
     "p3Title": "Honest about limits",
-    "p3Text": "No Omani site is \"just like Mars\". Every card lists differences and data limits next to similarities, and each score carries a confidence value.",
+    "p3Text": "No Omani site is \"just like Mars\". Every value comes from a named NASA dataset; values we cannot compute are shown as not available, with the reason.",
     "sitesTitle": "The Omani sites",
     "sitesSubtitle": "Ranked by mean similarity to the Mars targets. Each card shows the best match and its breakdown by criterion.",
     "rankTitle": "Rank by mean similarity to Mars targets",
@@ -74,7 +95,8 @@
     "differences": "Key differences",
     "bestMatch": "Best match",
     "validationTitle": "Sanity check: the AMADEE-18 site",
-    "validationText": "Experts already chose the Dhofar desert for the AMADEE-18 Mars simulation (2018). Our index ranks it #{rank} of {total} Omani sites by mean similarity to Mars targets: a sign the method points in the right direction."
+    "validationText": "Experts chose the Dhofar desert for the AMADEE-18 Mars simulation (2018). With measured data only, our index ranks it #{rank} of {total} Omani sites by mean similarity to Mars targets. A method that captures what experts look for should rank it near the top; the result is shown as computed, not tuned.",
+    "intended": "Intended analog"
   },
   "explorer": {
     "title": "Explorer",
@@ -92,7 +114,10 @@
     "lola": "LOLA shaded relief",
     "window": "Analysis window",
     "intended": "intended analog",
-    "reference": "reference site"
+    "reference": "reference site",
+    "tab_map": "Map & terrain",
+    "tab_compare": "Compare & adjust",
+    "tab_table": "All sites table"
   },
   "site": {
     "coords": "Coordinates",
@@ -110,15 +135,14 @@
     "resolution": "Native resolution",
     "rawMetrics": "Raw metrics",
     "value": "Value",
-    "provisional": "provisional estimate",
-    "measured": "measured",
-    "partial": "partly measured",
-    "tagMeasured": "NASA data",
-    "tagEstimate": "estimate",
+    "tagMeasured": "measured",
     "compare": "Compare",
     "back": "Back to explorer",
     "notFound": "Site not found.",
-    "none": "—"
+    "none": "—",
+    "coordsApprox": "approximate location",
+    "allMeasured": "all measured",
+    "someMissing": "{n} not available"
   },
   "compare": {
     "title": "Compare & adjust",
@@ -131,9 +155,9 @@
     "features": "Normalised features (0–1)",
     "rawValues": "Raw values",
     "feature": "Feature",
-    "moonNote": "Moon targets are compared on terrain only, so confidence is capped by data coverage.",
+    "moonNote": "Moon targets are compared on terrain only, so coverage (and confidence) is lower by design.",
     "zeroWeights": "All weights are zero: no score.",
-    "breakdown": "Confidence = data coverage × resolution match"
+    "breakdown": "Confidence = data coverage (share of weighted features measured on both sides) × resolution match"
   },
   "methodology": {
     "title": "Methodology",
@@ -146,27 +170,29 @@
     "colMars": "Mars data",
     "colMoon": "Moon data",
     "normTitle": "1 · Normalisation",
-    "normText": "Each raw feature is mapped to 0–1 with a fixed range (values outside are clipped), so slopes in degrees and thermal inertia in TIU become comparable.",
+    "normText": "Each raw feature is mapped to 0–1 using the lowest and highest value measured across all sites (Earth, Mars and Moon together). Roughness and relief span about two orders of magnitude, so they are compared on a log10 scale. A feature measured at fewer than two sites is not compared. Exception: mineral indices come from different instruments (EMIT on Earth, CRISM on Mars) whose absolute band depths differ about 40-fold, so each is scaled within its own body. The Omani site with the strongest serpentine signal is matched with the Mars target with the strongest one, rather than every Mars target sitting at zero.",
     "scoreTitle": "2 · Similarity score",
     "scoreText": "For each criterion, the score is the mean of (1 − |difference|) over features available on both sides. The overall score is the weighted mean over criteria that have data.",
     "confTitle": "3 · Confidence",
-    "confText": "Confidence drops when data is missing (coverage) or when the two datasets have very different native resolutions (resolution match). Moon comparisons cover terrain only, so their confidence is lower by design.",
+    "confText": "Confidence = coverage × resolution match. Coverage is the weighted share of features measured on both sides, so every missing value lowers it. Resolution match penalises very different native resolutions for minerals and surface; terrain is already compared on one common grid, so it carries no penalty.",
     "scaleTitle": "4 · Common spatial scale",
-    "scaleText": "Comparing 30 m Earth DEMs with 463 m MOLA directly would be misleading. Every DEM is block-averaged to {scale} m before slope, roughness and relief are computed.",
+    "scaleText": "Comparing 30 m Earth DEMs with 463 m MOLA directly would be misleading. Every DEM is area-averaged to exactly {scale} m before slope, roughness and relief are computed.",
     "validationTitle": "5 · Validation",
-    "validationText": "The Dhofar AMADEE-18 site was chosen by experts as a Mars analog. If our index ranks it highly against Mars targets, the method is working. Current rank: #{rank} of {total}.",
+    "validationText": "The Dhofar AMADEE-18 site was chosen by experts as a Mars analog. With measured data only it ranks #{rank} of {total} Omani sites by mean similarity to Mars targets.",
     "limitsTitle": "Limitations",
     "limits": [
-      "Terrain (NASADEM, MOLA, LOLA) and albedo (MODIS, TES) are computed from NASA data. Mineral indices (EMIT, CRISM) and thermal inertia are still provisional estimates and are marked as such on each site page.",
+      "Mineral indices are relative within each body: with four Mars targets measured, the weakest one is always placed at 0 and the strongest at 1, so small differences between Mars targets can look larger than they are.",
+      "Only values computed from named NASA datasets are used. Missing values (for example Dhofar minerals, where no EMIT scene is cloud-free, chloride everywhere, Earth thermal inertia) are shown as not available with the reason, and they lower confidence.",
+      "Chloride has no diagnostic absorption in the 0.4–2.5 µm range and we have no cited detection threshold, so no chloride index is computed.",
+      "Earth thermal inertia needs a calibration from apparent thermal inertia that we have no cited source for, so it is not estimated.",
+      "Mineral indices are mean band depths, a spectral proxy, not quantitative abundances.",
       "Earth's atmosphere, water and gravity mean no site reproduces Mars or Moon conditions; we compare surface form and composition only.",
-      "Thermal inertia on Earth is estimated from apparent thermal inertia and needs local calibration.",
-      "Mineral indices are band-depth proxies, not quantitative abundances.",
       "Weights are a judgement call. That is why the website lets you change them."
     ]
   },
   "sources": {
     "title": "Data sources",
-    "intro": "All datasets are open NASA (or partner) products. We clip a small window around each site instead of downloading full scenes.",
+    "intro": "Every number on this site traces to the dataset, version and product IDs below. We read only a small window around each site, never full scenes.",
     "colDataset": "Dataset",
     "colBody": "Body",
     "colUse": "Used for",
@@ -175,6 +201,94 @@
     "mapsTitle": "Base maps",
     "mapsText": "Mars and Moon base maps: NASA Solar System Treks (Viking MDIM 2.1, MOLA, LRO WAC, LOLA). Earth: Esri World Imagery and OpenTopoMap (© OpenStreetMap contributors).",
     "teamTitle": "Team",
-    "team": "Abdulmunim (data & analysis, PM) · Saeed (frontend) · Abdulrahman (methodology & integration) · Narjis (story & presentation)"
+    "team": "Abdulmunim (data & analysis, PM) · Saeed (frontend) · Abdulrahman (methodology & integration) · Narjis (story & presentation)",
+    "usedTitle": "Datasets used for scores",
+    "missingTitle": "Values not available, and why",
+    "candidatesTitle": "Other datasets considered (not used for any score)",
+    "colSite": "Site",
+    "colFeature": "Metric",
+    "colReason": "Reason",
+    "colNeeded": "What would fix it",
+    "colProducts": "Product IDs",
+    "colSites": "Sites",
+    "colAcquired": "Acquired",
+    "colVersion": "Version"
+  },
+  "metric": {
+    "notAvailable": "Not available",
+    "notApplicable": "Not compared",
+    "needed": "What would fix it",
+    "source": "Dataset",
+    "products": "Products",
+    "acquired": "Acquired",
+    "processing": "Processing",
+    "resolution": "Native resolution",
+    "windowCoverage": "data covers {pct}% of the window",
+    "measuredTag": "measured",
+    "showDetails": "Provenance"
+  },
+  "reason": {
+    "no_coverage": "no data coverage",
+    "needs_login": "needs Earthdata login",
+    "not_implemented": "not implemented",
+    "calibration_missing": "no cited calibration",
+    "not_applicable": "not applicable",
+    "download_failed": "download failed"
+  },
+  "table": {
+    "intro": "Every site and every measured value in one table. The small tag under each value names the NASA dataset it came from; hover it for version and product IDs.",
+    "site": "Site",
+    "bestMatch": "Best match",
+    "groupOman": "Oman sites",
+    "groupTargets": "Mars and Moon targets",
+    "tagHelp": "Full provenance (product IDs, dates, processing) for every value:",
+    "evidenceTitle": "Published evidence for each pairing",
+    "evidenceIntro": "Peer-reviewed papers about each place. Use them to check that the Oman site and its Mars or Moon counterpart really share the feature we compare.",
+    "noDirect": "These papers study each place separately. No published study compares the two directly; the pairing is our inference, tested by the measured score.",
+    "confidence": "Confidence {pct}%"
+  },
+  "minerals": {
+    "title": "Minerals guide",
+    "intro": "What each mineral on this platform is, how it forms, why it matters on Mars, how satellites detect it, and what it is used for on Earth.",
+    "indexNote": "A mineral \"index\" on this site is the mean depth of the mineral's absorption band over the analysis window. It is a spectral proxy that rises with how much of the area shows the mineral and how strongly; it is not a percentage or an abundance.",
+    "scored": "Scored by the index",
+    "context": "Context only",
+    "forms": "How it forms",
+    "mars": "Why it matters on Mars",
+    "detect": "How it is detected",
+    "oman": "In Oman",
+    "uses": "Uses on Earth",
+    "values": "Measured index per site",
+    "refs": "References"
+  },
+  "terrain": {
+    "elevation": "Elevation (DEM)",
+    "slope": "Slope",
+    "drainage": "Drainage & basins",
+    "channels": "Flow channels",
+    "basins": "Closed basins (water would pond)",
+    "help": "Use the layer button (top right of each map) to switch on elevation, slope and drainage. Drainage is topographic: it shows where water would flow and collect on today's surface, not where water is now. On Mars it traces the shape of ancient valleys that have since been modified.",
+    "colProperty": "Property",
+    "gData": "Data",
+    "dataset": "Dataset",
+    "pixel": "Pixel size",
+    "window": "Map window",
+    "lowest": "Lowest point",
+    "highest": "Highest point",
+    "relief": "Total relief",
+    "colourScale": "Colour scale (2nd → 98th percentile)",
+    "gSlope": "Slope: share of the window",
+    "threshold": "A channel starts where this area drains to one point",
+    "largest": "Largest catchment",
+    "ofWindow": "{v}% of the window",
+    "onGrid": "same {res} m grid for both",
+    "commonNote": "Slope and drainage rows are measured the same way for both sites: elevation area-averaged to {res} m (the grid the similarity score uses) and the same thresholds, so they compare directly. The map layers above keep each dataset's own pixel size for detail. The two map windows differ in size, so the largest-catchment row also reflects window size.",
+    "resNote":"The layers use each dataset's own pixel size ({a} m vs {b} m). Slope and drainage numbers depend on pixel size, so read these rows as a description of each map, not as a like-for-like comparison. The similarity score does not use them: it resamples both elevation models to the same 463 m grid first.",
+    "elevRange":"Lowest {min} m, highest {max} m (total relief {relief} m). Colours stretch from the 2nd to the 98th percentile.",
+    "drainStats": "A channel starts where more than {area} km² drains to one point. Channels cover {share}% of the window; closed basins cover {basins} km²; the largest catchment is {upstream} km².",
+    "source": "{dataset}, {res} m pixels, {half} km either side of the site.",
+    "none": "Terrain layers have not been generated for this site yet.",
+    "noMoon": "The Moon has no drainage, and a map image this close to the south pole cannot be laid on the global map without severe distortion. Slopes and relief are still compared in the score.",
+    "flatWarn": "Most of this window is almost flat (under 2°). Here a few metres of elevation-model noise can steer the computed channels, so read the lines as indicative only; the closed basins are more reliable."
   }
 }

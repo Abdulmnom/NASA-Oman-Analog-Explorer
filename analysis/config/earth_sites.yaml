@@ -1,9 +1,9 @@
 # Candidate Earth (Oman) analog sites.
 #
-# `provisional_metrics` are literature-informed PLACEHOLDER estimates so the pipeline and
-# the web UI can be built end-to-end before real data is downloaded (Phase 1-2).
-# When analysis produces data/processed/metrics/<id>.json, export.py uses those instead.
-# `bbox_km` is the half-width of the clip window used by the download scripts.
+# This file holds only locations and card texts. Metric values never live here: they come from
+# `python -m analog.compute` (data/processed/metrics/<id>.json) with provenance, or are null with a
+# reason. Datasets and resolutions are recorded per value in that provenance.
+# `bbox_km` is the half-width of the clip window used by the pipeline.
 
 sites:
   - id: samail_ophiolite
@@ -13,20 +13,6 @@ sites:
     bbox_km: 10
     role: analog
     intended_targets: [jezero_crater, nili_fossae]
-    resolution_m: {terrain: 30, mineralogy: 60, surface: 500}
-    sources:
-      terrain: [NASADEM]
-      mineralogy: [EMIT, ASTER]
-      surface: [MODIS]
-    provisional_metrics:
-      slope_deg: 12
-      roughness_m: 45
-      relief_m: 600
-      serpentine_index: 0.70
-      carbonate_index: 0.50
-      chloride_index: 0.05
-      albedo: 0.18
-      thermal_inertia: 1200
     card:
       en:
         summary: "Earth's best-exposed slab of oceanic mantle. Peridotite reacting with water and CO2 makes serpentine and carbonate veins, the same mineral pair CRISM maps around Jezero and Nili Fossae."
@@ -56,20 +42,6 @@ sites:
     bbox_km: 15
     role: analog
     intended_targets: [terra_sirenum_chlorides]
-    resolution_m: {terrain: 30, mineralogy: 60, surface: 500}
-    sources:
-      terrain: [NASADEM]
-      mineralogy: [EMIT]
-      surface: [MODIS]
-    provisional_metrics:
-      slope_deg: 0.3
-      roughness_m: 1
-      relief_m: 15
-      serpentine_index: 0.0
-      carbonate_index: 0.15
-      chloride_index: 0.85
-      albedo: 0.42
-      thermal_inertia: 900
     card:
       en:
         summary: "One of the largest inland sabkhas in Arabia: a flat, salt-crusted basin where evaporating groundwater leaves chloride and sulfate salts - a template for the chloride deposits found in Mars' southern highlands."
@@ -99,27 +71,12 @@ sites:
     bbox_km: 15
     role: analog
     intended_targets: [nili_patera_dunes]
-    resolution_m: {terrain: 30, mineralogy: 60, surface: 500}
-    sources:
-      terrain: [NASADEM]
-      mineralogy: [EMIT]
-      surface: [MODIS]
-    provisional_metrics:
-      slope_deg: 3
-      roughness_m: 12
-      relief_m: 120
-      serpentine_index: 0.0
-      carbonate_index: 0.20
-      chloride_index: 0.02
-      albedo: 0.35
-      thermal_inertia: 350
     card:
       en:
         summary: "A sand sea of linear and star dunes a short drive from Ibra. Dune spacing, height and loose-sand thermal behaviour can be compared with the dark basaltic dune field of Nili Patera."
         similarities:
           - "Wind-built dune forms (linear and barchanoid ridges)"
           - "Loose, unconsolidated sand with low thermal inertia"
-          - "Comparable dune heights and ridge spacing at the 463 m scale"
         differences:
           - "Quartz-carbonate sand is bright; Nili Patera sand is dark basalt"
           - "Earth's thicker atmosphere moves sand far more often"
@@ -129,7 +86,6 @@ sites:
         similarities:
           - "أشكال كثبان تبنيها الرياح (حافات طولية وهلالية)"
           - "رمل مفكك غير متماسك بقصور حراري منخفض"
-          - "ارتفاعات وتباعد كثبان متقاربة عند مقياس 463 م"
         differences:
           - "رمل الكوارتز والكربونات فاتح اللون، بينما رمل Nili Patera بازلت داكن"
           - "غلاف الأرض الأكثف يحرّك الرمل بشكل أكثر تكراراً بكثير"
@@ -142,20 +98,12 @@ sites:
     bbox_km: 10
     role: reference
     intended_targets: []
-    resolution_m: {terrain: 30, mineralogy: 60, surface: 500}
-    sources:
-      terrain: [NASADEM]
-      mineralogy: [EMIT, ASTER]
-      surface: [MODIS]
-    provisional_metrics:
-      slope_deg: 1.5
-      roughness_m: 5
-      relief_m: 60
-      serpentine_index: 0.05
-      carbonate_index: 0.35
-      chloride_index: 0.10
-      albedo: 0.32
-      thermal_inertia: 700
+    # Groemer et al. 2020 (Astrobiology 20(11):1276-1286, doi:10.1089/ast.2019.2031) list the field
+    # coordinates, but the article was not accessible (paywall), so the point below is approximate.
+    coords_approximate: true
+    coords_note:
+      en: "Approximate location in the Dhofar desert near Marmul; the exact AMADEE-18 field coordinates (Groemer et al. 2020) could not be verified."
+      ar: "موقع تقريبي في صحراء ظفار قرب مرمول؛ لم نتمكن من التحقق من إحداثيات موقع AMADEE-18 الدقيقة (Groemer وآخرون 2020)."
     card:
       en:
         summary: "Host of the Austrian Space Forum's AMADEE-18 Mars analog mission (2018). Because experts already chose it as Mars-like, we use it to check the index: a sound method should give it a high score."
@@ -185,20 +133,6 @@ sites:
     bbox_km: 10
     role: analog
     intended_targets: [moon_south_pole]
-    resolution_m: {terrain: 30, mineralogy: 60, surface: 500}
-    sources:
-      terrain: [NASADEM]
-      mineralogy: [EMIT]
-      surface: [MODIS]
-    provisional_metrics:
-      slope_deg: 22
-      roughness_m: 110
-      relief_m: 1800
-      serpentine_index: 0.05
-      carbonate_index: 0.60
-      chloride_index: 0.0
-      albedo: 0.28
-      thermal_inertia: 1500
     card:
       en:
         summary: "Oman's highest summit and a canyon nearly 1 km deep. We compare only its slopes and relief with the rugged crater rims near the lunar south pole, where Artemis plans to land."

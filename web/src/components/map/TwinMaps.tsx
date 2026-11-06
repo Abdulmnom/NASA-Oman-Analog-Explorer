@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import { useI18n } from '../../i18n';
 import { analysisWindow } from '../../lib/geo';
 import type { Site } from '../../types';
+import { TerrainOverlays, TerrainTable, useLayerMeta } from './TerrainLayers';
 
 const TREK = 'https://trek.nasa.gov/tiles';
 const TREK_ATTR = 'NASA Solar System Treks';
@@ -74,8 +75,11 @@ export default function TwinMaps({ earthSites, earth, targets, target, onSelectE
   const { t, loc } = useI18n();
   const sameBody = targets.filter((s) => s.body === target.body);
   const planetColor = target.body === 'mars' ? '#e0703f' : '#b8c2d6';
+  const earthLayers = useLayerMeta(earth);
+  const targetLayers = useLayerMeta(target);
 
   return (
+    <>
     <div className="twin-maps">
       <figure className="map-panel">
         <figcaption>
@@ -97,6 +101,7 @@ export default function TwinMaps({ earthSites, earth, targets, target, onSelectE
                 maxZoom={17}
               />
             </LayersControl.BaseLayer>
+            <TerrainOverlays site={earth} meta={earthLayers} />
           </LayersControl>
           {earthSites.map((s) => (
             <SiteMarker key={s.id} site={s} selected={s.id === earth.id} color="#3fb6a8" onSelect={onSelectEarth} />
@@ -126,6 +131,7 @@ export default function TwinMaps({ earthSites, earth, targets, target, onSelectE
                 <TileLayer url={layer.url} attribution={TREK_ATTR} tileSize={256} maxNativeZoom={layer.maxNativeZoom} maxZoom={10} noWrap bounds={WORLD} />
               </LayersControl.BaseLayer>
             ))}
+            <TerrainOverlays site={target} meta={targetLayers} />
           </LayersControl>
           {sameBody.map((s) => (
             <SiteMarker key={s.id} site={s} selected={s.id === target.id} color={planetColor} onSelect={onSelectTarget} />
@@ -134,5 +140,8 @@ export default function TwinMaps({ earthSites, earth, targets, target, onSelectE
         </MapContainer>
       </figure>
     </div>
+    <p className="muted small terrain-help">{t('terrain.help')}</p>
+    <TerrainTable sites={[{ site: earth, meta: earthLayers }, { site: target, meta: targetLayers }]} />
+    </>
   );
 }

@@ -1,13 +1,14 @@
 import { useI18n } from '../i18n';
 import { useDataset } from '../lib/data';
-import { DATA_SOURCES } from '../lib/sources';
 import type { Body } from '../types';
 
-const FORMULA = `norm(x)      = clip((x − min) / (max − min), 0, 1)
-score_c      = mean over shared features of (1 − |norm_a − norm_b|)
+const FORMULA = `x'           = log10(x) for roughness and relief, x otherwise
+norm(x)      = clip((x' − min) / (max − min), 0, 1)   min, max = measured over all sites
+               (mineral indices: min, max over the same body's sites, one instrument each)
+score_c      = mean over features measured on both sides of (1 − |norm_a − norm_b|)
 overall      = Σ w_c · score_c  /  Σ w_c            (criteria with data)
-coverage     = Σ w_c (with data) / Σ w_c (all)
-res_factor_c = max(0.5, 1 − 0.1 · |log2(res_a / res_b)|)
+coverage     = Σ w_c · (shared_c / n_c) / Σ w_c     (every missing feature lowers it)
+res_factor_c = max(0.5, 1 − 0.1 · |log2(res_a / res_b)|)   (terrain: common grid → 1)
 confidence   = coverage × weighted mean(res_factor_c)`;
 
 export default function Methodology() {
@@ -15,8 +16,10 @@ export default function Methodology() {
   const data = useDataset();
   const { config, validation } = data;
 
+  // Datasets actually used for this criterion on this body (from the exported provenance).
   const datasetsFor = (criterion: string, body: Body) =>
-    DATA_SOURCES.filter((d) => d.criterion === criterion && d.body === body && d.id !== 'DIVINER').map((d) => d.name).join(', ') || '—';
+    [...new Set([...data.earth_sites, ...data.targets].filter((s) => s.body === body).flatMap((s) => s.sources[criterion] ?? []))].join('; ') ||
+    t('metric.notAvailable');
 
   return (
     <div className="page prose">
@@ -43,7 +46,17 @@ export default function Methodology() {
                 <td>
                   {spec.features.map((f) => (
                     <div key={f}>
-                      {t(`features.${f}`)} <span className="muted small">[{config.feature_ranges[f].join('–')}{t(`units.${f}`) ? ` ${t(`units.${f}`)}` : ''}]</span>
+                      {t(`features.${f}`)}{' '}
+                      <span className="muted small">
+                        {config.feature_ranges_by_body?.[f]
+                          ? (['earth', 'mars'] as Body[]).map((b) => {
+                              const r = config.feature_ranges_by_body![f][b];
+                              return `${t(`body.${b}`)} [${r ? r.map((v) => num(v, 4)).join('–') : t('metric.notAvailable')}]`;
+                            }).join(' · ')
+                          : config.feature_ranges[f]
+                            ? `[${config.feature_ranges[f]!.map((v) => num(v, 3)).join('–')}${config.feature_scale?.[f] ? ` ${config.feature_scale[f]}` : t(`units.${f}`) ? ` ${t(`units.${f}`)}` : ''}]`
+                            : `[${t('metric.notAvailable')}]`}
+                      </span>
                     </div>
                   ))}
                 </td>

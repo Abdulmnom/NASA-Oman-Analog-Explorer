@@ -1,13 +1,24 @@
-import { HashRouter, Route, Routes } from 'react-router-dom';
+import { HashRouter, Navigate, Route, Routes, useSearchParams } from 'react-router-dom';
 import Layout from './components/Layout';
 import { useI18n } from './i18n';
 import { useDataState } from './lib/data';
-import Compare from './pages/Compare';
 import Explorer from './pages/Explorer';
 import Home from './pages/Home';
 import Methodology from './pages/Methodology';
+import Minerals from './pages/Minerals';
 import SiteDetail from './pages/SiteDetail';
 import Sources from './pages/Sources';
+
+/** Old /compare?earth=..&target=.. links open the Compare tab of the Explorer. */
+function CompareRedirect() {
+  const [params] = useSearchParams();
+  const next = new URLSearchParams({ view: 'compare' });
+  const earth = params.get('earth');
+  const target = params.get('target');
+  if (earth) next.set('site', earth);
+  if (target) next.set('target', target);
+  return <Navigate to={`/explorer?${next}`} replace />;
+}
 
 export default function App() {
   const state = useDataState();
@@ -24,7 +35,8 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="explorer" element={<Explorer />} />
           <Route path="site/:id" element={<SiteDetail />} />
-          <Route path="compare" element={<Compare />} />
+          <Route path="compare" element={<CompareRedirect />} />
+          <Route path="minerals" element={<Minerals />} />
           <Route path="methodology" element={<Methodology />} />
           <Route path="sources" element={<Sources />} />
           <Route path="*" element={<Home />} />

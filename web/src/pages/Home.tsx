@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
+import SpaceHero from '../components/hero/SpaceHero';
 import SiteCard from '../components/site/SiteCard';
 import { useI18n } from '../i18n';
-import { bestMatch, findSite, matchesFor, useDataset } from '../lib/data';
+import { bestMatch, findSite, intendedMatch, matchesFor, useDataset } from '../lib/data';
 
 export default function Home() {
   const { t, loc, num } = useI18n();
@@ -13,13 +13,16 @@ export default function Home() {
   const cards = sites.map((s) => {
     const best = bestMatch(data, s);
     const others = matchesFor(data, s.id)
-      .filter((m) => m.target !== best?.target && m.overall !== null)
+      .filter((m) => m.target !== best?.target && m.overall !== null && !s.intended_targets?.includes(m.target))
       .slice(0, 2)
       .flatMap((m) => {
         const target = findSite(data, m.target);
         return target ? [{ score: m, target }] : [];
       });
-    return { site: s, best, bestTarget: findSite(data, best?.target), others };
+    const im = intendedMatch(data, s);
+    const imTarget = findSite(data, im?.target);
+    const intended = im && imTarget && im.target !== best?.target ? { score: im, target: imTarget } : undefined;
+    return { site: s, best, bestTarget: findSite(data, best?.target), intended, others };
   });
   const top = cards.reduce<(typeof cards)[number] | undefined>(
     (acc, c) => ((c.best?.overall ?? -1) > (acc?.best?.overall ?? -1) ? c : acc),
@@ -29,18 +32,10 @@ export default function Home() {
   const moonCount = data.targets.filter((x) => x.body === 'moon').length;
 
   return (
+    <>
+    <SpaceHero earthSites={data.earth_sites.length} marsTargets={marsCount} />
     <div className="page">
-      <section className="hero">
-        <p className="kicker">{t('home.kicker')}</p>
-        <h1>{t('home.heroTitle')}</h1>
-        <p className="lead">{t('home.heroText')}</p>
-        <div className="actions">
-          <Link to="/explorer" className="btn primary">{t('home.ctaExplore')}</Link>
-          <Link to="/methodology" className="btn ghost">{t('home.ctaMethod')}</Link>
-        </div>
-      </section>
-
-      <section>
+      <section id="rules">
         <h2>{t('home.principlesTitle')}</h2>
         <div className="grid three">
           {[1, 2, 3].map((i) => (
@@ -53,7 +48,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section>
+      <section id="sites">
         <div className="section-head">
           <h2>{t('home.sitesTitle')}</h2>
           <p className="muted">{t('home.sitesSubtitle')}</p>
@@ -97,5 +92,6 @@ export default function Home() {
         </section>
       )}
     </div>
+    </>
   );
 }

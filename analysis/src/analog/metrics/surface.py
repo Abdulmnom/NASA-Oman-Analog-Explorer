@@ -1,17 +1,16 @@
-"""Surface physical properties: albedo and thermal inertia.
+"""Surface physical properties: albedo and thermal inertia helpers.
 
-Mars (TES/THEMIS) and Moon (Diviner) publish thermal inertia maps directly. For Earth we
-estimate it from MODIS albedo and day/night land-surface temperature using apparent
-thermal inertia (ATI), calibrated with a simple linear fit to reference surfaces.
+Mars thermal inertia comes straight from published maps (THEMIS quantitative mosaic, TES), see
+compute.py. For Earth, MODIS day/night land-surface temperature only gives apparent thermal
+inertia (ATI). Converting ATI into thermal inertia (TIU, comparable with Mars) needs a calibration
+for which we have no cited source, so Earth thermal inertia is reported as missing
+(`calibration_missing`) rather than estimated. `apparent_thermal_inertia` is kept for the
+methodology notebook only and never enters the score.
 """
 
 from __future__ import annotations
 
 import numpy as np
-
-# ATI -> TI linear calibration (placeholder; refit on known dry sand / bedrock pixels).
-ATI_TO_TI_SLOPE = 25000.0
-ATI_TO_TI_OFFSET = 0.0
 
 
 def summary(values: np.ndarray) -> float:
@@ -27,15 +26,3 @@ def apparent_thermal_inertia(albedo: np.ndarray, t_day_k: np.ndarray, t_night_k:
         ati = (1.0 - albedo) / delta
     ati[delta <= 0] = np.nan
     return ati
-
-
-def earth_surface_metrics(albedo: np.ndarray, t_day_k: np.ndarray, t_night_k: np.ndarray) -> dict[str, float]:
-    ati = apparent_thermal_inertia(albedo, t_day_k, t_night_k)
-    return {
-        "albedo": summary(albedo),
-        "thermal_inertia": summary(ati * ATI_TO_TI_SLOPE + ATI_TO_TI_OFFSET),
-    }
-
-
-def planetary_surface_metrics(albedo: np.ndarray, thermal_inertia: np.ndarray) -> dict[str, float]:
-    return {"albedo": summary(albedo), "thermal_inertia": summary(thermal_inertia)}
