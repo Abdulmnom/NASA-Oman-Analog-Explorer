@@ -26,11 +26,55 @@ export default function Sources() {
     }
   }
   const missing = sites.flatMap((s) => s.missing.map((m) => ({ siteId: s.id, m })));
+  const features = Object.values(data.config.criteria).flatMap((c) => c.features);
+  const cellState = (siteId: string, f: string) => {
+    const s = sites.find((x) => x.id === siteId)!;
+    if (s.measured.includes(f)) return 'measured';
+    return s.missing.find((m) => m.feature === f)?.status === 'not_applicable' ? 'na' : 'missing';
+  };
+  const MARK = { measured: '✓', missing: '–', na: '·' } as const;
+  const LABEL = { measured: 'sources.matrixMeasured', missing: 'sources.matrixMissing', na: 'sources.matrixNa' } as const;
 
   return (
     <div className="page prose">
       <h1>{t('sources.title')}</h1>
       <p className="lead">{t('sources.intro')}</p>
+
+      <h2>{t('sources.matrixTitle')}</h2>
+      <p className="muted">{t('sources.matrixIntro')}</p>
+      <div className="table-wrap">
+        <table className="table coverage-matrix">
+          <thead>
+            <tr>
+              <th>{t('sources.colSite')}</th>
+              {features.map((f) => (
+                <th key={f} scope="col">{t(`features.${f}`)}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {sites.map((s) => (
+              <tr key={s.id}>
+                <th scope="row">
+                  <span className={`dot ${s.body}`} /> <Link to={`/site/${s.id}`}>{loc(s.name)}</Link>
+                </th>
+                {features.map((f) => {
+                  const st = cellState(s.id, f);
+                  return (
+                    <td key={f} className={`cov ${st}`} title={t(LABEL[st])}>
+                      <span aria-hidden="true">{MARK[st]}</span>
+                      <span className="sr-only">{t(LABEL[st])}</span>
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="cov-legend small muted">
+        <span className="cov measured">✓</span> {t('sources.matrixMeasured')} · <span className="cov missing">–</span> {t('sources.matrixMissing')} · <span className="cov na">·</span> {t('sources.matrixNa')}
+      </p>
 
       <h2>{t('sources.usedTitle')}</h2>
       <div className="table-wrap">

@@ -5,6 +5,7 @@ import ScoreBadge, { ScoreBar } from '../components/similarity/ScoreBadge';
 import { useI18n } from '../i18n';
 import { analogsFor, bestMatch, findSite, matchesFor, useDataset } from '../lib/data';
 import { formatCoords } from '../lib/geo';
+import { layerUrl, useLayerMeta } from '../lib/layerMeta';
 
 const BODY_HEX = { earth: '#3fb6a8', mars: '#e0703f', moon: '#b8c2d6' } as const;
 
@@ -13,6 +14,7 @@ export default function SiteDetail() {
   const { t, loc, lang, num } = useI18n();
   const data = useDataset();
   const site = findSite(data, id);
+  const meta = useLayerMeta(site && site.body !== 'moon' ? site.id : null);
 
   if (!site) {
     return (
@@ -30,10 +32,38 @@ export default function SiteDetail() {
   const card = site.card[lang];
   const criteria = Object.keys(data.config.criteria);
   const features = Object.values(data.config.criteria).flatMap((c) => c.features);
+  const bodyOf = (tid: string) => findSite(data, tid)?.body;
+  const marsTwin = isEarth ? bestMatch(data, site) : undefined;
+  const moonTwin = isEarth ? ranked.find((m) => m.overall !== null && bodyOf(m.target) === 'moon') : undefined;
+  const applicable = site.measured.length + site.missing.filter((m) => m.status === 'unavailable').length;
+  const glance: { label: string; value: string; body?: string }[] = [];
+  if (isEarth) {
+    const mars = findSite(data, marsTwin?.target);
+    const moon = findSite(data, moonTwin?.target);
+    if (mars && marsTwin?.overall != null) glance.push({ label: t('site.bestMars'), value: `${loc(mars.name)} · ${num(marsTwin.overall * 100)}%`, body: 'mars' });
+    if (moon && moonTwin?.overall != null) glance.push({ label: t('site.bestMoon'), value: `${loc(moon.name)} · ${num(moonTwin.overall * 100)}%`, body: 'moon' });
+  } else {
+    const top = ranked[0];
+    const oman = findSite(data, top?.earth);
+    if (oman && top?.overall != null) glance.push({ label: t('site.bestOman'), value: `${loc(oman.name)} · ${num(top.overall * 100)}%`, body: 'earth' });
+  }
+  glance.push({ label: t('site.coverageFact'), value: t('site.coverageVal', { m: num(site.measured.length), n: num(applicable) }) });
+  glance.push({ label: t('home.area'), value: t('home.areaValue', { n: num(site.bbox_km * 2) }) });
+  const slopeKeys = meta?.common ? Object.keys(meta.common.slope_share) : [];
+  const slopeLabel = (k: string) => {
+    const [lo, hi] = k.split('-');
+    return hi === '90' ? `> ${lo}°` : `${lo}–${hi}°`;
+  };
 
   return (
     <div className="page">
       <Link to={isEarth ? `/explorer?site=${site.id}` : '/explorer'} className="back">← {t('site.back')}</Link>
+
+      {site.body !== 'moon' && (
+        <div className={`detail-banner ${site.body}`}>
+          <img src={layerUrl(site.id, 'elevation.png')} alt={t('site.reliefImgAlt')} draggable={false} />
+        </div>
+      )}
 
       <header className="detail-head">
         <div>
@@ -56,7 +86,38 @@ export default function SiteDetail() {
         )}
       </header>
 
+      <dl className="glance" aria-label={t('site.glance')}>
+        {glance.map((g) => (
+          <div key={g.label}>
+            <dt>{g.label}</dt>
+            <dd>
+              {g.body && <span className={`dot ${g.body}`} />} {g.value}
+            </dd>
+          </div>
+        ))}
+      </dl>
+
       <p className="lead">{card.summary}</p>
+
+      {meta?.common && (
+        <section className="panel slope-profile">
+          <h2>{t('site.slopeTitle')}</h2>
+          <p className="muted small">{t('site.slopeText', { n: num(meta.half_km * 2) })}</p>
+          <div className="slope-bar" role="img" aria-label={slopeKeys.map((k) => `${slopeLabel(k)} ${num(meta.common!.slope_share[k] * 100)}%`).join(', ')}>
+            {slopeKeys.map((k, i) => (
+              <span key={k} style={{ width: `${meta.common!.slope_share[k] * 100}%`, background: meta.slope.colors[i] }} />
+            ))}
+          </div>
+          <ul className="slope-legend">
+            {slopeKeys.map((k, i) => (
+              <li key={k}>
+                <i style={{ background: meta.slope.colors[i] }} /> {slopeLabel(k)} <strong>{num(meta.common!.slope_share[k] * 100)}%</strong>
+              </li>
+            ))}
+          </ul>
+          <p className="muted small">{t('site.slopeSource', { dataset: meta.source.dataset })}</p>
+        </section>
+      )}
 
       {(card.similarities || card.differences) && (
         <div className="grid two">

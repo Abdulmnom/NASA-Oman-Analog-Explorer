@@ -1,13 +1,14 @@
 import { Link, useSearchParams } from 'react-router-dom';
 import CompareView from '../components/explorer/CompareView';
 import SitesTable from '../components/explorer/SitesTable';
+import TargetFinder from '../components/explorer/TargetFinder';
 import TwinMaps from '../components/map/TwinMaps';
 import ScoreBadge, { ScoreBar } from '../components/similarity/ScoreBadge';
 import { useI18n } from '../i18n';
 import { bestMatch, findSite, matchesFor, scoreFor, useDataset } from '../lib/data';
 
-type View = 'map' | 'compare' | 'table';
-const VIEWS: View[] = ['map', 'compare', 'table'];
+type View = 'map' | 'compare' | 'targets' | 'table';
+const VIEWS: View[] = ['map', 'compare', 'targets', 'table'];
 
 export default function Explorer() {
   const { t, loc, lang } = useI18n();
@@ -45,6 +46,12 @@ export default function Explorer() {
 
       {view === 'table' ? (
         <SitesTable onOpen={(site, tgt) => select(site, tgt, tgt ? 'compare' : 'map')} />
+      ) : view === 'targets' ? (
+        <TargetFinder
+          target={target}
+          onSelectTarget={(id) => select(earth.id, id, 'targets')}
+          onOpen={(site, v) => select(site, target.id, v)}
+        />
       ) : (
       <div className="explorer">
         <aside className="panel site-list">

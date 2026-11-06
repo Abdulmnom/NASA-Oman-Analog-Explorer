@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 import SpaceHero from '../components/hero/SpaceHero';
 import TwinSlider from '../components/home/TwinSlider';
-import SiteCard from '../components/site/SiteCard';
 import { useI18n } from '../i18n';
-import { bestMatch, findSite, intendedMatch, matchesFor, useDataset } from '../lib/data';
+import { bestMatch, findSite, useDataset } from '../lib/data';
 
 const svg = (children: ReactNode) => (
   <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -81,25 +81,16 @@ const IMPACT_ICONS = [
 ];
 
 export default function Home() {
-  const { t, loc, num } = useI18n();
+  const { t, loc, num, lang } = useI18n();
   const data = useDataset();
   const v = data.validation;
   const meanMars = v.mean_mars_similarity;
   // Rank by mean similarity to Mars targets, the same ordering the validation check uses.
   const sites = [...data.earth_sites].sort((a, b) => (meanMars[b.id] ?? -1) - (meanMars[a.id] ?? -1));
-  const cards = sites.map((s) => {
+  // Compact gallery: the home page tells the story; full breakdowns live on the site pages and in the explorer.
+  const tiles = sites.map((s) => {
     const best = bestMatch(data, s);
-    const others = matchesFor(data, s.id)
-      .filter((m) => m.target !== best?.target && m.overall !== null && !s.intended_targets?.includes(m.target))
-      .slice(0, 2)
-      .flatMap((m) => {
-        const target = findSite(data, m.target);
-        return target ? [{ score: m, target }] : [];
-      });
-    const im = intendedMatch(data, s);
-    const imTarget = findSite(data, im?.target);
-    const intended = im && imTarget && im.target !== best?.target ? { score: im, target: imTarget } : undefined;
-    return { site: s, best, bestTarget: findSite(data, best?.target), intended, others };
+    return { site: s, best, twin: findSite(data, best?.target) };
   });
   // Headline stat follows the same ranking as the cards: the site with the best mean Mars similarity.
   const top = sites.find((s) => meanMars[s.id] != null);
@@ -149,8 +140,8 @@ export default function Home() {
 
         <section id="sites">
           <div className="section-head">
-            <h2>{t('home.sitesTitle')}</h2>
-            <p className="muted">{t('home.sitesSubtitle')}</p>
+            <h2>{t('home.galleryTitle')}</h2>
+            <p className="muted">{t('home.gallerySubtitle')}</p>
           </div>
           <ul className="stats">
             <li>
@@ -177,11 +168,41 @@ export default function Home() {
               </li>
             )}
           </ul>
-          <div className="grid sites">
-            {cards.map((c, i) => (
-              <SiteCard key={c.site.id} {...c} rank={i + 1} meanMars={meanMars[c.site.id]} featured={i === 0} />
+          <ol className="gallery">
+            {tiles.map(({ site, best, twin }, i) => (
+              <li key={site.id}>
+                <Link to={`/site/${site.id}`} className={`tile${i === 0 ? ' lead-tile' : ''}${site.role === 'reference' ? ' is-ref' : ''}`} aria-label={`${loc(site.name)} · ${t('home.galleryOpen')}`}>
+                  <span className="tile-img" aria-hidden="true">
+                    <img src={`${import.meta.env.BASE_URL}layers/${site.id}/elevation.png`} alt="" loading="lazy" draggable={false} />
+                  </span>
+                  <span className="tile-body">
+                    <span className="tile-top">
+                      <span className="rank">#{i + 1}</span>
+                      {site.role === 'reference' && <span className="pill ref">{t('explorer.reference')}</span>}
+                      {meanMars[site.id] != null && (
+                        <span className="tile-mean">
+                          {t('home.meanMars')} <strong>{num(meanMars[site.id]! * 100)}%</strong>
+                        </span>
+                      )}
+                    </span>
+                    <span className="tile-name">{loc(site.name)}</span>
+                    <span className="tile-summary">{site.card[lang].summary}</span>
+                    {best && twin && (
+                      <span className="tile-twin">
+                        <span className="muted">{t(twin.body === 'moon' ? 'home.galleryMoonTwin' : 'home.galleryTwin')}</span>
+                        <span className="tile-twin-row">
+                          <span>
+                            <span className={`dot ${twin.body}`} /> {loc(twin.name)}
+                          </span>
+                          {best.overall != null && <strong className="tile-score">{num(best.overall * 100)}%</strong>}
+                        </span>
+                      </span>
+                    )}
+                  </span>
+                </Link>
+              </li>
             ))}
-          </div>
+          </ol>
         </section>
 
         {v.reference_rank !== null && (
@@ -223,6 +244,17 @@ export default function Home() {
                 <p>{t(`home.impact${i}Text`)}</p>
               </div>
             ))}
+          </div>
+        </section>
+
+        <section className="panel cta-band">
+          <div>
+            <h2>{t('home.ctaTitle')}</h2>
+            <p className="muted">{t('home.ctaText')}</p>
+          </div>
+          <div className="actions">
+            <Link to="/explorer?view=targets" className="btn primary">{t('explorer.tab_targets')}</Link>
+            <Link to="/explorer" className="btn ghost">{t('home.ctaExplore')}</Link>
           </div>
         </section>
       </div>

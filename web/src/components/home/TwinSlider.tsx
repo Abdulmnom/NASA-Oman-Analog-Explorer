@@ -1,10 +1,9 @@
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import { useI18n } from '../../i18n';
 import { findSite, scoreFor } from '../../lib/data';
+import { layerUrl, useLayerMeta } from '../../lib/layerMeta';
 import type { Dataset, Site } from '../../types';
-
-const layerUrl = (id: string) => `${import.meta.env.BASE_URL}layers/${id}/elevation.png`;
 
 interface Pair {
   earth: Site;
@@ -22,24 +21,6 @@ function marsPairs(data: Dataset): Pair[] {
   });
 }
 
-/** Window size (km) of a terrain layer, read from its meta.json; null until loaded or if missing. */
-function useWindowKm(id: string): number | null {
-  const [km, setKm] = useState<number | null>(null);
-  useEffect(() => {
-    let alive = true;
-    setKm(null);
-    if (!id) return;
-    fetch(`${import.meta.env.BASE_URL}layers/${id}/meta.json`)
-      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
-      .then((m: { half_km?: number }) => alive && setKm(typeof m.half_km === 'number' ? m.half_km * 2 : null))
-      .catch(() => alive && setKm(null));
-    return () => {
-      alive = false;
-    };
-  }, [id]);
-  return km;
-}
-
 /** Before/after slider: an Omani site and its Mars counterpart in the same shaded-relief style. */
 export default function TwinSlider({ data }: { data: Dataset }) {
   const { t, loc, num } = useI18n();
@@ -47,8 +28,10 @@ export default function TwinSlider({ data }: { data: Dataset }) {
   const [index, setIndex] = useState(0);
   const [split, setSplit] = useState(50);
   const pair = pairs[Math.min(index, pairs.length - 1)];
-  const earthKm = useWindowKm(pair?.earth.id ?? '');
-  const marsKm = useWindowKm(pair?.target.id ?? '');
+  const earthMeta = useLayerMeta(pair?.earth.id);
+  const marsMeta = useLayerMeta(pair?.target.id);
+  const earthKm = earthMeta ? earthMeta.half_km * 2 : null;
+  const marsKm = marsMeta ? marsMeta.half_km * 2 : null;
   if (!pair) return null;
   const score = scoreFor(data, pair.earth.id, pair.target.id);
 
@@ -80,8 +63,8 @@ export default function TwinSlider({ data }: { data: Dataset }) {
       </div>
 
       <div className="twin-stage" dir="ltr" style={{ '--split': `${split}%` } as CSSProperties}>
-        <img className="twin-img" src={layerUrl(pair.target.id)} alt={loc(pair.target.name)} draggable={false} />
-        <img className="twin-img twin-top" src={layerUrl(pair.earth.id)} alt={loc(pair.earth.name)} draggable={false} />
+        <img className="twin-img" src={layerUrl(pair.target.id, 'elevation.png')} alt={loc(pair.target.name)} draggable={false} />
+        <img className="twin-img twin-top" src={layerUrl(pair.earth.id, 'elevation.png')} alt={loc(pair.earth.name)} draggable={false} />
         <span className="twin-label earth">
           <span className="dot earth" /> {loc(pair.earth.name)}
           {earthKm !== null && <small>{t('home.twinWindow', { n: num(earthKm) })}</small>}

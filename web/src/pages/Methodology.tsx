@@ -26,6 +26,19 @@ export default function Methodology() {
       <h1>{t('methodology.title')}</h1>
       <p className="lead">{t('methodology.intro')}</p>
 
+      <section className="pipeline" aria-labelledby="pipeline-title">
+        <h2 id="pipeline-title">{t('methodology.pipelineTitle')}</h2>
+        <ol className="pipeline-steps">
+          {[1, 2, 3, 4].map((i) => (
+            <li key={i}>
+              <span className="pipeline-num">{num(i)}</span>
+              <strong>{t(`methodology.step${i}`)}</strong>
+              <span className="muted small">{t(`methodology.step${i}Text`)}</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+
       <h2>{t('methodology.criteriaTitle')}</h2>
       <div className="table-wrap">
         <table className="table">
@@ -88,6 +101,17 @@ export default function Methodology() {
 
       <h2>{t('methodology.limitsTitle')}</h2>
       <ul>{tl('methodology.limits').map((l) => <li key={l}>{l}</li>)}</ul>
+
+      <section className="panel extend">
+        <h2>{t('methodology.extendTitle')}</h2>
+        <p>{t('methodology.extendIntro')}</p>
+        <ol>
+          {tl('methodology.extendSteps').map((step) => (
+            <li key={step}>{step}</li>
+          ))}
+        </ol>
+        <p className="muted small">{t('methodology.extendNote')}</p>
+      </section>
     </div>
   );
 }

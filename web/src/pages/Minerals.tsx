@@ -30,7 +30,12 @@ export default function Minerals() {
           <header>
             <h2>{loc(m.name)}</h2>
             <code className="formula" dir="ltr">{m.formula}</code>
-            <span className={`pill ${m.feature ? 'ok' : ''}`}>{t(m.feature ? 'minerals.scored' : 'minerals.context')}</span>
+            {(() => {
+              // Scored only if at least one site has a measured value (chloride has a feature but no calibration).
+              const scored = !!m.feature && sites.some((s) => s.raw[m.feature!] != null);
+              const key = scored ? 'minerals.scored' : m.feature ? 'minerals.notScored' : 'minerals.context';
+              return <span className={`pill ${scored ? 'ok' : m.feature ? 'soft' : ''}`}>{t(key)}</span>;
+            })()}
           </header>
           <p className="lead">{loc(m.what)}</p>
           <div className="grid two">

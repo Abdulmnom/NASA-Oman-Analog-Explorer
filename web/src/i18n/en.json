@@ -101,7 +101,7 @@
     "twinTitle": "Oman and Mars, side by side",
     "twinSubtitle": "Drag the handle to compare an Omani site with its intended Mars target. Both sides use the same shaded-relief rendering of NASA elevation data.",
     "twinHandle": "Move to compare Oman and Mars",
-    "twinWindow": "{n} × {n} km window",
+    "twinWindow": "{n} × {n} km map",
     "twinScore": "Similarity {v}%",
     "twinOpen": "Open this pair in the explorer",
     "twinCredit": "Elevation: NASADEM (Earth, 30 m) and MGS MOLA (Mars, 463 m). Colours show relative height within each window, so the two sides are not on one height scale.",
@@ -129,7 +129,14 @@
     "footerData": "Data: NASA EMIT, NASADEM, MODIS, MGS MOLA, MRO CRISM, MGS TES, Mars Odyssey THEMIS and LRO LOLA.",
     "footerCode": "Source code on GitHub",
     "footerSpaceApps": "NASA Space Apps Challenge",
-    "footerNote": "A student hackathon project; not an official NASA product."
+    "footerNote": "A student hackathon project; not an official NASA product.",
+    "galleryTitle": "Five Omani sites, five rehearsals",
+    "gallerySubtitle": "Ranked by mean similarity to the Mars targets. Open a site for its full profile, or the explorer to compare it yourself.",
+    "galleryTwin": "Closest Mars twin",
+    "galleryMoonTwin": "Closest Moon twin (terrain only)",
+    "galleryOpen": "Open site profile",
+    "ctaTitle": "Compare it yourself",
+    "ctaText": "Pick a Mars or Moon target and see which Omani site resembles it most, change the weights, or put both places side by side on the map."
   },
   "explorer": {
     "title": "Explorer",
@@ -150,7 +157,15 @@
     "reference": "reference site",
     "tab_map": "Map & terrain",
     "tab_compare": "Compare & adjust",
-    "tab_table": "All sites table"
+    "tab_table": "All sites table",
+    "tab_targets": "Find analogs for a target",
+    "findTitle": "Start from Mars or the Moon",
+    "findIntro": "Choose a planned landing region or base site. The Omani sites are ranked by how closely they resemble it, using the same index and data as the rest of the platform.",
+    "findRanked": "Omani analogs for {name}",
+    "findMoonNote": "Moon comparisons use terrain only: no mineral or surface data are compared for the Moon.",
+    "findMap": "Map",
+    "findCompare": "Compare",
+    "findBest": "best analog"
   },
   "site": {
     "coords": "Coordinates",
@@ -175,7 +190,17 @@
     "none": "—",
     "coordsApprox": "approximate location",
     "allMeasured": "all measured",
-    "someMissing": "{n} not available"
+    "someMissing": "{n} not available",
+    "glance": "At a glance",
+    "bestMars": "Closest Mars twin",
+    "bestMoon": "Closest Moon twin",
+    "bestOman": "Best Omani analog",
+    "coverageFact": "Metrics measured",
+    "coverageVal": "{m} of {n}",
+    "slopeTitle": "Terrain on the common 463 m grid",
+    "slopeText": "Share of the {n} × {n} km map window in each slope class, from the same elevation data and grid the similarity score uses.",
+    "slopeSource": "Source: {dataset}",
+    "reliefImgAlt": "Shaded relief of the map window"
   },
   "compare": {
     "title": "Compare & adjust",
@@ -221,7 +246,20 @@
       "Mineral indices are mean band depths, a spectral proxy, not quantitative abundances.",
       "Earth's atmosphere, water and gravity mean no site reproduces Mars or Moon conditions; we compare surface form and composition only.",
       "Weights are a judgement call. That is why the website lets you change them."
-    ]
+    ],
+    "pipelineTitle": "From NASA data to a score",
+    "step1": "NASA data",
+    "step1Text": "A small window around each site from NASADEM, EMIT and MODIS (Earth), MOLA, CRISM, TES and THEMIS (Mars) and LOLA (Moon).",
+    "step2": "Raw metrics",
+    "step2Text": "Slope, roughness, relief, mineral band depths and albedo, each stored with its dataset, product IDs and dates.",
+    "step3": "Normalise",
+    "step3Text": "Terrain on one 463 m grid; every feature mapped to 0–1 over the measured range.",
+    "step4": "Score + confidence",
+    "step4Text": "Weighted similarity per pair, with a confidence that drops when data are missing.",
+    "extendTitle": "Adding a new analog site",
+    "extendIntro": "The pipeline is not limited to five sites. Any team can test another candidate, in Oman or elsewhere:",
+    "extendSteps": ["Add the site's coordinates, window size and card text to analysis/config/earth_sites.yaml.", "Run python -m analog.compute to read the NASA data for that window and store each value with its provenance.", "Run python -m analog.export to rescore every pair and rewrite sites.json.", "Run python -m analog.layers for the elevation, slope and drainage map layers."],
+    "extendNote": "Nothing is entered by hand: a value that cannot be computed is stored as not available, with the reason."
   },
   "sources": {
     "title": "Data sources",
@@ -245,7 +283,12 @@
     "colProducts": "Product IDs",
     "colSites": "Sites",
     "colAcquired": "Acquired",
-    "colVersion": "Version"
+    "colVersion": "Version",
+    "matrixTitle": "Data coverage at a glance",
+    "matrixIntro": "Every metric for every site: measured from NASA data, not available (with a reason further down), or not applicable to that body.",
+    "matrixMeasured": "measured",
+    "matrixMissing": "not available",
+    "matrixNa": "not applicable"
   },
   "metric": {
     "notAvailable": "Not available",
@@ -292,7 +335,8 @@
     "oman": "In Oman",
     "uses": "Uses on Earth",
     "values": "Measured index per site",
-    "refs": "References"
+    "refs": "References",
+    "notScored": "Not scored: no cited calibration"
   },
   "terrain": {
     "elevation": "Elevation (DEM)",
