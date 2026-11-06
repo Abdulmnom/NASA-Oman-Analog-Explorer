@@ -35,6 +35,31 @@ export default function Layout() {
       <main>
         <Outlet />
       </main>
+      <footer className="site-footer">
+        <div className="footer-inner">
+          <div className="footer-brand">
+            <span className="vex-mark" aria-hidden="true">VEX</span>
+            <div>
+              <p className="footer-built">{t('home.footerBuilt')}</p>
+              <p className="muted small">{t('home.footerTeam')}</p>
+            </div>
+          </div>
+          <p className="footer-challenge">
+            <span className="muted">{t('home.footerChallenge')}:</span> {t('home.kicker')}
+            <span className="footer-theme">The Next Frontier</span>
+          </p>
+          <p className="muted small">{t('home.footerData')}</p>
+          <div className="footer-links">
+            <a href="https://github.com/Abdulmnom/NASA-Oman-Analog-Explorer" target="_blank" rel="noreferrer">
+              {t('home.footerCode')}
+            </a>
+            <a href="https://www.spaceappschallenge.org" target="_blank" rel="noreferrer">
+              {t('home.footerSpaceApps')}
+            </a>
+          </div>
+          <p className="muted small footer-note">{t('home.footerNote')}</p>
+        </div>
+      </footer>
     </div>
   );
 }

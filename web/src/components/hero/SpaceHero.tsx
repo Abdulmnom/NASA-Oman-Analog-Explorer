@@ -490,9 +490,9 @@ export default function SpaceHero({ earthSites, marsTargets }: { earthSites: num
 
       <div className="space-hero-inner">
         <div className="space-copy">
-          <p className="kicker chip">
+          <p className="kicker chip" title={t('home.kicker')}>
             <span className="pulse" aria-hidden="true" />
-            {t('home.kicker')}
+            {t('home.kickerShort')}
           </p>
           <h1 id="hero-title">{t('home.heroTitle')}</h1>
           <p className="lead">{t('home.heroText')}</p>
