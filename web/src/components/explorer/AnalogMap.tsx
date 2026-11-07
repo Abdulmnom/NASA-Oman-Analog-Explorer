@@ -60,7 +60,7 @@ export default function AnalogMap({ onOpen }: { onOpen: (site: Site) => void }) 
       </div>
       <div className="analog-map-body">
         <div className="panel analog-plot">
-          <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={t('explorer.mapTitle')} dir="ltr">
+          <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={t('explorer.mapTitle')} style={{ direction: 'ltr' }}>
             {near.map(({ j, s }) => (
               <line key={j} x1={px(hover!)} y1={py(hover!)} x2={px(j)} y2={py(j)} className="am-link" style={{ opacity: 0.3 + 0.6 * s }} />
             ))}

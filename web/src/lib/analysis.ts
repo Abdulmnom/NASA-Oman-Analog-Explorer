@@ -25,17 +25,7 @@ export interface SensitivityRow {
 
 /** Every weight combination on a 0.1 grid (sums to 1); returns how stable the Mars ranking is. */
 export function weightSensitivity(data: Dataset, step = 0.1): { rows: SensitivityRow[]; combos: number } {
-  const names = Object.keys(data.config.criteria);
-  const n = Math.round(1 / step);
-  const combos: Weights[] = [];
-  const build = (i: number, left: number, acc: number[]) => {
-    if (i === names.length - 1) {
-      combos.push(Object.fromEntries(names.map((k, j) => [k, (j === i ? left : acc[j]) / n])));
-      return;
-    }
-    for (let v = 0; v <= left; v++) build(i + 1, left - v, [...acc, v]);
-  };
-  build(0, n, []);
+  const combos = weightGrid(data, step);
 
   const sites = data.earth_sites;
   const ranksOf = (weights?: Weights) => {
@@ -105,18 +95,19 @@ export function mds2d(sim: number[][]): { x: number; y: number }[] {
 }
 
 /**
- * True when the mineral score is high only because both sites have the weakest signals of their own
- * body: mineral indices are scaled within each body, so "both near zero" reads as a close match.
+ * True when no mineral feature is compared for this pair because both sites sit below the signal floor
+ * on their own body's scale (config.signal_floor): shared absence is not counted as similarity.
  */
-export function mineralsFromLowSignal(data: Dataset, a: Site, b: Site, threshold = 0.2): boolean {
+export function mineralsFromLowSignal(data: Dataset, a: Site, b: Site): boolean {
   const feats = data.config.criteria.mineralogy?.features ?? [];
+  const floor = data.config.signal_floor?.floor ?? 0.2;
   const pairs = feats
     .map((f) => [
       normalizeValue(a.raw[f], rangeFor(data.config, f, a.body), data.config.feature_scale?.[f]),
       normalizeValue(b.raw[f], rangeFor(data.config, f, b.body), data.config.feature_scale?.[f]),
     ])
     .filter(([x, y]) => x !== null && y !== null) as [number, number][];
-  return pairs.length > 0 && pairs.every(([x, y]) => x < threshold && y < threshold);
+  return pairs.length > 0 && pairs.every(([x, y]) => x < floor && y < floor);
 }
 
 /** How many of a criterion's features are measured on both sides, e.g. surface physics = 1 of 2. */
@@ -155,4 +146,73 @@ export function scoresCsv(data: Dataset, loc: (s: Site) => string): string {
       .join(',');
   });
   return [head.join(','), ...lines].join('\n');
+}
+
+/** All weight combinations on a grid (sums to 1), shared by the sensitivity views. */
+export function weightGrid(data: Dataset, step = 0.1): Weights[] {
+  const names = Object.keys(data.config.criteria);
+  const n = Math.round(1 / step);
+  const out: Weights[] = [];
+  const build = (i: number, left: number, acc: number[]) => {
+    if (i === names.length - 1) {
+      out.push(Object.fromEntries(names.map((k, j) => [k, (j === i ? left : acc[j]) / n])));
+      return;
+    }
+    for (let v = 0; v <= left; v++) build(i + 1, left - v, [...acc, v]);
+  };
+  build(0, n, []);
+  return out;
+}
+
+/** Lowest and highest overall score a pair can get across every weighting on the grid. */
+export function pairWeightRange(data: Dataset, a: Site, b: Site): { min: number; max: number } | null {
+  const vals = weightGrid(data)
+    .map((w) => similarity(a.raw, b.raw, a.resolution_m, b.resolution_m, data.config, w, a.body, b.body).overall)
+    .filter((v): v is number => v !== null);
+  return vals.length ? { min: Math.min(...vals), max: Math.max(...vals) } : null;
+}
+
+export interface FeatureGap {
+  feature: string;
+  criterion: string;
+  /** 1 − |normalised difference|: 1 = identical after normalisation. */
+  closeness: number;
+  a: number;
+  b: number;
+}
+
+/** Per-feature closeness for a pair, for the "why this score" explanation (features measured on both sides). */
+export function featureGaps(data: Dataset, a: Site, b: Site): FeatureGap[] {
+  const out: FeatureGap[] = [];
+  for (const [criterion, spec] of Object.entries(data.config.criteria)) {
+    for (const f of spec.features) {
+      const va = a.raw[f];
+      const vb = b.raw[f];
+      if (va == null || vb == null) continue;
+      const na = normalizeValue(va, rangeFor(data.config, f, a.body), data.config.feature_scale?.[f]);
+      const nb = normalizeValue(vb, rangeFor(data.config, f, b.body), data.config.feature_scale?.[f]);
+      if (na === null || nb === null) continue;
+      const floor = data.config.signal_floor;
+      if (floor && floor.features.includes(f) && na < floor.floor && nb < floor.floor) continue; // not compared
+      out.push({ feature: f, criterion, closeness: 1 - Math.abs(na - nb), a: va, b: vb });
+    }
+  }
+  return out.sort((x, y) => y.closeness - x.closeness);
+}
+
+/** Display a raw metric with its unit (same precision conventions as the tables). */
+export function formatRaw(feature: string, v: number, num: (n: number, d?: number) => string): string {
+  switch (feature) {
+    case 'slope_deg':
+      return `${num(v, 1)}°`;
+    case 'roughness_m':
+    case 'relief_m':
+      return `${num(v, v < 10 ? 1 : 0)} m`;
+    case 'albedo':
+      return num(v, 3);
+    case 'thermal_inertia':
+      return `${num(v, 0)} TIU`;
+    default:
+      return num(v, v < 0.01 ? 4 : 3);
+  }
 }

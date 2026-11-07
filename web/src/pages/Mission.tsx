@@ -4,11 +4,19 @@ import { kmFromMuscat } from '../lib/analysis';
 import { bestMatch, findSite, useDataset } from '../lib/data';
 import { layerUrl } from '../lib/layerMeta';
 import { MISSION_EXTENSION, MISSION_LEGS } from '../lib/mission';
+import { envSite, meanOver, monthNames, monthRange, sharedCoolestMonths, useEnvironment } from '../lib/environment';
 
 /** Proposed field campaign (a concept) that ground-truths the scores and fills the data gaps. */
 export default function Mission() {
-  const { t, tl, loc, num } = useI18n();
+  const { t, tl, loc, lang, num } = useI18n();
   const data = useDataset();
+  const env = useEnvironment();
+  const months = monthNames(lang);
+  const routeIds = MISSION_LEGS.map((l) => l.site);
+  const coolWin = sharedCoolestMonths(env, routeIds);
+  const routeClimate = routeIds.map((id) => envSite(env, id)).filter((e) => e !== null);
+  const inWindow = routeClimate.map((e) => meanOver(e!.monthly.T2M, coolWin));
+  const hottest = routeClimate.map((e) => Math.max(...e!.monthly.T2M));
   const ext = findSite(data, MISSION_EXTENSION);
   const extKm = ext ? kmFromMuscat(ext) : null;
 
@@ -28,6 +36,24 @@ export default function Mission() {
           </div>
         ))}
       </div>
+
+      {coolWin.length > 0 && routeClimate.length > 0 && (
+        <section className="panel mission-season">
+          <h2>
+            {t('env.seasonTitle')} <span className="pill soft">NASA POWER</span>
+          </h2>
+          <p>
+            {t('env.seasonText', {
+              window: monthRange(months, coolWin),
+              n: num(routeClimate.length),
+              lo: num(Math.min(...inWindow), 1),
+              hi: num(Math.max(...inWindow), 1),
+              hot: num(Math.max(...hottest), 1),
+            })}
+          </p>
+          <p className="muted small">{t('env.seasonNote')}</p>
+        </section>
+      )}
 
       <h2>{t('mission.routeTitle')}</h2>
       <ol className="mission-legs">

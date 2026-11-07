@@ -3,6 +3,7 @@ import { useI18n } from '../i18n';
 import { scoresCsv } from '../lib/analysis';
 import { useDataset } from '../lib/data';
 import { DATA_SOURCES } from '../lib/sources';
+import { ENV_URL } from '../lib/environment';
 import type { Provenance } from '../types';
 
 interface UsedRow {
@@ -66,6 +67,18 @@ export default function Sources() {
             {t('sources.downloadCsv')}
           </button>
         </div>
+      </section>
+
+      <section className="panel context-source">
+        <h2>
+          {t('env.ctxTitle')} <span className="pill soft">{t('env.badge')}</span>
+        </h2>
+        <p>{t('env.ctxText')}</p>
+        <p className="small">
+          <a href="https://power.larc.nasa.gov/" target="_blank" rel="noreferrer">NASA POWER (power.larc.nasa.gov)</a> ·{' '}
+          <a href={ENV_URL} download="oman-analog-explorer-environment.json">{t('env.download')}</a> ·{' '}
+          <Link to="/atlas">{t('env.ctxAtlas')}</Link>
+        </p>
       </section>
 
       <h2>{t('sources.matrixTitle')}</h2>

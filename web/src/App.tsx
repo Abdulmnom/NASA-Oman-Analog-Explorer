@@ -7,6 +7,9 @@ import Home from './pages/Home';
 import Methodology from './pages/Methodology';
 import Minerals from './pages/Minerals';
 import Mission from './pages/Mission';
+import About from './pages/About';
+import Atlas from './pages/Atlas';
+import Present from './pages/Present';
 import SiteDetail from './pages/SiteDetail';
 import Sources from './pages/Sources';
 
@@ -32,6 +35,7 @@ export default function App() {
   return (
     <HashRouter>
       <Routes>
+        <Route path="present" element={<Present />} />
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="explorer" element={<Explorer />} />
@@ -41,6 +45,8 @@ export default function App() {
           <Route path="methodology" element={<Methodology />} />
           <Route path="sources" element={<Sources />} />
           <Route path="mission" element={<Mission />} />
+          <Route path="about" element={<About />} />
+          <Route path="atlas" element={<Atlas />} />
           <Route path="*" element={<Home />} />
         </Route>
       </Routes>

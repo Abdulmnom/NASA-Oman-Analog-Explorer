@@ -8,6 +8,8 @@ import { formatCoords } from '../lib/geo';
 import { kmFromMuscat, mineralsFromLowSignal, sharedFeatures } from '../lib/analysis';
 import { FIELD_NOTES } from '../lib/fieldNotes';
 import { layerUrl, useLayerMeta } from '../lib/layerMeta';
+import { envSite, useEnvironment } from '../lib/environment';
+import EnvironmentPanel from '../components/site/EnvironmentPanel';
 
 const BODY_HEX = { earth: '#3fb6a8', mars: '#e0703f', moon: '#b8c2d6' } as const;
 
@@ -17,6 +19,8 @@ export default function SiteDetail() {
   const data = useDataset();
   const site = findSite(data, id);
   const meta = useLayerMeta(site && site.body !== 'moon' ? site.id : null);
+  const env = useEnvironment();
+  const climate = envSite(env, site?.id);
 
   if (!site) {
     return (
@@ -150,6 +154,8 @@ export default function SiteDetail() {
           </div>
         </section>
       )}
+
+      {env && climate && <EnvironmentPanel env={env} site={climate} demRange={meta?.elevation_m ?? null} />}
 
       {meta?.common && (
         <section className="panel slope-profile">

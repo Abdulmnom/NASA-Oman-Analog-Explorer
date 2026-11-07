@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-06T16:57:06+00:00",
+  "generated": "2026-11-07T08:12:30+00:00",
   "coverage": {
     "measured": 59,
     "unavailable": 16,
@@ -48,7 +48,7 @@
       }
     }
   },
-  "score_spread": 0.1887,
+  "score_spread": 0.1794,
   "config": {
     "criteria": {
       "terrain": {
@@ -84,6 +84,14 @@
       "carbonate_index",
       "chloride_index"
     ],
+    "signal_floor": {
+      "floor": 0.2,
+      "features": [
+        "serpentine_index",
+        "carbonate_index",
+        "chloride_index"
+      ]
+    },
     "common_terrain_scale_m": 463,
     "confidence": {
       "resolution_k": 0.1,
@@ -3269,26 +3277,26 @@
     {
       "earth": "umm_as_samim",
       "target": "terra_sirenum_chlorides",
-      "overall": 0.8693893219880452,
-      "confidence": 0.6537611274600927,
-      "coverage": 0.7666666666666667,
-      "resolution_factor": 0.8527319053827296,
+      "overall": 0.7823155366467418,
+      "confidence": 0.4351754409578149,
+      "coverage": 0.5000000000000001,
+      "resolution_factor": 0.8703508819156296,
       "per_criterion": {
         "terrain": 0.9321021323057549,
-        "mineralogy": 1.0,
+        "mineralogy": null,
         "surface": 0.48274234532871596
       }
     },
     {
       "earth": "umm_as_samim",
       "target": "nili_patera_dunes",
-      "overall": 0.7220014435308552,
-      "confidence": 0.6537611274600927,
-      "coverage": 0.7666666666666667,
+      "overall": 0.6908797457769794,
+      "confidence": 0.5400635400757288,
+      "coverage": 0.6333333333333334,
       "resolution_factor": 0.8527319053827296,
       "per_criterion": {
         "terrain": 0.7690565210409875,
-        "mineralogy": 0.8672507006702558,
+        "mineralogy": 0.7894464562855665,
         "surface": 0.3373927742317888
       }
     },
@@ -3334,26 +3342,26 @@
     {
       "earth": "sharqiya_sands",
       "target": "terra_sirenum_chlorides",
-      "overall": 0.6595558716165109,
-      "confidence": 0.6537611274600927,
-      "coverage": 0.7666666666666667,
+      "overall": 0.5331999383238719,
+      "confidence": 0.5400635400757288,
+      "coverage": 0.6333333333333334,
       "resolution_factor": 0.8527319053827296,
       "per_criterion": {
         "terrain": 0.7297348340676565,
-        "mineralogy": 0.6426111506445809,
+        "mineralogy": 0.3267213174129834,
         "surface": 0.5530873886580795
       }
     },
     {
       "earth": "sharqiya_sands",
       "target": "nili_patera_dunes",
-      "overall": 0.7194717007332426,
-      "confidence": 0.6537611274600927,
-      "coverage": 0.7666666666666667,
+      "overall": 0.6296158807229727,
+      "confidence": 0.5400635400757288,
+      "coverage": 0.6333333333333334,
       "resolution_factor": 0.8527319053827296,
       "per_criterion": {
         "terrain": 0.8328959318994386,
-        "mineralogy": 0.7619144111530918,
+        "mineralogy": 0.5372748611274168,
         "surface": 0.40773781756115235
       }
     },
@@ -3505,8 +3513,8 @@
     "reference_site": "dhofar_amadee18",
     "mean_mars_similarity": {
       "samail_ophiolite": 0.6859471787228559,
-      "umm_as_samim": 0.6188424570072106,
-      "sharqiya_sands": 0.6696406365474719,
+      "umm_as_samim": 0.5892935862334158,
+      "sharqiya_sands": 0.6155876982217446,
       "dhofar_amadee18": 0.5310342613123553,
       "jebel_shams": 0.5070234110930915
     },

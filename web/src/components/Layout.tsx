@@ -4,10 +4,12 @@ import { useI18n } from '../i18n';
 const NAV = [
   { to: '/', key: 'home', end: true },
   { to: '/explorer', key: 'explorer' },
+  { to: '/atlas', key: 'atlas' },
   { to: '/minerals', key: 'minerals' },
   { to: '/methodology', key: 'methodology' },
   { to: '/sources', key: 'sources' },
   { to: '/mission', key: 'mission' },
+  { to: '/about', key: 'about' },
 ];
 
 export default function Layout() {

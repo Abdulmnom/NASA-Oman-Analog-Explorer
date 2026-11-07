@@ -8,6 +8,7 @@ const FORMULA = `x'           = log10(x) for roughness and relief, x otherwise
 norm(x)      = clip((x' − min) / (max − min), 0, 1)   min, max = measured over all sites
                (mineral indices: min, max over the same body's sites, one instrument each)
 score_c      = mean over features measured on both sides of (1 − |norm_a − norm_b|)
+               (minerals: skipped when both sides < 0.2 of their body's range)
 overall      = Σ w_c · score_c  /  Σ w_c            (criteria with data)
 coverage     = Σ w_c · (shared_c / n_c) / Σ w_c     (every missing feature lowers it)
 res_factor_c = max(0.5, 1 − 0.1 · |log2(res_a / res_b)|)   (terrain: common grid → 1)

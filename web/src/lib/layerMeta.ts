@@ -5,6 +5,8 @@ export interface LayerMeta {
   half_km: number;
   source: { dataset: string; native_resolution_m: number };
   slope: { bins_deg: number[]; colors: string[] };
+  /** Elevation range of the window (metres). */
+  elevation_m?: { min: number; max: number };
   /** Slope shares on the common 463 m grid, keyed "0-2", "2-5", ... "30-90". */
   common?: { res_m: number; slope_share: Record<string, number> };
 }

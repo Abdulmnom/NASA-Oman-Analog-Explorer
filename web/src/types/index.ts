@@ -81,6 +81,8 @@ export interface SimilarityConfig {
   feature_ranges: Record<string, [number, number] | null>;
   /** Per-body ranges for features whose instruments differ by body (mineral band depths). */
   feature_ranges_by_body?: Record<string, Record<string, [number, number] | null>>;
+  /** Mineral features skipped when both sites are below `floor` on their own body scale (no shared signal). */
+  signal_floor?: { floor: number; features: string[] };
   body_relative_features?: string[];
   feature_scale?: Record<string, string>;
   common_terrain_scale_m: number;
