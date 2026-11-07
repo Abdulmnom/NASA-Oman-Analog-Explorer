@@ -1,6 +1,7 @@
 """Similarity index between an Earth site and a planetary target.
 
 score_c    = mean over features measured on both sides of (1 - |norm_a - norm_b|)   (0..1)
+             (signal_floor features are skipped when both sides are below the floor: no shared signal)
 overall    = sum(w_c * score_c) / sum(w_c)   over criteria with at least one shared feature
 coverage   = sum(w_c * shared_c / n_c) / sum(w_c with w_c > 0)   (a missing feature lowers it)
 res_mean   = sum(w_c * resfactor_c) / sum(w_c)   over criteria with data
@@ -31,6 +32,9 @@ def similarity(
     conf_cfg = config["confidence"]
     k = conf_cfg["resolution_k"]
     min_factor = conf_cfg["resolution_min_factor"]
+    floor_cfg = config.get("signal_floor") or {}
+    floor = floor_cfg.get("floor")
+    floor_features = set(floor_cfg.get("features") or [])
 
     per_criterion: dict[str, Optional[float]] = {}
     num = 0.0
@@ -51,6 +55,8 @@ def similarity(
             na = normalize_value(raw_a.get(feature), range_for(config, feature, body_a), scale)
             nb = normalize_value(raw_b.get(feature), range_for(config, feature, body_b), scale)
             if na is None or nb is None:
+                continue
+            if floor is not None and feature in floor_features and na < floor and nb < floor:
                 continue
             diffs_sum += 1.0 - abs(na - nb)
             count += 1

@@ -54,7 +54,10 @@ export interface Site {
   lat: number;
   lon: number;
   bbox_km: number;
-  role?: 'analog' | 'reference';
+  /** analog / reference: the Omani sites; candidate: a new Omani site; benchmark: a world analog site. */
+  role?: 'analog' | 'reference' | 'candidate' | 'benchmark';
+  country?: Localized;
+  coords_source?: string;
   intended_targets?: string[];
   coords_approximate?: boolean;
   coords_note?: Localized;
@@ -81,6 +84,8 @@ export interface SimilarityConfig {
   feature_ranges: Record<string, [number, number] | null>;
   /** Per-body ranges for features whose instruments differ by body (mineral band depths). */
   feature_ranges_by_body?: Record<string, Record<string, [number, number] | null>>;
+  /** Mineral features skipped when both sites are below `floor` on their own body scale (no shared signal). */
+  signal_floor?: { floor: number; features: string[] };
   body_relative_features?: string[];
   feature_scale?: Record<string, string>;
   common_terrain_scale_m: number;
@@ -126,6 +131,10 @@ export interface Dataset {
   targets: Site[];
   scores: Score[];
   validation: Validation;
+  /** Candidate and world benchmark sites, scored with the same normalisation ranges (not in the Omani ranking). */
+  benchmarks?: Site[];
+  benchmark_scores?: Score[];
+  benchmark_mean_mars?: Record<string, number | null>;
 }
 
 export type Weights = Record<string, number>;

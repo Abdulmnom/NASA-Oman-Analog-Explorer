@@ -1,18 +1,23 @@
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import AnalogMap from '../components/explorer/AnalogMap';
 import CompareView from '../components/explorer/CompareView';
 import SitesTable from '../components/explorer/SitesTable';
+import TargetFinder from '../components/explorer/TargetFinder';
 import TwinMaps from '../components/map/TwinMaps';
 import ScoreBadge, { ScoreBar } from '../components/similarity/ScoreBadge';
 import { useI18n } from '../i18n';
 import { bestMatch, findSite, matchesFor, scoreFor, useDataset } from '../lib/data';
+import ContinueExploring from '../components/common/ContinueExploring';
+import { sharedFeatures } from '../lib/analysis';
 
-type View = 'map' | 'compare' | 'table';
-const VIEWS: View[] = ['map', 'compare', 'table'];
+type View = 'map' | 'compare' | 'targets' | 'map2' | 'table';
+const VIEWS: View[] = ['map', 'compare', 'targets', 'map2', 'table'];
 
 export default function Explorer() {
-  const { t, loc, lang } = useI18n();
+  const { t, loc, num } = useI18n();
   const data = useDataset();
   const [params, setParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const earth = data.earth_sites.find((s) => s.id === params.get('site')) ?? data.earth_sites[0];
   const matches = matchesFor(data, earth.id);
@@ -45,6 +50,14 @@ export default function Explorer() {
 
       {view === 'table' ? (
         <SitesTable onOpen={(site, tgt) => select(site, tgt, tgt ? 'compare' : 'map')} />
+      ) : view === 'map2' ? (
+        <AnalogMap onOpen={(s) => navigate(`/site/${s.id}`)} />
+      ) : view === 'targets' ? (
+        <TargetFinder
+          target={target}
+          onSelectTarget={(id) => select(earth.id, id, 'targets')}
+          onOpen={(site, v) => select(site, target.id, v)}
+        />
       ) : (
       <div className="explorer">
         <aside className="panel site-list">
@@ -104,21 +117,30 @@ export default function Explorer() {
             onSelectTarget={(id) => select(earth.id, id)}
           />
 
-          <div className="grid two">
-            <div className="panel">
-              <h3><span className="dot earth" /> {loc(earth.name)}</h3>
-              <p>{earth.card[lang].summary}</p>
-            </div>
-            <div className="panel">
-              <h3><span className={`dot ${target.body}`} /> {loc(target.name)}</h3>
-              <p>{target.card[lang].summary}</p>
-            </div>
+          <div className="panel pair-strip">
+            <p>
+              <span className="dot earth" /> <strong>{loc(earth.name)}</strong> ↔ <span className={`dot ${target.body}`} /> <strong>{loc(target.name)}</strong>
+            </p>
+            <ul className="pair-coverage">
+              {Object.keys(data.config.criteria).map((c) => {
+                const sf = sharedFeatures(data, c, earth, target);
+                return (
+                  <li key={c} className={sf.shared === 0 ? 'muted' : undefined}>
+                    {t(`criteria.${c}`)}: {t('explorer.sharedOf', { n: num(sf.shared), m: num(sf.total) })}
+                  </li>
+                );
+              })}
+            </ul>
+            <button type="button" className="btn primary small" onClick={() => show('compare')}>
+              {t('explorer.whyScore')} →
+            </button>
           </div>
           </>
           )}
         </section>
       </div>
       )}
+      <ContinueExploring from="explorer" />
     </div>
   );
 }
