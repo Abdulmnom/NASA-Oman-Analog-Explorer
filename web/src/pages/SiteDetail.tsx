@@ -10,6 +10,7 @@ import { FIELD_NOTES } from '../lib/fieldNotes';
 import { layerUrl, useLayerMeta } from '../lib/layerMeta';
 import { envSite, useEnvironment } from '../lib/environment';
 import EnvironmentPanel from '../components/site/EnvironmentPanel';
+import ContinueExploring from '../components/common/ContinueExploring';
 
 const BODY_HEX = { earth: '#3fb6a8', mars: '#e0703f', moon: '#b8c2d6' } as const;
 
@@ -72,7 +73,15 @@ export default function SiteDetail() {
   return (
     <div className="page">
       <div className="detail-tools no-print">
-        <Link to={isEarth ? `/explorer?site=${site.id}` : '/explorer'} className="back">← {t('site.back')}</Link>
+        <nav className="breadcrumb" aria-label={t('common.breadcrumb')}>
+          <Link to="/">{t('nav.home')}</Link>
+          <span aria-hidden="true">›</span>
+          <Link to={isEarth ? `/explorer?site=${site.id}` : '/explorer?view=targets'}>{t('nav.explorer')}</Link>
+          <span aria-hidden="true">›</span>
+          <span>{t(`body.${site.body}`)}</span>
+          <span aria-hidden="true">›</span>
+          <span aria-current="page">{loc(site.name)}</span>
+        </nav>
         <button type="button" className="btn ghost small" onClick={() => window.print()}>
           {t('site.print')}
         </button>
@@ -265,6 +274,7 @@ export default function SiteDetail() {
           </table></div>
         </div>
       </div>
+      <ContinueExploring from="site" />
     </div>
   );
 }

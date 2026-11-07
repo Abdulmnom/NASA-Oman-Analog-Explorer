@@ -4,59 +4,13 @@ import SpaceHero from '../components/hero/SpaceHero';
 import TwinSlider from '../components/home/TwinSlider';
 import { useI18n } from '../i18n';
 import { bestMatch, findSite, useDataset } from '../lib/data';
+import { PAGES } from '../lib/pages';
 
 const svg = (children: ReactNode) => (
   <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     {children}
   </svg>
 );
-
-/** Icons for the ground rules: Mars first, same scale, honest about limits. */
-const RULE_ICONS = [
-  svg(
-    <>
-      <circle cx="12" cy="12" r="7" />
-      <path d="M3 14c3-1.2 6.5-1.6 10-1.2s6.5 1.2 8 2" />
-    </>,
-  ),
-  svg(
-    <>
-      <rect x="4" y="4" width="16" height="16" rx="2" />
-      <path d="M4 9.3h16M4 14.7h16M9.3 4v16M14.7 4v16" />
-    </>,
-  ),
-  svg(
-    <>
-      <path d="M12 4v16M7 20h10M5 7h14" />
-      <path d="M5 7l-3 6a3 3 0 006 0zM19 7l-3 6a3 3 0 006 0z" />
-    </>,
-  ),
-];
-
-/** Icons for "How it works": data in, common grid, score with confidence. */
-const HOW_ICONS = [
-  svg(
-    <>
-      <path d="M4 15a8 8 0 0116 0" />
-      <path d="M12 15l4-5" />
-      <circle cx="12" cy="15" r="1.3" />
-      <path d="M8 20h8" />
-    </>,
-  ),
-  svg(
-    <>
-      <path d="M3 17l5-6 4 3 4-6 5 6" />
-      <path d="M3 21h18" />
-    </>,
-  ),
-  svg(
-    <>
-      <circle cx="12" cy="12" r="8" />
-      <path d="M12 4a8 8 0 018 8h-8z" fill="currentColor" stroke="none" opacity="0.35" />
-      <path d="M8.5 12.5l2.3 2.3 4.7-5" />
-    </>,
-  ),
-];
 
 /** Icons for "Why it matters": mission planners, Oman, open research. */
 const IMPACT_ICONS = [
@@ -81,7 +35,7 @@ const IMPACT_ICONS = [
 ];
 
 export default function Home() {
-  const { t, loc, num, lang } = useI18n();
+  const { t, loc, num } = useI18n();
   const data = useDataset();
   const v = data.validation;
   const meanMars = v.mean_mars_similarity;
@@ -97,46 +51,12 @@ export default function Home() {
   const topMean = top ? meanMars[top.id] : null;
   const marsCount = data.targets.filter((x) => x.body === 'mars').length;
   const moonCount = data.targets.filter((x) => x.body === 'moon').length;
-  const ranked = v.ranking.flatMap((id) => {
-    const site = findSite(data, id);
-    return site ? [{ site, mean: meanMars[id] ?? null }] : [];
-  });
 
   return (
     <>
       <SpaceHero earthSites={data.earth_sites.length} marsTargets={marsCount} />
       <div className="page">
-        <section id="rules">
-          <h2>{t('home.principlesTitle')}</h2>
-          <div className="grid three">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="panel principle">
-                <span className="icon-badge">{RULE_ICONS[i - 1]}</span>
-                <h3>{t(`home.p${i}Title`)}</h3>
-                <p>{t(`home.p${i}Text`)}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
         <TwinSlider data={data} />
-
-        <section className="how" aria-labelledby="how-title">
-          <h2 id="how-title">{t('home.howTitle')}</h2>
-          <ol className="how-steps">
-            {[1, 2, 3].map((i) => (
-              <li key={i} className="how-step">
-                <span className="icon-badge earth">{HOW_ICONS[i - 1]}</span>
-                <div>
-                  <h3>
-                    <span className="how-num">{num(i)}</span> {t(`home.how${i}Title`)}
-                  </h3>
-                  <p>{t(`home.how${i}Text`)}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
 
         <section id="sites">
           <div className="section-head">
@@ -158,15 +78,6 @@ export default function Home() {
                 <span className="stat-label">{t('home.statBestMean', { site: loc(top.name) })}</span>
               </li>
             )}
-            {v.reference_rank !== null && (
-              <li>
-                <span className="stat-val">
-                  #{v.reference_rank}
-                  <small> / {v.ranking.length}</small>
-                </span>
-                <span className="stat-label">{t('home.statRef')}</span>
-              </li>
-            )}
           </ul>
           <ol className="gallery">
             {tiles.map(({ site, best, twin }, i) => (
@@ -186,7 +97,6 @@ export default function Home() {
                       )}
                     </span>
                     <span className="tile-name">{loc(site.name)}</span>
-                    <span className="tile-summary">{site.card[lang].summary}</span>
                     {best && twin && (
                       <span className="tile-twin">
                         <span className="muted">{t(twin.body === 'moon' ? 'home.galleryMoonTwin' : 'home.galleryTwin')}</span>
@@ -205,31 +115,23 @@ export default function Home() {
           </ol>
         </section>
 
-        {v.reference_rank !== null && (
-          <section className="panel callout validation">
-            <h2>{t('home.validationTitle')}</h2>
-            <p>{t('home.validationText', { rank: v.reference_rank, total: v.ranking.length })}</p>
-            <ol className="rank-strip">
-              {ranked.map(({ site, mean }, i) => {
-                const isRef = site.id === v.reference_site;
-                return (
-                  <li key={site.id} className={isRef ? 'is-ref' : undefined}>
-                    <span className="rank-pos">#{i + 1}</span>
-                    <span className="rank-name">
-                      {loc(site.name)}
-                      {isRef && <span className="pill ref">{t('home.validationRef')}</span>}
-                    </span>
-                    <span className="rank-bar" aria-hidden="true">
-                      <i style={{ width: `${Math.max(0, (mean ?? 0) * 100)}%` }} />
-                    </span>
-                    <span className="rank-val">{mean == null ? t('metric.notAvailable') : `${num(mean * 100)}%`}</span>
-                  </li>
-                );
-              })}
-            </ol>
-            <p className="muted small">{t('home.validationWhy')}</p>
-          </section>
-        )}
+        <section className="directory" aria-labelledby="dir-title">
+          <div className="section-head">
+            <h2 id="dir-title">{t('home.dirTitle')}</h2>
+            <p className="muted">{t('home.dirSubtitle')}</p>
+          </div>
+          <ul className="dir-grid">
+            {PAGES.map((p, i) => (
+              <li key={p.id}>
+                <Link to={p.to} className="panel dir-card">
+                  <span className="dir-num">{num(i + 1).padStart(2, '0')}</span>
+                  <strong>{t(`nav.${p.id}`)}</strong>
+                  <span className="muted small">{loc(p.job)}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
 
         <section className="impact" aria-labelledby="impact-title">
           <div className="section-head">

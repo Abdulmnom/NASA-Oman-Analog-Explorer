@@ -14,7 +14,8 @@
     "minerals": "Minerals",
     "mission": "Mission concept",
     "about": "About",
-    "atlas": "Atlas"
+    "atlas": "Atlas",
+    "present": "Presentation"
   },
   "lang": {
     "switch": "العربية",
@@ -129,7 +130,7 @@
     "footerBuilt": "Built by Team VEX for the NASA Space Apps Challenge 2026 · Ibra, Oman",
     "footerChallenge": "Challenge",
     "footerTeam": "Abdulmunim · Saeed · Abdulrahman · Narjis",
-    "footerData": "Data: NASA EMIT, NASADEM, MODIS, MGS MOLA, MRO CRISM, MGS TES, Mars Odyssey THEMIS and LRO LOLA.",
+    "footerData": "Data: NASA EMIT, NASADEM, MODIS, MGS MOLA, MRO CRISM, MGS TES, Mars Odyssey THEMIS and LRO LOLA; climate context from NASA POWER.",
     "footerCode": "Source code on GitHub",
     "footerSpaceApps": "NASA Space Apps Challenge",
     "footerNote": "A student hackathon project; not an official NASA product.",
@@ -140,7 +141,9 @@
     "galleryOpen": "Open site profile",
     "ctaTitle": "Compare it yourself",
     "ctaText": "Pick a Mars or Moon target and see which Omani site resembles it most, change the weights, or put both places side by side on the map.",
-    "ctaPresent": "Presentation mode"
+    "ctaPresent": "Presentation mode",
+    "dirTitle": "Explore the project",
+    "dirSubtitle": "Each page does one job. Start wherever your question is."
   },
   "explorer": {
     "title": "Explorer",
@@ -179,7 +182,9 @@
     "flagLowSignalText": "Both sites sit in the weakest 20% of their own body's range for every mineral index. Shared absence is not similarity, so minerals are left out of this score and confidence is lower.",
     "flagSurfacePartial": "Surface physics: {n} of {total} features compared",
     "findAccess": "{km} km from Muscat",
-    "mapHint": "Hover over a point to see its three closest sites; click it to open the site page."
+    "mapHint": "Hover over a point to see its three closest sites; click it to open the site page.",
+    "sharedOf": "{n} of {m} features measured on both",
+    "whyScore": "Why this score"
   },
   "site": {
     "coords": "Coordinates",
@@ -498,23 +503,8 @@
         "partial"
       ],
       [
-        "Deserts",
-        "Sharqiya (Wahiba) Sands, Umm as Samim salt flat, Dhofar desert",
-        "done"
-      ],
-      [
-        "Volcanic terrain",
-        "Samail Ophiolite (ancient ocean-floor crust and mantle); young-basalt benchmarks in the Atlas",
-        "partial"
-      ],
-      [
-        "Polar regions",
-        "Not in Oman; polar benchmarks (Haughton Crater, Svalbard) compared in the Analog Atlas",
-        "notyet"
-      ],
-      [
-        "Caves",
-        "New Omani candidate in the Analog Atlas: Majlis al Jinn (not yet scored)",
+        "Analog types: deserts, polar regions, volcanic terrain, caves",
+        "Analog Atlas: which types Oman covers (scored or candidate) and world benchmarks for the rest",
         "partial"
       ],
       [
@@ -589,7 +579,35 @@
         "Multidimensional scaling: placing points on a plane so their distances follow a similarity table."
       ]
     ],
-    "presentLink": "Open presentation mode"
+    "presentLink": "Open presentation mode",
+    "citeTitle": "Cite this project",
+    "citeText": "Data version {date}. Please credit NASA and the instrument teams listed on the Sources page when you reuse the values.",
+    "copyBib": "Copy BibTeX",
+    "copied": "Copied",
+    "judgesTitle": "For the judges",
+    "judgesText": "Where to see each judging criterion on this site.",
+    "judges": [
+      [
+        "Impact",
+        "A ranked, data-backed shortlist of Omani analogs for each Mars and Moon target, and a field-campaign plan timed to the coolest season.",
+        "/mission"
+      ],
+      [
+        "Creativity",
+        "Start from a Mars or Moon target and find its Omani twin; drag-to-compare relief maps; an analog map of every site; mission lenses that re-weight the score.",
+        "/explorer?view=targets"
+      ],
+      [
+        "Validity",
+        "Every value traced to a NASA product ID; missing values shown with reasons; a check against the expert-chosen AMADEE-18 site; a 66-weighting sensitivity test.",
+        "/methodology"
+      ],
+      [
+        "Relevance",
+        "Challenge 10 answered part by part in the table above: Mars landing sites, the lunar south pole, deserts, volcanic terrain, a cave candidate, environment.",
+        "/atlas"
+      ]
+    ]
   },
   "present": {
     "exit": "Exit",
@@ -687,5 +705,12 @@
     "ctxText": "Temperature, rain, sunlight, humidity and wind for each Omani site from NASA's POWER Climatology API (January 2001 – December 2025). They are shown on site pages, the Analog Atlas and the mission plan. They are not scored. The six raw API responses are kept unchanged in the repository.",
     "ctxAtlas": "Compare the sites in the Atlas",
     "sunVal": "{v}/day"
+  },
+  "common": {
+    "continue": "Continue exploring",
+    "onThisPage": "On this page",
+    "skip": "Skip to content",
+    "meetTeam": "Meet Team VEX",
+    "breadcrumb": "You are here"
   }
 }

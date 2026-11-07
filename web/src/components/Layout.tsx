@@ -16,6 +16,9 @@ export default function Layout() {
   const { t, toggle } = useI18n();
   return (
     <div className="app">
+      <a href="#main" className="skip-link" onClick={(e) => { e.preventDefault(); document.getElementById('main')?.focus(); }}>
+        {t('common.skip')}
+      </a>
       <header className="topbar">
         <NavLink to="/" className="brand">
           <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true">
@@ -35,7 +38,7 @@ export default function Layout() {
           {t('lang.switch')}
         </button>
       </header>
-      <main>
+      <main id="main" tabIndex={-1}>
         <Outlet />
       </main>
       <footer className="site-footer">
@@ -44,7 +47,9 @@ export default function Layout() {
             <span className="vex-mark" aria-hidden="true">VEX</span>
             <div>
               <p className="footer-built">{t('home.footerBuilt')}</p>
-              <p className="muted small">{t('home.footerTeam')}</p>
+              <p className="muted small">
+                <NavLink to="/about">{t('common.meetTeam')}</NavLink>
+              </p>
             </div>
           </div>
           <p className="footer-challenge">

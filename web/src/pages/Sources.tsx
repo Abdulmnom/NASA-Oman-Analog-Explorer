@@ -4,6 +4,8 @@ import { scoresCsv } from '../lib/analysis';
 import { useDataset } from '../lib/data';
 import { DATA_SOURCES } from '../lib/sources';
 import { ENV_URL } from '../lib/environment';
+import ContinueExploring from '../components/common/ContinueExploring';
+import PageToc from '../components/common/PageToc';
 import type { Provenance } from '../types';
 
 interface UsedRow {
@@ -41,6 +43,7 @@ export default function Sources() {
     <div className="page prose">
       <h1>{t('sources.title')}</h1>
       <p className="lead">{t('sources.intro')}</p>
+      <PageToc />
 
       <section className="panel download-band">
         <div>
@@ -203,8 +206,7 @@ export default function Sources() {
       </div>
       <h2>{t('sources.mapsTitle')}</h2>
       <p>{t('sources.mapsText')}</p>
-      <h2>{t('sources.teamTitle')}</h2>
-      <p>{t('sources.team')}</p>
+      <ContinueExploring from="sources" />
     </div>
   );
 }

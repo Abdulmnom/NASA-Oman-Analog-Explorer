@@ -3,6 +3,8 @@ import { useI18n } from '../i18n';
 import { weightSensitivity } from '../lib/analysis';
 import { useDataset } from '../lib/data';
 import type { Body } from '../types';
+import ContinueExploring from '../components/common/ContinueExploring';
+import PageToc from '../components/common/PageToc';
 
 const FORMULA = `x'           = log10(x) for roughness and relief, x otherwise
 norm(x)      = clip((x' − min) / (max − min), 0, 1)   min, max = measured over all sites
@@ -31,6 +33,7 @@ export default function Methodology() {
     <div className="page prose">
       <h1>{t('methodology.title')}</h1>
       <p className="lead">{t('methodology.intro')}</p>
+      <PageToc />
 
       <section className="pipeline" aria-labelledby="pipeline-title">
         <h2 id="pipeline-title">{t('methodology.pipelineTitle')}</h2>
@@ -160,6 +163,7 @@ export default function Methodology() {
 
       <h2>{t('methodology.roadmapTitle')}</h2>
       <ul className="roadmap">{tl('methodology.roadmap').map((l) => <li key={l}>{l}</li>)}</ul>
+      <ContinueExploring from="methodology" />
     </div>
   );
 }

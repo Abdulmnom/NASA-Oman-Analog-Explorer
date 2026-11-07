@@ -7,12 +7,14 @@ import TwinMaps from '../components/map/TwinMaps';
 import ScoreBadge, { ScoreBar } from '../components/similarity/ScoreBadge';
 import { useI18n } from '../i18n';
 import { bestMatch, findSite, matchesFor, scoreFor, useDataset } from '../lib/data';
+import ContinueExploring from '../components/common/ContinueExploring';
+import { sharedFeatures } from '../lib/analysis';
 
 type View = 'map' | 'compare' | 'targets' | 'map2' | 'table';
 const VIEWS: View[] = ['map', 'compare', 'targets', 'map2', 'table'];
 
 export default function Explorer() {
-  const { t, loc, lang } = useI18n();
+  const { t, loc, num } = useI18n();
   const data = useDataset();
   const [params, setParams] = useSearchParams();
   const navigate = useNavigate();
@@ -115,21 +117,30 @@ export default function Explorer() {
             onSelectTarget={(id) => select(earth.id, id)}
           />
 
-          <div className="grid two">
-            <div className="panel">
-              <h3><span className="dot earth" /> {loc(earth.name)}</h3>
-              <p>{earth.card[lang].summary}</p>
-            </div>
-            <div className="panel">
-              <h3><span className={`dot ${target.body}`} /> {loc(target.name)}</h3>
-              <p>{target.card[lang].summary}</p>
-            </div>
+          <div className="panel pair-strip">
+            <p>
+              <span className="dot earth" /> <strong>{loc(earth.name)}</strong> ↔ <span className={`dot ${target.body}`} /> <strong>{loc(target.name)}</strong>
+            </p>
+            <ul className="pair-coverage">
+              {Object.keys(data.config.criteria).map((c) => {
+                const sf = sharedFeatures(data, c, earth, target);
+                return (
+                  <li key={c} className={sf.shared === 0 ? 'muted' : undefined}>
+                    {t(`criteria.${c}`)}: {t('explorer.sharedOf', { n: num(sf.shared), m: num(sf.total) })}
+                  </li>
+                );
+              })}
+            </ul>
+            <button type="button" className="btn primary small" onClick={() => show('compare')}>
+              {t('explorer.whyScore')} →
+            </button>
           </div>
           </>
           )}
         </section>
       </div>
       )}
+      <ContinueExploring from="explorer" />
     </div>
   );
 }

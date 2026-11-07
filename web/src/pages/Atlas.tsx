@@ -5,6 +5,8 @@ import { useI18n } from '../i18n';
 import { ARTEMIS_REGIONS, ARTEMIS_SOURCES, BENCHMARKS, CATEGORIES, OMAN_CANDIDATES, OMAN_SCORED_CATEGORIES, OMAN_TRACK, type AtlasSite } from '../lib/atlas';
 import { findSite, useDataset } from '../lib/data';
 import { ENV_URL, ltr, meanOver, monthNames, monthRange, periodYears, useEnvironment } from '../lib/environment';
+import ContinueExploring from '../components/common/ContinueExploring';
+import PageToc from '../components/common/PageToc';
 
 const COLORS = { scored: '#3fb6a8', candidate: '#e6b34a', benchmark: '#f1f4fa' } as const;
 
@@ -41,6 +43,7 @@ export default function Atlas() {
     <div className="page atlas">
       <h1>{t('atlas.title')}</h1>
       <p className="lead">{t('atlas.intro')}</p>
+      <PageToc deps={[env]} />
 
       <div className="panel atlas-map-panel">
         <MapContainer center={[28, 20]} zoom={2} minZoom={2} scrollWheelZoom={false} worldCopyJump className="map atlas-map">
@@ -251,6 +254,7 @@ export default function Atlas() {
           </ul>
         </section>
       </div>
+      <ContinueExploring from="atlas" />
     </div>
   );
 }

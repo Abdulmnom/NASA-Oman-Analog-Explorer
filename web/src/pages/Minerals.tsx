@@ -4,6 +4,7 @@ import { useI18n } from '../i18n';
 import { useDataset } from '../lib/data';
 import { MINERALS } from '../lib/minerals';
 import { REFERENCES } from '../lib/references';
+import ContinueExploring from '../components/common/ContinueExploring';
 
 export default function Minerals() {
   const { t, loc } = useI18n();
@@ -74,6 +75,7 @@ export default function Minerals() {
           </div>
         </section>
       ))}
+      <ContinueExploring from="minerals" />
     </div>
   );
 }

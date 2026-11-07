@@ -5,6 +5,7 @@ import { bestMatch, findSite, useDataset } from '../lib/data';
 import { layerUrl } from '../lib/layerMeta';
 import { MISSION_EXTENSION, MISSION_LEGS } from '../lib/mission';
 import { envSite, meanOver, monthNames, monthRange, sharedCoolestMonths, useEnvironment } from '../lib/environment';
+import ContinueExploring from '../components/common/ContinueExploring';
 
 /** Proposed field campaign (a concept) that ground-truths the scores and fills the data gaps. */
 export default function Mission() {
@@ -112,6 +113,7 @@ export default function Mission() {
           <ul>{tl('mission.success').map((k) => <li key={k}>{k}</li>)}</ul>
         </div>
       </div>
+      <ContinueExploring from="mission" />
     </div>
   );
 }

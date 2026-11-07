@@ -328,7 +328,7 @@ html[dir='rtl'] .coords { text-align: right; }
 .section-head { margin-bottom: 14px; }
 .section-head h2 { margin-bottom: 4px; }
 .section-head p { margin: 0; font-size: 0.92rem; }
-.stats { list-style: none; margin: 0 0 16px; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.stats { list-style: none; margin: 0 0 16px; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
 .stats li {
   display: flex; flex-direction: column; gap: 2px; padding: 12px 16px;
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
@@ -705,8 +705,8 @@ html[dir='rtl'] .rank-bar i { background: linear-gradient(270deg, var(--earth), 
 .tile:hover { text-decoration: none; border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0, 0, 0, 0.38); }
 .tile.is-ref { border-color: rgba(169, 193, 255, 0.45); }
 .tile-img { position: relative; display: block; height: 130px; overflow: hidden; background: var(--surface-2); }
-.lead-tile { flex-direction: row; min-height: 260px; }
-.lead-tile .tile-img { height: auto; flex: 1.3; min-height: 280px; }
+.lead-tile { flex-direction: row; min-height: 220px; }
+.lead-tile .tile-img { height: auto; flex: 1.3; min-height: 220px; }
 .lead-tile .tile-img img { position: absolute; inset: 0; }
 .lead-tile .tile-img::after { background: linear-gradient(90deg, transparent 55%, rgba(18, 24, 38, 0.96)); }
 html[dir='rtl'] .lead-tile .tile-img::after { background: linear-gradient(270deg, transparent 55%, rgba(18, 24, 38, 0.96)); }
@@ -1011,3 +1011,32 @@ html[dir='rtl'] .timeline li { padding: 0 18px 14px 0; }
 .mission-season { border-inline-start: 3px solid var(--accent-2); }
 .context-source { margin: 18px 0; }
 @media print { .env-panel { break-inside: avoid; } }
+
+/* ---- Navigation aids: directory, continue, on-this-page, breadcrumb, skip link ---- */
+.skip-link { position: absolute; inset-inline-start: 12px; top: -48px; z-index: 100; background: var(--accent-2); color: #0b0f17; padding: 8px 14px; border-radius: 8px; font-weight: 600; }
+.skip-link:focus { top: 10px; }
+main:focus { outline: none; }
+.dir-grid { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+.dir-card, .continue-card, .judge-card { display: flex; flex-direction: column; gap: 6px; height: 100%; color: inherit; text-decoration: none; transition: border-color 0.15s, transform 0.15s; }
+.dir-card:hover, .continue-card:hover, .judge-card:hover { border-color: var(--accent-2); transform: translateY(-2px); }
+.dir-card strong, .continue-card strong, .judge-card strong { color: var(--text); font-size: 1.02rem; }
+.dir-num { color: var(--accent); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.08em; }
+.continue { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); }
+.continue h2 { font-size: 1.1rem; }
+.page-toc { margin: 4px 0 28px; padding: 12px 16px; border: 1px solid var(--border); border-radius: 12px; }
+.page-toc ul { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.linklike { background: none; border: 0; padding: 0; color: var(--accent-2); font: inherit; font-size: 0.9rem; cursor: pointer; text-align: start; }
+.linklike:hover { text-decoration: underline; }
+.breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 0.86rem; color: var(--muted); }
+.breadcrumb a { color: var(--muted); }
+.breadcrumb a:hover { color: var(--text); }
+.breadcrumb [aria-current] { color: var(--text); }
+.pair-strip { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 20px; }
+.pair-strip p { margin: 0; }
+.pair-coverage { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 0.86rem; }
+.team-list { padding-inline-start: 18px; }
+.cite-box { margin: 28px 0; }
+.cite-text { font-size: 0.92rem; }
+.bibtex { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-size: 0.8rem; overflow-x: auto; text-align: left; white-space: pre; }
+@media print { .continue, .page-toc, .skip-link, .breadcrumb { display: none; } }
+.grid.judges { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
