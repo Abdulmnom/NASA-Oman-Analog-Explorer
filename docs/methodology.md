@@ -39,6 +39,7 @@ x'           = log10(x) for roughness_m and relief_m, x otherwise
 norm(x)      = clip((x' − min) / (max − min), 0, 1)
                min, max = lowest / highest measured x' over ALL sites (Earth + Mars + Moon)
 score_c      = mean over features measured on both sides of (1 − |norm_a − norm_b|)
+               (mineral features: skipped when both sides are below `signal_floor` = 0.2 of their body's range)
 overall      = Σ w_c · score_c / Σ w_c                 over criteria with ≥ 1 shared feature
 coverage     = Σ w_c · (shared_c / n_c) / Σ w_c        over all criteria with w > 0
 res_factor_c = max(0.5, 1 − 0.1 · |log2(res_a / res_b)|)   native resolutions from provenance
@@ -78,6 +79,14 @@ resolution among the criterion's measured features.
 
 ## 5. Mineral indices (`metrics/mineralogy.py`)
 
+**Shared absence is not similarity (`signal_floor` in `weights.yaml`).** Mineral indices are scaled
+within each body, so the weakest Earth site and the weakest Mars target both land near 0. Before this
+rule, Umm as Samim vs Terra Sirenum scored 100% on minerals although neither shows serpentine or
+carbonate. A mineral feature is now compared only when at least one site reaches 0.2 of its body's
+range; otherwise it is skipped for that pair and coverage drops. Effect: Umm as Samim vs Terra Sirenum
+86.9% → 78.2% (minerals not compared, confidence 65% → 44%); the ranking of the Omani sites is unchanged.
+
+
 * **Band depth** `BD = 1 − R_center / R_continuum`, continuum linear between shoulders.
 * Serpentine: 2.32 µm Mg-OH band (Ehlmann et al. 2010). Carbonate: requires **both** 2.33 µm and
   2.50 µm bands, taking the smaller of the two depths (Ehlmann et al. 2008). Serpentine has no 2.5 µm
@@ -106,6 +115,17 @@ The Dhofar AMADEE-18 site (chosen by experts for a 2018 Mars simulation) is the 
 `export.py` ranks all Omani sites by mean similarity to Mars targets. The current result, with measured
 data only, is in `sites.json` → `validation` and on the Methodology page. It is reported as computed,
 and the method is not adjusted to improve it. The AMADEE-18 coordinates are approximate (see sites.md).
+
+## 7b. Field environment (context, not scored)
+
+Site pages, the Analog Atlas and the mission plan show NASA POWER monthly climatology (2001–2025) for each
+Omani site and for the Majlis al Jinn candidate: air temperature at 2 m (mean, extremes, day–night range),
+rain, all-sky solar irradiance, humidity and wind. `analog/environment.py` reads the raw API answers
+unchanged and derives only rain per year and the coolest three consecutive months (Dec–Feb at every site).
+POWER describes a coarse grid cell, so each page shows the cell height next to the NASADEM elevation range
+and, where the ground is more than 500 m higher, the standard-atmosphere lapse-rate estimate (6.5 °C per km).
+Climate is not in the similarity index: that would need an equivalent Mars source (for example the Mars
+Climate Database) and a defensible way to compare Earth and Mars weather.
 
 ## 8. Open questions for the geologist review
 

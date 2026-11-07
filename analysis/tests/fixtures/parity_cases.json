@@ -34,6 +34,14 @@
    "carbonate_index",
    "chloride_index"
   ],
+  "signal_floor": {
+   "floor": 0.2,
+   "features": [
+    "serpentine_index",
+    "carbonate_index",
+    "chloride_index"
+   ]
+  },
   "common_terrain_scale_m": 463,
   "confidence": {
    "resolution_k": 0.1,
@@ -474,13 +482,13 @@
    "body_a": "earth",
    "body_b": "mars",
    "expected": {
-    "overall": 0.8693893219880452,
-    "confidence": 0.6537611274600927,
-    "coverage": 0.7666666666666667,
-    "resolution_factor": 0.8527319053827296,
+    "overall": 0.7823155366467418,
+    "confidence": 0.4351754409578149,
+    "coverage": 0.5000000000000001,
+    "resolution_factor": 0.8703508819156296,
     "per_criterion": {
      "terrain": 0.9321021323057549,
-     "mineralogy": 1.0,
+     "mineralogy": null,
      "surface": 0.48274234532871596
     }
    }
@@ -522,13 +530,13 @@
    "body_a": "earth",
    "body_b": "mars",
    "expected": {
-    "overall": 0.7220014435308552,
-    "confidence": 0.6537611274600927,
-    "coverage": 0.7666666666666667,
+    "overall": 0.6908797457769794,
+    "confidence": 0.5400635400757288,
+    "coverage": 0.6333333333333334,
     "resolution_factor": 0.8527319053827296,
     "per_criterion": {
      "terrain": 0.7690565210409875,
-     "mineralogy": 0.8672507006702558,
+     "mineralogy": 0.7894464562855665,
      "surface": 0.3373927742317888
     }
    }
@@ -714,13 +722,13 @@
    "body_a": "earth",
    "body_b": "mars",
    "expected": {
-    "overall": 0.6595558716165109,
-    "confidence": 0.6537611274600927,
-    "coverage": 0.7666666666666667,
+    "overall": 0.5331999383238719,
+    "confidence": 0.5400635400757288,
+    "coverage": 0.6333333333333334,
     "resolution_factor": 0.8527319053827296,
     "per_criterion": {
      "terrain": 0.7297348340676565,
-     "mineralogy": 0.6426111506445809,
+     "mineralogy": 0.3267213174129834,
      "surface": 0.5530873886580795
     }
    }
@@ -762,13 +770,13 @@
    "body_a": "earth",
    "body_b": "mars",
    "expected": {
-    "overall": 0.7194717007332426,
-    "confidence": 0.6537611274600927,
-    "coverage": 0.7666666666666667,
+    "overall": 0.6296158807229727,
+    "confidence": 0.5400635400757288,
+    "coverage": 0.6333333333333334,
     "resolution_factor": 0.8527319053827296,
     "per_criterion": {
      "terrain": 0.8328959318994386,
-     "mineralogy": 0.7619144111530918,
+     "mineralogy": 0.5372748611274168,
      "surface": 0.40773781756115235
     }
    }
@@ -1712,7 +1720,7 @@
     "resolution_factor": 1.0,
     "per_criterion": {
      "terrain": 0.9321021323057549,
-     "mineralogy": 1.0,
+     "mineralogy": null,
      "surface": 0.48274234532871596
     }
    }
@@ -1764,7 +1772,7 @@
     "resolution_factor": 1.0,
     "per_criterion": {
      "terrain": 0.7690565210409875,
-     "mineralogy": 0.8672507006702558,
+     "mineralogy": 0.7894464562855665,
      "surface": 0.3373927742317888
     }
    }
@@ -1972,7 +1980,7 @@
     "resolution_factor": 1.0,
     "per_criterion": {
      "terrain": 0.7297348340676565,
-     "mineralogy": 0.6426111506445809,
+     "mineralogy": 0.3267213174129834,
      "surface": 0.5530873886580795
     }
    }
@@ -2024,7 +2032,7 @@
     "resolution_factor": 1.0,
     "per_criterion": {
      "terrain": 0.8328959318994386,
-     "mineralogy": 0.7619144111530918,
+     "mineralogy": 0.5372748611274168,
      "surface": 0.40773781756115235
     }
    }
@@ -3006,13 +3014,13 @@
    "body_a": "earth",
    "body_b": "mars",
    "expected": {
-    "overall": 0.8829688955268942,
-    "confidence": 0.5725948154495838,
-    "coverage": 0.7,
-    "resolution_factor": 0.8179925934994055,
+    "overall": 0.7074222388172354,
+    "confidence": 0.24165789686203337,
+    "coverage": 0.30000000000000004,
+    "resolution_factor": 0.8055263228734445,
     "per_criterion": {
      "terrain": 0.9321021323057549,
-     "mineralogy": 1.0,
+     "mineralogy": null,
      "surface": 0.48274234532871596
     }
    }
@@ -3058,13 +3066,13 @@
    "body_a": "earth",
    "body_b": "mars",
    "expected": {
-    "overall": 0.7416402794567087,
-    "confidence": 0.5725948154495838,
-    "coverage": 0.7,
+    "overall": 0.6949577328258952,
+    "confidence": 0.4089962967497027,
+    "coverage": 0.5,
     "resolution_factor": 0.8179925934994055,
     "per_criterion": {
      "terrain": 0.7690565210409875,
-     "mineralogy": 0.8672507006702558,
+     "mineralogy": 0.7894464562855665,
      "surface": 0.3373927742317888
     }
    }
@@ -3266,13 +3274,13 @@
    "body_a": "earth",
    "body_b": "mars",
    "expected": {
-    "overall": 0.6421311349318958,
-    "confidence": 0.5725948154495838,
-    "coverage": 0.7,
+    "overall": 0.45259723499293725,
+    "confidence": 0.4089962967497027,
+    "coverage": 0.5,
     "resolution_factor": 0.8179925934994055,
     "per_criterion": {
      "terrain": 0.7297348340676565,
-     "mineralogy": 0.6426111506445809,
+     "mineralogy": 0.3267213174129834,
      "surface": 0.5530873886580795
     }
    }
@@ -3318,13 +3326,13 @@
    "body_a": "earth",
    "body_b": "mars",
    "expected": {
-    "overall": 0.7052753965839733,
-    "confidence": 0.5725948154495838,
-    "coverage": 0.7,
+    "overall": 0.5704916665685683,
+    "confidence": 0.4089962967497027,
+    "coverage": 0.5,
     "resolution_factor": 0.8179925934994055,
     "per_criterion": {
      "terrain": 0.8328959318994386,
-     "mineralogy": 0.7619144111530918,
+     "mineralogy": 0.5372748611274168,
      "surface": 0.40773781756115235
     }
    }
@@ -4312,7 +4320,7 @@
     "resolution_factor": 0.0,
     "per_criterion": {
      "terrain": 0.9321021323057549,
-     "mineralogy": 1.0,
+     "mineralogy": null,
      "surface": 0.48274234532871596
     }
    }
@@ -4364,7 +4372,7 @@
     "resolution_factor": 0.0,
     "per_criterion": {
      "terrain": 0.7690565210409875,
-     "mineralogy": 0.8672507006702558,
+     "mineralogy": 0.7894464562855665,
      "surface": 0.3373927742317888
     }
    }
@@ -4572,7 +4580,7 @@
     "resolution_factor": 0.0,
     "per_criterion": {
      "terrain": 0.7297348340676565,
-     "mineralogy": 0.6426111506445809,
+     "mineralogy": 0.3267213174129834,
      "surface": 0.5530873886580795
     }
    }
@@ -4624,7 +4632,7 @@
     "resolution_factor": 0.0,
     "per_criterion": {
      "terrain": 0.8328959318994386,
-     "mineralogy": 0.7619144111530918,
+     "mineralogy": 0.5372748611274168,
      "surface": 0.40773781756115235
     }
    }
