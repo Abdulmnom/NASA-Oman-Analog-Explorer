@@ -5,6 +5,7 @@ import MetricValue from '../site/MetricValue';
 import ScoreBadge, { ScoreBar } from '../similarity/ScoreBadge';
 import WeightSliders from '../similarity/WeightSliders';
 import { useI18n } from '../../i18n';
+import { mineralsFromLowSignal, sharedFeatures } from '../../lib/analysis';
 import { useDataset } from '../../lib/data';
 import { defaultWeights, similarity } from '../../lib/similarity';
 import type { Site, Weights } from '../../types';
@@ -52,6 +53,17 @@ export default function CompareView({ earth, target }: Props) {
           </dl>
           <p className="muted small">{t('compare.breakdown')}</p>
           {target.body === 'moon' && <p className="note">{t('compare.moonNote')}</p>}
+          {mineralsFromLowSignal(data, earth, target) && (
+            <p className="note warn small">
+              <strong>{t('explorer.flagLowSignal')}.</strong> {t('explorer.flagLowSignalText')}
+            </p>
+          )}
+          {(() => {
+            const sf = sharedFeatures(data, 'surface', earth, target);
+            return sf.shared > 0 && sf.shared < sf.total ? (
+              <p className="note small">{t('explorer.flagSurfacePartial', { n: num(sf.shared), total: num(sf.total) })}</p>
+            ) : null;
+          })()}
         </div>
       </div>
 

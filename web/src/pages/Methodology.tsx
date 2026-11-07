@@ -1,4 +1,6 @@
+import { useMemo } from 'react';
 import { useI18n } from '../i18n';
+import { weightSensitivity } from '../lib/analysis';
 import { useDataset } from '../lib/data';
 import type { Body } from '../types';
 
@@ -12,9 +14,12 @@ res_factor_c = max(0.5, 1 − 0.1 · |log2(res_a / res_b)|)   (terrain: common g
 confidence   = coverage × weighted mean(res_factor_c)`;
 
 export default function Methodology() {
-  const { t, tl, num } = useI18n();
+  const { t, tl, num, loc } = useI18n();
   const data = useDataset();
   const { config, validation } = data;
+  const sens = useMemo(() => weightSensitivity(data), [data]);
+  const leader = sens.rows[0];
+  const ref = sens.rows.find((r) => r.site.id === validation.reference_site);
 
   // Datasets actually used for this criterion on this body (from the exported provenance).
   const datasetsFor = (criterion: string, body: Body) =>
@@ -99,6 +104,45 @@ export default function Methodology() {
       <h2>{t('methodology.validationTitle')}</h2>
       <p>{t('methodology.validationText', { rank: validation.reference_rank ?? '–', total: validation.ranking.length })}</p>
 
+      <section className="sensitivity">
+        <h2>{t('methodology.sensTitle')}</h2>
+        <p>{t('methodology.sensText', { n: sens.combos })}</p>
+        <div className="table-wrap">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>{t('methodology.sensColSite')}</th>
+                <th>{t('methodology.sensColDefault')}</th>
+                <th>{t('methodology.sensColFirst')}</th>
+                <th>{t('methodology.sensColRange')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sens.rows.map((r) => (
+                <tr key={r.site.id} className={r.site.id === validation.reference_site ? 'is-ref-row' : undefined}>
+                  <td>{loc(r.site.name)}</td>
+                  <td className="num-cell">#{r.defaultRank}</td>
+                  <td>
+                    <span className="sens-bar" aria-hidden="true">
+                      <i style={{ width: `${r.firstShare * 100}%` }} />
+                    </span>{' '}
+                    <strong>{num(r.firstShare * 100)}%</strong>
+                  </td>
+                  <td className="num-cell">
+                    #{r.bestRank} – #{r.worstRank}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {leader && ref && (
+          <p className="note">
+            {t('methodology.sensTakeaway', { site: loc(leader.site.name), share: num(leader.firstShare * 100), best: ref.bestRank, worst: ref.worstRank })}
+          </p>
+        )}
+      </section>
+
       <h2>{t('methodology.limitsTitle')}</h2>
       <ul>{tl('methodology.limits').map((l) => <li key={l}>{l}</li>)}</ul>
 
@@ -112,6 +156,9 @@ export default function Methodology() {
         </ol>
         <p className="muted small">{t('methodology.extendNote')}</p>
       </section>
+
+      <h2>{t('methodology.roadmapTitle')}</h2>
+      <ul className="roadmap">{tl('methodology.roadmap').map((l) => <li key={l}>{l}</li>)}</ul>
     </div>
   );
 }

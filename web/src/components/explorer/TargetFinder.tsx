@@ -1,5 +1,6 @@
 import { ScoreBar } from '../similarity/ScoreBadge';
 import { useI18n } from '../../i18n';
+import { kmFromMuscat, mineralsFromLowSignal, sharedFeatures } from '../../lib/analysis';
 import { analogsFor, findSite, useDataset } from '../../lib/data';
 import type { Site } from '../../types';
 
@@ -17,6 +18,12 @@ export default function TargetFinder({ target, onSelectTarget, onOpen }: Props) 
   const ranked = analogsFor(data, target.id);
   const criteria = Object.keys(data.config.criteria);
   const hasLayer = target.body !== 'moon';
+  // Shown once under the list when surface physics rests on fewer features than defined (same for every Omani site).
+  const surfNote = ranked
+    .map((m) => findSite(data, m.earth))
+    .filter((e): e is Site => !!e)
+    .map((e) => sharedFeatures(data, 'surface', e, target))
+    .find((x) => x.shared > 0 && x.shared < x.total);
 
   return (
     <div className="finder">
@@ -70,6 +77,8 @@ export default function TargetFinder({ target, onSelectTarget, onOpen }: Props) 
             {ranked.map((m, i) => {
               const earth = findSite(data, m.earth);
               if (!earth) return null;
+              const low = mineralsFromLowSignal(data, earth, target);
+              const km = kmFromMuscat(earth);
               return (
                 <li key={earth.id} className={i === 0 ? 'top' : undefined}>
                   <span className="rank">#{i + 1}</span>
@@ -90,7 +99,15 @@ export default function TargetFinder({ target, onSelectTarget, onOpen }: Props) 
                       <span>
                         {t('score.confidence')} {num(m.confidence * 100)}%
                       </span>
+                      {km !== null && <span>{t('explorer.findAccess', { km: num(km) })}</span>}
                     </div>
+                    {low && (
+                      <div className="finder-flags">
+                        <span className="pill warn" title={t('explorer.flagLowSignalText')}>
+                          {t('explorer.flagLowSignal')}
+                        </span>
+                      </div>
+                    )}
                   </div>
                   <div className="finder-actions">
                     <button type="button" className="btn ghost small" onClick={() => onOpen(earth.id, 'map')}>
@@ -104,6 +121,9 @@ export default function TargetFinder({ target, onSelectTarget, onOpen }: Props) 
               );
             })}
           </ol>
+          {surfNote && (
+            <p className="note small">{t('explorer.flagSurfacePartial', { n: num(surfNote.shared), total: num(surfNote.total) })}</p>
+          )}
         </div>
       </div>
     </div>

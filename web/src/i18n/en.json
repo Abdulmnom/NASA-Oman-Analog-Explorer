@@ -11,7 +11,8 @@
     "compare": "Compare",
     "methodology": "Methodology",
     "sources": "Sources",
-    "minerals": "Minerals"
+    "minerals": "Minerals",
+    "mission": "Mission concept"
   },
   "lang": {
     "switch": "العربية",
@@ -60,7 +61,7 @@
   "home": {
     "kicker": "Identify Earth locations that analog the permanent Moon base locations and Mars",
     "heroTitle": "Where on Earth can we rehearse Mars?",
-    "heroText": "Oman holds some of the planet's best exposures of rocks, salts and dunes that resemble what orbiters see on Mars. We compare five Omani sites with Mars landing regions, and one with the lunar south pole, using NASA data and an open, adjustable similarity index.",
+    "heroText": "Oman holds some of the planet's best exposures of rocks, salts and dunes that resemble what orbiters see on Mars. We compare five Omani sites with four Mars landing regions and with the lunar south pole, the region NASA's Artemis program is targeting for a long-term presence, using NASA data and an open, adjustable similarity index.",
     "ctaExplore": "Open the explorer",
     "ctaMethod": "How the score works",
     "liveDistance": "Earth ↔ Mars right now",
@@ -74,8 +75,8 @@
     "dragHint": "Drag a planet to spin it · click to explore",
     "scrollLabel": "Scroll to the content",
     "principlesTitle": "Three ground rules",
-    "p1Title": "Mars first",
-    "p1Text": "Mars is the main target. The Moon is a secondary comparison, for terrain only and with a single region.",
+    "p1Title": "Mars and the Moon base",
+    "p1Text": "Four Mars landing regions are compared on terrain, minerals and surface physics. The lunar south pole is compared on terrain only, because the platform has no comparable mineral or surface data for the Moon.",
     "p2Title": "Same scale, fair comparison",
     "p2Text": "All terrain is reprojected to exactly the same 463 m grid before comparing, because fine-resolution data always looks rougher.",
     "p3Title": "Honest about limits",
@@ -165,7 +166,17 @@
     "findMoonNote": "Moon comparisons use terrain only: no mineral or surface data are compared for the Moon.",
     "findMap": "Map",
     "findCompare": "Compare",
-    "findBest": "best analog"
+    "findBest": "best analog",
+    "tab_map2": "Analog map",
+    "mapTitle": "Which places are alike?",
+    "mapIntro": "Every site, Omani, Mars and Moon, placed so that similar sites sit close together. Distances come from the same similarity index with the default weights (classical multidimensional scaling), so this is a picture of the scores, not a geographic map.",
+    "mapNearest": "Closest to {name}",
+    "mapAxes": "The two axes have no units: only the distances between points matter.",
+    "flagLowSignal": "Mineral score reflects weak signals on both sides",
+    "flagLowSignalText": "Both sites have the weakest serpentine and carbonate signals of their own body. Mineral indices are scaled within each body, so shared absence reads as a close match.",
+    "flagSurfacePartial": "Surface physics: {n} of {total} features compared",
+    "findAccess": "{km} km from Muscat",
+    "mapHint": "Hover over a point to see its three closest sites; click it to open the site page."
   },
   "site": {
     "coords": "Coordinates",
@@ -200,7 +211,14 @@
     "slopeTitle": "Terrain on the common 463 m grid",
     "slopeText": "Share of the {n} × {n} km map window in each slope class, from the same elevation data and grid the similarity score uses.",
     "slopeSource": "Source: {dataset}",
-    "reliefImgAlt": "Shaded relief of the map window"
+    "reliefImgAlt": "Shaded relief of the map window",
+    "access": "Distance from Muscat",
+    "accessVal": "{km} km (straight line)",
+    "notesTitle": "Field notes",
+    "notesBadge": "Team assessment, based on the values above",
+    "rehearse": "What could be rehearsed here",
+    "resources": "Resources angle (ISRU)",
+    "print": "Print or save as PDF"
   },
   "compare": {
     "title": "Compare & adjust",
@@ -259,7 +277,16 @@
     "extendTitle": "Adding a new analog site",
     "extendIntro": "The pipeline is not limited to five sites. Any team can test another candidate, in Oman or elsewhere:",
     "extendSteps": ["Add the site's coordinates, window size and card text to analysis/config/earth_sites.yaml.", "Run python -m analog.compute to read the NASA data for that window and store each value with its provenance.", "Run python -m analog.export to rescore every pair and rewrite sites.json.", "Run python -m analog.layers for the elevation, slope and drainage map layers."],
-    "extendNote": "Nothing is entered by hand: a value that cannot be computed is stored as not available, with the reason."
+    "extendNote": "Nothing is entered by hand: a value that cannot be computed is stored as not available, with the reason.",
+    "sensTitle": "Does the ranking depend on the weights?",
+    "sensText": "We recomputed the mean Mars similarity of every Omani site for all {n} weight combinations on a 10% grid (terrain, minerals and surface physics from 0% to 100%, always summing to 100%).",
+    "sensColSite": "Omani site",
+    "sensColDefault": "Rank with default weights",
+    "sensColFirst": "Ranked first in",
+    "sensColRange": "Best – worst rank",
+    "sensTakeaway": "{site} ranks first in {share}% of all weightings, so the headline result does not hinge on one choice of weights. The AMADEE-18 reference site ranges from #{best} to #{worst}: it ranks first only when surface physics is switched off (it has no mineral data, so it is then judged on terrain alone, where it matches well), and drops to last whenever surface brightness counts, because its albedo is the furthest from the Mars targets.",
+    "roadmapTitle": "Next steps",
+    "roadmap": ["More lunar base regions: add further Artemis candidate regions near the south pole, using the same LOLA elevation data.", "Caves and lava tubes: Oman's karst caves as analogs for lunar and Martian lava tubes proposed as shelters. Elevation data cannot see caves, so this needs field data.", "Environment: add NASA POWER climate records (temperature range, solar radiation) for each Omani site.", "Global benchmarks: score well-known analogs such as the Atacama Desert and Death Valley with the same index, to place Oman among them.", "Fill the data gaps in the field: measure surface temperature cycles (for thermal inertia) and sample salts (for chlorides) on site."]
   },
   "sources": {
     "title": "Data sources",
@@ -288,7 +315,11 @@
     "matrixIntro": "Every metric for every site: measured from NASA data, not available (with a reason further down), or not applicable to that body.",
     "matrixMeasured": "measured",
     "matrixMissing": "not available",
-    "matrixNa": "not applicable"
+    "matrixNa": "not applicable",
+    "downloadTitle": "Download the data",
+    "downloadText": "Everything on this site is open. Reuse it with credit to the NASA datasets listed below.",
+    "downloadJson": "All data (sites.json)",
+    "downloadCsv": "Scores (CSV)"
   },
   "metric": {
     "notAvailable": "Not available",
@@ -367,5 +398,35 @@
     "none": "Terrain layers have not been generated for this site yet.",
     "noMoon": "The Moon has no drainage, and a map image this close to the south pole cannot be laid on the global map without severe distortion. Slopes and relief are still compared in the score.",
     "flatWarn": "Most of this window is almost flat (under 2°). Here a few metres of elevation-model noise can steer the computed channels, so read the lines as indicative only; the closed basins are more reliable."
+  },
+  "mission": {
+    "kicker": "Mission concept · proposed by Team VEX",
+    "title": "Oman Analog Field Campaign",
+    "intro": "A ten-day field campaign across four of the Omani sites. It turns the satellite comparison into ground truth: check the scores on site, measure the values satellites could not provide, and rehearse tasks planned for Mars and for a lunar south pole base.",
+    "disclaimer": "This is a concept written by the team for the challenge, not a planned or funded mission. Days are indicative; distances are straight-line from Muscat.",
+    "goalsTitle": "Goals",
+    "goals": [
+      "Ground-truth the index: compare handheld spectra and drone elevation models with the NASA values used in the scores.",
+      "Fill the gaps marked \"not available\": surface temperature cycles for thermal inertia at every site, and salt samples for chlorides at Umm as Samim.",
+      "Rehearse mission tasks: sample selection, traverses on steep slopes, mobility in loose sand and work on salt crusts."
+    ],
+    "routeTitle": "Route",
+    "days": "Days {d}",
+    "rehearses": "Rehearses for",
+    "fills": "Measures on site:",
+    "extension": "Optional extension: {site}, about {km} km from Muscat, host of the AMADEE-18 Mars simulation (2018), to compare the campaign with a full analog mission.",
+    "kitTitle": "Field kit",
+    "kit": [
+      "Handheld reflectance spectrometer (0.4–2.5 µm), to compare with EMIT band depths",
+      "Surface temperature loggers left for at least 24 hours, for day–night cycles",
+      "Small drone with camera for local elevation models",
+      "Sample bags and GPS for documented salt and rock samples"
+    ],
+    "successTitle": "Success looks like",
+    "success": [
+      "Field spectra agree in direction with the satellite mineral indices at each site.",
+      "Every visited site gains a measured surface temperature cycle, so thermal inertia is no longer \"not available\".",
+      "Updated values are run through the same open pipeline, and the scores are republished with their provenance."
+    ]
   }
 }

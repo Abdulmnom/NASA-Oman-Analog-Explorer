@@ -1,4 +1,5 @@
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import AnalogMap from '../components/explorer/AnalogMap';
 import CompareView from '../components/explorer/CompareView';
 import SitesTable from '../components/explorer/SitesTable';
 import TargetFinder from '../components/explorer/TargetFinder';
@@ -7,13 +8,14 @@ import ScoreBadge, { ScoreBar } from '../components/similarity/ScoreBadge';
 import { useI18n } from '../i18n';
 import { bestMatch, findSite, matchesFor, scoreFor, useDataset } from '../lib/data';
 
-type View = 'map' | 'compare' | 'targets' | 'table';
-const VIEWS: View[] = ['map', 'compare', 'targets', 'table'];
+type View = 'map' | 'compare' | 'targets' | 'map2' | 'table';
+const VIEWS: View[] = ['map', 'compare', 'targets', 'map2', 'table'];
 
 export default function Explorer() {
   const { t, loc, lang } = useI18n();
   const data = useDataset();
   const [params, setParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const earth = data.earth_sites.find((s) => s.id === params.get('site')) ?? data.earth_sites[0];
   const matches = matchesFor(data, earth.id);
@@ -46,6 +48,8 @@ export default function Explorer() {
 
       {view === 'table' ? (
         <SitesTable onOpen={(site, tgt) => select(site, tgt, tgt ? 'compare' : 'map')} />
+      ) : view === 'map2' ? (
+        <AnalogMap onOpen={(s) => navigate(`/site/${s.id}`)} />
       ) : view === 'targets' ? (
         <TargetFinder
           target={target}

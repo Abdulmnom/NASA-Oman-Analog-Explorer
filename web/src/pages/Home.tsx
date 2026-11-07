@@ -255,6 +255,7 @@ export default function Home() {
           <div className="actions">
             <Link to="/explorer?view=targets" className="btn primary">{t('explorer.tab_targets')}</Link>
             <Link to="/explorer" className="btn ghost">{t('home.ctaExplore')}</Link>
+            <Link to="/mission" className="btn ghost">{t('nav.mission')}</Link>
           </div>
         </section>
       </div>

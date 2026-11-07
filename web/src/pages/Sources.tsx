@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useI18n } from '../i18n';
+import { scoresCsv } from '../lib/analysis';
 import { useDataset } from '../lib/data';
 import { DATA_SOURCES } from '../lib/sources';
 import type { Provenance } from '../types';
@@ -39,6 +40,33 @@ export default function Sources() {
     <div className="page prose">
       <h1>{t('sources.title')}</h1>
       <p className="lead">{t('sources.intro')}</p>
+
+      <section className="panel download-band">
+        <div>
+          <h2>{t('sources.downloadTitle')}</h2>
+          <p className="muted">{t('sources.downloadText')}</p>
+        </div>
+        <div className="actions">
+          <a className="btn primary" href={`${import.meta.env.BASE_URL}data/sites.json`} download="oman-analog-explorer-sites.json">
+            {t('sources.downloadJson')}
+          </a>
+          <button
+            type="button"
+            className="btn ghost"
+            onClick={() => {
+              const blob = new Blob([scoresCsv(data, (s) => s.name.en)], { type: 'text/csv;charset=utf-8' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = 'oman-analog-explorer-scores.csv';
+              a.click();
+              setTimeout(() => URL.revokeObjectURL(url), 1000);
+            }}
+          >
+            {t('sources.downloadCsv')}
+          </button>
+        </div>
+      </section>
 
       <h2>{t('sources.matrixTitle')}</h2>
       <p className="muted">{t('sources.matrixIntro')}</p>

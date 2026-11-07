@@ -7,6 +7,7 @@ const NAV = [
   { to: '/minerals', key: 'minerals' },
   { to: '/methodology', key: 'methodology' },
   { to: '/sources', key: 'sources' },
+  { to: '/mission', key: 'mission' },
 ];
 
 export default function Layout() {

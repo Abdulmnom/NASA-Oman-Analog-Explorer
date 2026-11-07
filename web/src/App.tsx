@@ -6,6 +6,7 @@ import Explorer from './pages/Explorer';
 import Home from './pages/Home';
 import Methodology from './pages/Methodology';
 import Minerals from './pages/Minerals';
+import Mission from './pages/Mission';
 import SiteDetail from './pages/SiteDetail';
 import Sources from './pages/Sources';
 
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="minerals" element={<Minerals />} />
           <Route path="methodology" element={<Methodology />} />
           <Route path="sources" element={<Sources />} />
+          <Route path="mission" element={<Mission />} />
           <Route path="*" element={<Home />} />
         </Route>
       </Routes>

@@ -5,6 +5,8 @@ import ScoreBadge, { ScoreBar } from '../components/similarity/ScoreBadge';
 import { useI18n } from '../i18n';
 import { analogsFor, bestMatch, findSite, matchesFor, useDataset } from '../lib/data';
 import { formatCoords } from '../lib/geo';
+import { kmFromMuscat, mineralsFromLowSignal, sharedFeatures } from '../lib/analysis';
+import { FIELD_NOTES } from '../lib/fieldNotes';
 import { layerUrl, useLayerMeta } from '../lib/layerMeta';
 
 const BODY_HEX = { earth: '#3fb6a8', mars: '#e0703f', moon: '#b8c2d6' } as const;
@@ -49,6 +51,14 @@ export default function SiteDetail() {
   }
   glance.push({ label: t('site.coverageFact'), value: t('site.coverageVal', { m: num(site.measured.length), n: num(applicable) }) });
   glance.push({ label: t('home.area'), value: t('home.areaValue', { n: num(site.bbox_km * 2) }) });
+  const km = kmFromMuscat(site);
+  if (km !== null) glance.push({ label: t('site.access'), value: t('site.accessVal', { km: num(km) }) });
+  // Honest flags on the headline pair (same checks as the explorer).
+  const pairEarth = isEarth ? site : counterpart;
+  const pairTarget = isEarth ? counterpart : site;
+  const lowSignal = !!(pairEarth && pairTarget && mineralsFromLowSignal(data, pairEarth, pairTarget));
+  const surf = pairEarth && pairTarget ? sharedFeatures(data, 'surface', pairEarth, pairTarget) : null;
+  const notes = FIELD_NOTES[site.id];
   const slopeKeys = meta?.common ? Object.keys(meta.common.slope_share) : [];
   const slopeLabel = (k: string) => {
     const [lo, hi] = k.split('-');
@@ -57,7 +67,12 @@ export default function SiteDetail() {
 
   return (
     <div className="page">
-      <Link to={isEarth ? `/explorer?site=${site.id}` : '/explorer'} className="back">← {t('site.back')}</Link>
+      <div className="detail-tools no-print">
+        <Link to={isEarth ? `/explorer?site=${site.id}` : '/explorer'} className="back">← {t('site.back')}</Link>
+        <button type="button" className="btn ghost small" onClick={() => window.print()}>
+          {t('site.print')}
+        </button>
+      </div>
 
       {site.body !== 'moon' && (
         <div className={`detail-banner ${site.body}`}>
@@ -97,7 +112,44 @@ export default function SiteDetail() {
         ))}
       </dl>
 
+      {(lowSignal || (surf && surf.shared > 0 && surf.shared < surf.total)) && (
+        <div className="flags">
+          {lowSignal && (
+            <p className="note warn small">
+              <strong>{t('explorer.flagLowSignal')}.</strong> {t('explorer.flagLowSignalText')}
+            </p>
+          )}
+          {surf && surf.shared > 0 && surf.shared < surf.total && (
+            <p className="note small">{t('explorer.flagSurfacePartial', { n: num(surf.shared), total: num(surf.total) })}</p>
+          )}
+        </div>
+      )}
+
       <p className="lead">{card.summary}</p>
+
+      {notes && (
+        <section className="panel field-notes">
+          <h2>
+            {t('site.notesTitle')} <span className="pill soft">{t('site.notesBadge')}</span>
+          </h2>
+          <div className="grid two">
+            <div>
+              <h3>{t('site.rehearse')}</h3>
+              <ul>
+                {notes.rehearse.map((r) => (
+                  <li key={r.en}>{loc(r)}</li>
+                ))}
+              </ul>
+            </div>
+            {notes.resources && (
+              <div>
+                <h3>{t('site.resources')}</h3>
+                <p>{loc(notes.resources)}</p>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       {meta?.common && (
         <section className="panel slope-profile">
