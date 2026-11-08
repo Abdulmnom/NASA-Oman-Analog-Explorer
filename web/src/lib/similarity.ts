@@ -61,6 +61,9 @@ export function similarity(
   const scales = config.feature_scale ?? {};
   const k = config.confidence.resolution_k;
   const minFactor = config.confidence.resolution_min_factor;
+  // Shared absence is not similarity: skip a floor feature when both sides are below the floor.
+  const floor = config.signal_floor?.floor;
+  const floorFeatures = new Set(config.signal_floor?.features ?? []);
 
   const perCriterion: Record<string, number | null> = {};
   let num = 0;
@@ -80,6 +83,7 @@ export function similarity(
       const na = normalizeValue(rawA[feature], rangeFor(config, feature, bodyA), scale);
       const nb = normalizeValue(rawB[feature], rangeFor(config, feature, bodyB), scale);
       if (na === null || nb === null) continue;
+      if (floor !== undefined && floor !== null && floorFeatures.has(feature) && na < floor && nb < floor) continue;
       diffsSum += 1 - Math.abs(na - nb);
       count += 1;
     }

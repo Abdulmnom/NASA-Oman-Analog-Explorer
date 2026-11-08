@@ -6,7 +6,13 @@ import Explorer from './pages/Explorer';
 import Home from './pages/Home';
 import Methodology from './pages/Methodology';
 import Minerals from './pages/Minerals';
+import Mission from './pages/Mission';
+import About from './pages/About';
+import Atlas from './pages/Atlas';
+import Present from './pages/Present';
 import SiteDetail from './pages/SiteDetail';
+import Scout from './pages/Scout';
+import Log from './pages/Log';
 import Sources from './pages/Sources';
 
 /** Old /compare?earth=..&target=.. links open the Compare tab of the Explorer. */
@@ -31,6 +37,7 @@ export default function App() {
   return (
     <HashRouter>
       <Routes>
+        <Route path="present" element={<Present />} />
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="explorer" element={<Explorer />} />
@@ -39,6 +46,11 @@ export default function App() {
           <Route path="minerals" element={<Minerals />} />
           <Route path="methodology" element={<Methodology />} />
           <Route path="sources" element={<Sources />} />
+          <Route path="mission" element={<Mission />} />
+          <Route path="about" element={<About />} />
+          <Route path="atlas" element={<Atlas />} />
+          <Route path="scout" element={<Scout />} />
+          <Route path="log" element={<Log />} />
           <Route path="*" element={<Home />} />
         </Route>
       </Routes>

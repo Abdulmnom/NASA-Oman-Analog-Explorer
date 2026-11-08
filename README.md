@@ -85,6 +85,19 @@ writes elevation (hypsometric tint + hillshade), slope classes, and topographic 
 (Priority-Flood fill + D8 flow accumulation) as PNG overlays plus a `meta.json` with the legend values.
 Drainage shows where water *would* flow on today's surface, not where water is. No layers for the Moon.
 
+### 5 · Field environment (NASA POWER, context only)
+
+```bash
+python -m analog.environment      # data/processed/environment/nasa_power/*.json -> web/public/data/environment.json
+```
+
+The six raw NASA POWER Climatology API answers (v2.10.1, Jan 2001 – Dec 2025, community RE) are kept
+unchanged in `data/processed/environment/nasa_power/`; each output entry carries its exact request URL.
+The script only adds rain per year (PRECTOTCORR × 365) and the coolest three-month window. These values
+appear on site pages, in the Analog Atlas and in the mission plan. They are **not** part of the score:
+there is no matching Mars climate source in the pipeline yet, and a POWER grid cell (0.5°–1°, roughly 50–100 km) is much
+coarser than the analysis windows.
+
 ## Repository layout
 
 ```
@@ -105,6 +118,8 @@ oman-analog-explorer/
 ```
 
 ## Deploy
+
+* **Vercel (live site):** `vercel.json` builds `web/`; `main` deploys to https://nasa-oman-analog-explorer.vercel.app and every branch gets a preview URL.
 
 * **GitHub Pages:** `.github/workflows/deploy.yml` builds `web/` and publishes on every push to `main`
   (enable *Settings → Pages → Source: GitHub Actions*).

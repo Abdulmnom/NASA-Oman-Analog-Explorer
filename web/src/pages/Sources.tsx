@@ -1,7 +1,13 @@
 import { Link } from 'react-router-dom';
 import { useI18n } from '../i18n';
+import { scoresCsv } from '../lib/analysis';
 import { useDataset } from '../lib/data';
 import { DATA_SOURCES } from '../lib/sources';
+import { ENV_URL } from '../lib/environment';
+import ContinueExploring from '../components/common/ContinueExploring';
+import PageToc from '../components/common/PageToc';
+import { BENCHMARKS, OMAN_CANDIDATES, ARTEMIS_SOURCES } from '../lib/atlas';
+import { REFERENCES, sourcesForSite } from '../lib/references';
 import type { Provenance } from '../types';
 
 interface UsedRow {
@@ -26,11 +32,95 @@ export default function Sources() {
     }
   }
   const missing = sites.flatMap((s) => s.missing.map((m) => ({ siteId: s.id, m })));
+  const features = Object.values(data.config.criteria).flatMap((c) => c.features);
+  const cellState = (siteId: string, f: string) => {
+    const s = sites.find((x) => x.id === siteId)!;
+    if (s.measured.includes(f)) return 'measured';
+    return s.missing.find((m) => m.feature === f)?.status === 'not_applicable' ? 'na' : 'missing';
+  };
+  const MARK = { measured: '✓', missing: '–', na: '·' } as const;
+  const LABEL = { measured: 'sources.matrixMeasured', missing: 'sources.matrixMissing', na: 'sources.matrixNa' } as const;
 
   return (
     <div className="page prose">
       <h1>{t('sources.title')}</h1>
       <p className="lead">{t('sources.intro')}</p>
+      <PageToc />
+
+      <section className="panel download-band">
+        <div>
+          <h2>{t('sources.downloadTitle')}</h2>
+          <p className="muted">{t('sources.downloadText')}</p>
+        </div>
+        <div className="actions">
+          <a className="btn primary" href={`${import.meta.env.BASE_URL}data/sites.json`} download="oman-analog-explorer-sites.json">
+            {t('sources.downloadJson')}
+          </a>
+          <button
+            type="button"
+            className="btn ghost"
+            onClick={() => {
+              const blob = new Blob([scoresCsv(data, (s) => s.name.en)], { type: 'text/csv;charset=utf-8' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = 'oman-analog-explorer-scores.csv';
+              a.click();
+              setTimeout(() => URL.revokeObjectURL(url), 1000);
+            }}
+          >
+            {t('sources.downloadCsv')}
+          </button>
+        </div>
+      </section>
+
+      <section className="panel context-source">
+        <h2>
+          {t('env.ctxTitle')} <span className="pill soft">{t('env.badge')}</span>
+        </h2>
+        <p>{t('env.ctxText')}</p>
+        <p className="small">
+          <a href="https://power.larc.nasa.gov/" target="_blank" rel="noreferrer">NASA POWER (power.larc.nasa.gov)</a> ·{' '}
+          <a href={ENV_URL} download="oman-analog-explorer-environment.json">{t('env.download')}</a> ·{' '}
+          <Link to="/atlas">{t('env.ctxAtlas')}</Link>
+        </p>
+      </section>
+
+      <h2>{t('sources.matrixTitle')}</h2>
+      <p className="muted">{t('sources.matrixIntro')}</p>
+      <div className="table-wrap">
+        <table className="table coverage-matrix">
+          <thead>
+            <tr>
+              <th>{t('sources.colSite')}</th>
+              {features.map((f) => (
+                <th key={f} scope="col">{t(`features.${f}`)}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {sites.map((s) => (
+              <tr key={s.id}>
+                <th scope="row">
+                  <span className={`dot ${s.body}`} /> <Link to={`/site/${s.id}`}>{loc(s.name)}</Link>
+                </th>
+                {features.map((f) => {
+                  const st = cellState(s.id, f);
+                  return (
+                    <td key={f} className={`cov ${st}`} title={t(LABEL[st])}>
+                      <span aria-hidden="true">{MARK[st]}</span>
+                      <span className="sr-only">{t(LABEL[st])}</span>
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="cov-legend small muted">
+        <span className="cov measured">✓</span> {t('sources.matrixMeasured')} · <span className="cov missing">–</span> {t('sources.matrixMissing')} · <span className="cov na">·</span> {t('sources.matrixNa')}
+      </p>
 
       <h2>{t('sources.usedTitle')}</h2>
       <div className="table-wrap">
@@ -91,6 +181,19 @@ export default function Sources() {
         </table>
       </div>
 
+      <h2>{t('sources.papersTitle')}</h2>
+      <p className="muted">{t('sources.papersIntro')}</p>
+      <ul className="refs">
+        {REFERENCES.filter((r) => r.kind === 'method').map((r) => (
+          <li key={r.id}>
+            <a href={r.url} target="_blank" rel="noreferrer">{r.cite}</a> — <em>{r.title}</em>.{' '}
+            <span className="muted">{r.venue}</span>
+            <br />
+            <span className="small">{loc(r.supports)}</span>
+          </li>
+        ))}
+      </ul>
+
       <h2>{t('sources.candidatesTitle')}</h2>
       <div className="table-wrap">
         <table className="table">
@@ -118,8 +221,41 @@ export default function Sources() {
       </div>
       <h2>{t('sources.mapsTitle')}</h2>
       <p>{t('sources.mapsText')}</p>
-      <h2>{t('sources.teamTitle')}</h2>
-      <p>{t('sources.team')}</p>
+
+      <h2>{t('sources.siteTable')}</h2>
+      <p className="muted">{t('sources.siteTableText')}</p>
+      <div className="site-source-groups">
+        {([
+          ['explorer.groupOman', [...data.earth_sites, ...(data.benchmarks ?? []).filter((b) => b.role === 'candidate')]],
+          ['explorer.groupTargets', data.targets],
+          ['explorer.groupWorld', (data.benchmarks ?? []).filter((b) => b.role === 'benchmark')],
+        ] as const).map(([key, list]) => (
+          <div key={key} className="panel">
+            <h3>{t(key)}</h3>
+            <ul className="site-source-list">
+              {list.map((site) => {
+                const atlas = [...BENCHMARKS, ...OMAN_CANDIDATES].find((a) => a.id === site.id);
+                const refs = sourcesForSite(site.id, atlas?.source ?? (site.id === 'moon_south_pole' ? ARTEMIS_SOURCES[0] : undefined));
+                return (
+                  <li key={site.id}>
+                    <Link to={`/site/${site.id}`}><span className={`dot ${site.body}`} /> {loc(site.name)}</Link>
+                    {refs.length ? (
+                      <ul>
+                        {refs.map((r) => (
+                          <li key={r.url}><a href={r.url} target="_blank" rel="noreferrer">{r.label}</a></li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="muted small">{t('sources.dataOnly')}</p>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <ContinueExploring from="sources" />
     </div>
   );
 }

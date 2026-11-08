@@ -12,7 +12,8 @@ CONFIG = {**BASE, "feature_ranges": {
 }}
 FULL = {
     "slope_deg": 5, "roughness_m": 20, "relief_m": 300,
-    "serpentine_index": 0.03, "carbonate_index": 0.04, "chloride_index": 0.1,
+    # Every mineral value sits above the signal floor (0.2 of its range) so FULL vs FULL is a full match.
+    "serpentine_index": 0.03, "carbonate_index": 0.04, "chloride_index": 0.3,
     "albedo": 0.25, "thermal_inertia": 500,
 }
 RES = {"terrain": 463, "mineralogy": 60, "surface": 500}
@@ -99,3 +100,26 @@ def test_dataset_scores_every_pair_in_range():
     for s in data["scores"]:
         assert s["overall"] is None or 0.0 <= s["overall"] <= 1.0
         assert 0.0 <= s["confidence"] <= 1.0
+
+
+def test_shared_absence_is_not_a_mineral_match():
+    # Both sites below the floor on every mineral: no shared signal, so minerals are not compared
+    # (instead of scoring 1.0) and coverage drops by the whole mineral criterion.
+    weak = {**FULL, "serpentine_index": 0.001, "carbonate_index": 0.0, "chloride_index": 0.05}
+    r = similarity(weak, weak, RES, RES, CONFIG)
+    assert r["per_criterion"]["mineralogy"] is None
+    assert r["coverage"] == pytest.approx(0.6)
+
+
+def test_one_side_above_the_floor_is_still_compared():
+    weak = {**FULL, "serpentine_index": 0.001}
+    r = similarity(FULL, weak, RES, RES, CONFIG)
+    assert r["per_criterion"]["mineralogy"] is not None
+    assert r["per_criterion"]["mineralogy"] < 1.0
+
+
+def test_floor_can_be_switched_off():
+    cfg = {k: v for k, v in CONFIG.items() if k != "signal_floor"}
+    weak = {**FULL, "serpentine_index": 0.001, "carbonate_index": 0.0, "chloride_index": 0.05}
+    r = similarity(weak, weak, RES, RES, cfg)
+    assert r["per_criterion"]["mineralogy"] == pytest.approx(1.0)

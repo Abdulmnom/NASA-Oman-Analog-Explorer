@@ -30,6 +30,11 @@ export default function SiteCard({ site, best, bestTarget, intended, others = []
   ].filter((f): f is { label: string; text: string } => Boolean(f));
   return (
     <Link to={`/site/${site.id}`} className={`site-card${featured ? ' featured' : ''}${site.role === 'reference' ? ' is-ref' : ''}`}>
+      {site.body === 'earth' && (
+        <div className="site-thumb" aria-hidden="true">
+          <img src={`${import.meta.env.BASE_URL}layers/${site.id}/elevation.png`} alt="" loading="lazy" draggable={false} />
+        </div>
+      )}
       <div className="site-card-head">
         {rank !== undefined && (
           <span className="rank" title={t('home.rankTitle')}>
@@ -44,9 +49,9 @@ export default function SiteCard({ site, best, bestTarget, intended, others = []
       </div>
       <p className="card-flags">
         {site.coords_approximate && (
-          <span className="pill warn" title={site.coords_note ? loc(site.coords_note) : undefined}>{t('site.coordsApprox')}</span>
+          <span className="pill soft" title={site.coords_note ? loc(site.coords_note) : undefined}>{t('site.coordsApprox')}</span>
         )}
-        <span className={`pill ${unavailable ? 'warn' : 'ok'}`}>
+        <span className={`pill ${unavailable ? 'soft' : 'ok'}`}>
           {unavailable ? t('site.someMissing', { n: unavailable }) : t('site.allMeasured')}
         </span>
       </p>

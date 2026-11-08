@@ -1,20 +1,30 @@
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import AnalogMap from '../components/explorer/AnalogMap';
 import CompareView from '../components/explorer/CompareView';
 import SitesTable from '../components/explorer/SitesTable';
+import TargetFinder from '../components/explorer/TargetFinder';
 import TwinMaps from '../components/map/TwinMaps';
 import ScoreBadge, { ScoreBar } from '../components/similarity/ScoreBadge';
 import { useI18n } from '../i18n';
 import { bestMatch, findSite, matchesFor, scoreFor, useDataset } from '../lib/data';
+import ContinueExploring from '../components/common/ContinueExploring';
+import SiteSources from '../components/common/SiteSources';
+import { sharedFeatures } from '../lib/analysis';
 
-type View = 'map' | 'compare' | 'table';
-const VIEWS: View[] = ['map', 'compare', 'table'];
+type View = 'map' | 'compare' | 'targets' | 'map2' | 'table';
+const VIEWS: View[] = ['map', 'compare', 'targets', 'map2', 'table'];
 
 export default function Explorer() {
-  const { t, loc, lang } = useI18n();
+  const { t, loc, num, lang } = useI18n();
   const data = useDataset();
   const [params, setParams] = useSearchParams();
+  const navigate = useNavigate();
 
-  const earth = data.earth_sites.find((s) => s.id === params.get('site')) ?? data.earth_sites[0];
+  // Oman's five scored sites, then Majlis al Jinn (Omani candidate), then world analog sites.
+  const omanExtra = (data.benchmarks ?? []).filter((b) => b.role === 'candidate');
+  const world = (data.benchmarks ?? []).filter((b) => b.role === 'benchmark');
+  const pool = [...data.earth_sites, ...omanExtra, ...world];
+  const earth = pool.find((s) => s.id === params.get('site')) ?? data.earth_sites[0];
   const matches = matchesFor(data, earth.id);
   const target =
     data.targets.find((s) => s.id === params.get('target')) ?? findSite(data, bestMatch(data, earth)?.target) ?? data.targets[0];
@@ -45,27 +55,46 @@ export default function Explorer() {
 
       {view === 'table' ? (
         <SitesTable onOpen={(site, tgt) => select(site, tgt, tgt ? 'compare' : 'map')} />
+      ) : view === 'map2' ? (
+        <AnalogMap onOpen={(s) => navigate(`/site/${s.id}`)} />
+      ) : view === 'targets' ? (
+        <TargetFinder
+          target={target}
+          onSelectTarget={(id) => select(earth.id, id, 'targets')}
+          onOpen={(site, v) => select(site, target.id, v)}
+        />
       ) : (
       <div className="explorer">
         <aside className="panel site-list">
           <h2 className="small-title">{t('explorer.pickSite')}</h2>
-          <ul>
-            {data.earth_sites.map((s) => {
-              const best = bestMatch(data, s);
-              return (
-                <li key={s.id}>
-                  <button type="button" className={s.id === earth.id ? 'active' : ''} onClick={() => select(s.id)}>
-                    <span className="name">{loc(s.name)}</span>
-                    {s.role === 'reference' ? (
-                      <span className="pill ref">{t('explorer.reference')}</span>
-                    ) : (
-                      best && <ScoreBar value={best.overall} />
-                    )}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
+          {([
+            ['explorer.groupOman', [...data.earth_sites, ...omanExtra]],
+            ['explorer.groupWorld', world],
+          ] as const).map(([key, list]) => list.length > 0 && (
+            <div key={key} className="site-group">
+              <p className="site-group-title">{t(key)}</p>
+              <ul>
+                {list.map((s) => {
+                  const best = bestMatch(data, s);
+                  return (
+                    <li key={s.id}>
+                      <button type="button" className={s.id === earth.id ? 'active' : ''} onClick={() => select(s.id)}>
+                        <span className="name">
+                          {loc(s.name)}
+                          {s.role === 'candidate' && <span className="pill soft">{t('site.role_candidate')}</span>}
+                        </span>
+                        {s.role === 'reference' ? (
+                          <span className="pill ref">{t('explorer.reference')}</span>
+                        ) : (
+                          best && <ScoreBar value={best.overall} />
+                        )}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
         </aside>
 
         <section className="explorer-main">
@@ -96,7 +125,7 @@ export default function Explorer() {
           ) : (
           <>
           <TwinMaps
-            earthSites={data.earth_sites}
+            earthSites={pool}
             earth={earth}
             targets={data.targets}
             target={target}
@@ -114,11 +143,32 @@ export default function Explorer() {
               <p>{target.card[lang].summary}</p>
             </div>
           </div>
+
+          <div className="panel pair-strip">
+            <p>
+              <span className="dot earth" /> <strong>{loc(earth.name)}</strong> ↔ <span className={`dot ${target.body}`} /> <strong>{loc(target.name)}</strong>
+            </p>
+            <ul className="pair-coverage">
+              {Object.keys(data.config.criteria).map((c) => {
+                const sf = sharedFeatures(data, c, earth, target);
+                return (
+                  <li key={c} className={sf.shared === 0 ? 'muted' : undefined}>
+                    {t(`criteria.${c}`)}: {t('explorer.sharedOf', { n: num(sf.shared), m: num(sf.total) })}
+                  </li>
+                );
+              })}
+            </ul>
+            <button type="button" className="btn primary small" onClick={() => show('compare')}>
+              {t('explorer.whyScore')} →
+            </button>
+          </div>
+          <SiteSources ids={[earth.id, target.id]} title={t('explorer.pairSources')} />
           </>
           )}
         </section>
       </div>
       )}
+      <ContinueExploring from="explorer" />
     </div>
   );
 }

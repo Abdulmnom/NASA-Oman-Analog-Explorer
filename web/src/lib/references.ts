@@ -10,6 +10,8 @@ export interface Reference {
   /** Site ids this paper supports (Oman side or target side). */
   sites: string[];
   supports: Localized;
+  /** 'site' = why a site was chosen (default); 'method' = an instrument or method paper behind a dataset. */
+  kind?: 'site' | 'method';
 }
 
 const doi = (d: string) => `https://doi.org/${d}`;
@@ -95,8 +97,121 @@ export const REFERENCES: Reference[] = [
       ar: 'تضاريس فوهة Shackleton من LOLA: جدران شديدة الانحدار وارتفاع الحافة.',
     },
   },
+  // Added 2026-11-07; every DOI checked against the Crossref registry the same day.
+  {
+    id: 'leask2021', cite: 'Leask et al. (2021)', title: 'Tracing carbonate formation, serpentinization, and biological materials with micro-/meso-scale infrared imaging spectroscopy in a Mars analog system, Samail Ophiolite, Oman',
+    venue: 'Earth and Space Science 8(11), e2021EA001637', url: doi('10.1029/2021EA001637'), sites: ['samail_ophiolite'],
+    supports: {
+      en: 'Treats the Samail ophiolite explicitly as a Mars analog and maps its serpentine and carbonate with infrared imaging spectroscopy.',
+      ar: 'يعامل أفيوليت سمائل صراحةً كنظير للمريخ ويرسم السربنتين والكربونات فيه بالتصوير الطيفي بالأشعة تحت الحمراء.',
+    },
+  },
+  {
+    id: 'farley2022', cite: 'Farley et al. (2022)', title: 'Aqueously altered igneous rocks sampled on the floor of Jezero crater, Mars',
+    venue: 'Science 377', url: doi('10.1126/science.abo2196'), sites: ['jezero_crater'],
+    supports: {
+      en: 'Perseverance rover results: the Jezero floor rocks are igneous and were altered by water, the ground truth behind the orbital view.',
+      ar: 'نتائج عربة Perseverance: صخور أرضية Jezero نارية غيّرها الماء، وهي الحقيقة الأرضية خلف الرصد المداري.',
+    },
+  },
+  {
+    id: 'groemer2020', cite: 'Groemer et al. (2020)', title: 'The AMADEE-18 Mars analog expedition in the Dhofar region of Oman',
+    venue: 'Astrobiology 20(11), 1276–1286', url: doi('10.1089/ast.2019.2031'), sites: ['dhofar_amadee18'],
+    supports: {
+      en: 'Mission overview: 19 experiments in the Dhofar desert in February 2018, run with the Oman Astronomical Society and a support centre in Innsbruck.',
+      ar: 'نظرة عامة على المهمة: 19 تجربة في صحراء ظفار في فبراير 2018 بالتعاون مع الجمعية الفلكية العمانية ومركز دعم في إنسبروك.',
+    },
+  },
+  {
+    id: 'navarro2003', cite: 'Navarro-González et al. (2003)', title: 'Mars-like soils in the Atacama Desert, Chile, and the dry limit of microbial life',
+    venue: 'Science 302(5647), 1018–1021', url: doi('10.1126/science.1089143'), sites: ['atacama'],
+    supports: {
+      en: 'Why the Atacama is a classic Mars analog: soils so dry that Viking-style life tests come back nearly empty.',
+      ar: 'سبب اعتبار أتاكاما نظيراً كلاسيكياً للمريخ: تربة شديدة الجفاف لدرجة أن اختبارات الحياة على طريقة Viking تكاد لا تجد شيئاً.',
+    },
+  },
+  {
+    id: 'eppler2013', cite: 'Eppler et al. (2013)', title: 'Desert Research and Technology Studies (DRATS) 2010 science operations: Operational approaches and lessons learned for managing science during human planetary surface missions',
+    venue: 'Acta Astronautica 90(2), 224–241', url: doi('10.1016/j.actaastro.2012.03.009'), sites: ['black_point'],
+    supports: {
+      en: "NASA's own account of the Desert RATS field tests run at the Black Point Lava Flow.",
+      ar: 'رواية ناسا نفسها لاختبارات Desert RATS الميدانية في تدفق بلاك بوينت البركاني.',
+    },
+  },
+  {
+    id: 'sauro2020', cite: 'Sauro et al. (2020)', title: 'Lava tubes on Earth, Moon and Mars: A review on their size and morphology revealed by comparative planetology',
+    venue: 'Earth-Science Reviews 209, 103288', url: doi('10.1016/j.earscirev.2020.103288'), sites: ['lanzarote', 'majlis_al_jinn'],
+    supports: {
+      en: 'Compares Lanzarote lava tubes with lunar and Martian ones and discusses caves as shelters from radiation and micrometeorites.',
+      ar: 'يقارن أنابيب الحمم في لانزاروتي بنظيراتها على القمر والمريخ ويناقش الكهوف كملاجئ من الإشعاع والنيازك الدقيقة.',
+    },
+  },
+  {
+    id: 'davison1990', cite: 'Davison (1990)', title: 'Meeting place of the spirits',
+    venue: 'Aramco World 41(5)', url: 'https://archive.aramcoworld.com/issue/199005/meeting.place.of.the.spirits.htm', sites: ['majlis_al_jinn'],
+    supports: {
+      en: 'Account of the Majlis al Jinn chamber by the geologist who surveyed it for the 1985 Public Authority for Water Resources report.',
+      ar: 'وصف قاعة مجلس الجن بقلم الجيولوجي الذي مسحها لتقرير الهيئة العامة لموارد المياه عام 1985.',
+    },
+  },
+  // Instrument and method papers behind the datasets the scores use.
+  { id: 'smith2001', kind: 'method', cite: 'Smith et al. (2001)', title: 'Mars Orbiter Laser Altimeter: Experiment summary after the first year of global mapping of Mars', venue: 'JGR Planets 106, 23689–23722', url: doi('10.1029/2000JE001364'), sites: [], supports: { en: 'MOLA: the Mars elevation data behind every Mars terrain score.', ar: 'MOLA: بيانات ارتفاع المريخ وراء كل درجة تضاريس مريخية.' } },
+  { id: 'murchie2007', kind: 'method', cite: 'Murchie et al. (2007)', title: 'Compact Reconnaissance Imaging Spectrometer for Mars (CRISM) on Mars Reconnaissance Orbiter (MRO)', venue: 'JGR Planets 112', url: doi('10.1029/2006JE002682'), sites: [], supports: { en: 'CRISM: the Mars mineral spectra behind the serpentine and carbonate indices.', ar: 'CRISM: أطياف معادن المريخ وراء مؤشري السربنتين والكربونات.' } },
+  { id: 'christensen2001', kind: 'method', cite: 'Christensen et al. (2001)', title: 'Mars Global Surveyor Thermal Emission Spectrometer experiment: Investigation description and surface science results', venue: 'JGR Planets 106, 23823–23871', url: doi('10.1029/2000JE001370'), sites: [], supports: { en: 'TES: the Mars albedo map, and thermal inertia where THEMIS has no data.', ar: 'TES: خريطة ألبيدو المريخ، والقصور الحراري حيث لا تتوفر بيانات THEMIS.' } },
+  { id: 'fergason2006', kind: 'method', cite: 'Fergason et al. (2006)', title: 'High-resolution thermal inertia derived from the Thermal Emission Imaging System (THEMIS): Thermal model and applications', venue: 'JGR Planets 111', url: doi('10.1029/2006JE002735'), sites: [], supports: { en: 'How thermal inertia is derived from THEMIS, the 100 m Mars thermal inertia we use.', ar: 'كيف يُشتق القصور الحراري من THEMIS، وهو القصور الحراري المريخي بدقة 100 م الذي نستخدمه.' } },
+  { id: 'green2020', kind: 'method', cite: 'Green et al. (2020)', title: 'An Earth science imaging spectroscopy mission: The Earth Surface Mineral Dust Source Investigation (EMIT)', venue: 'IGARSS 2020, 6262–6265', url: doi('10.1109/IGARSS39084.2020.9323741'), sites: [], supports: { en: 'EMIT: the Earth mineral spectra behind the Omani serpentine and carbonate indices.', ar: 'EMIT: أطياف معادن الأرض وراء مؤشري السربنتين والكربونات في عُمان.' } },
+  { id: 'liang2001', kind: 'method', cite: 'Liang (2001)', title: 'Narrowband to broadband conversions of land surface albedo I: Algorithms', venue: 'Remote Sensing of Environment 76(2), 213–238', url: doi('10.1016/S0034-4257(00)00205-4'), sites: [], supports: { en: 'The formula that turns MODIS bands into the Earth albedo values we compare.', ar: 'المعادلة التي تحوّل نطاقات MODIS إلى قيم ألبيدو الأرض التي نقارنها.' } },
+  {
+    id: 'searle2007', cite: 'Searle (2007)', title: 'Structural geometry, style and timing of deformation in the Hawasina Window, Al Jabal al Akhdar and Saih Hatat culminations, Oman Mountains',
+    venue: 'GeoArabia 12(2)', url: 'https://ora.ox.ac.uk/objects/uuid:0e6ad91c-dcbd-4ca9-9eee-1567f925366f', sites: ['jebel_shams'],
+    supports: {
+      en: 'Geology of the Jabal al Akhdar culmination, whose highest point is Jebel Shams: the carbonate sequence exposed in the walls of Wadi Ghul.',
+      ar: 'جيولوجيا قبة الجبل الأخضر التي أعلى نقاطها جبل شمس: تتابع الصخور الكربوناتية المكشوف في جدران وادي غول.',
+    },
+  },
+  {
+    id: 'smith2010', cite: 'Smith et al. (2010)', title: 'Initial observations from the Lunar Orbiter Laser Altimeter (LOLA)',
+    venue: 'Geophysical Research Letters 37, L18204', url: doi('10.1029/2010GL043751'), sites: ['moon_south_pole'],
+    supports: {
+      en: 'The LOLA instrument and its first polar elevation models: the topography data our Moon comparison uses.',
+      ar: 'جهاز LOLA ونماذج الارتفاع القطبية الأولى منه: بيانات التضاريس التي تعتمد عليها مقارنتنا مع القمر.',
+    },
+  },
+  {
+    id: 'mazarico2011', cite: 'Mazarico et al. (2011)', title: 'Illumination conditions of the lunar polar regions using LOLA topography',
+    venue: 'Icarus 211(2), 1066–1081', url: doi('10.1016/j.icarus.2010.10.030'), sites: ['moon_south_pole'],
+    supports: {
+      en: 'Where the south pole is permanently shadowed and where it is lit for most of the year, the reason Artemis targets its ridges.',
+      ar: 'أين يقع الظل الدائم في القطب الجنوبي وأين تبقى الإضاءة معظم السنة، وهذا سبب اختيار Artemis لحوافه.',
+    },
+  },
+  {
+    id: 'colaprete2010', cite: 'Colaprete et al. (2010)', title: 'Detection of water in the LCROSS ejecta plume',
+    venue: 'Science 330(6003), 463–468', url: doi('10.1126/science.1186986'), sites: ['moon_south_pole'],
+    supports: {
+      en: 'The 2009 LCROSS impact into Cabeus crater threw up water: about 5.6 ± 2.9 % ice by mass in the shadowed regolith.',
+      ar: 'اصطدام LCROSS عام 2009 بفوهة Cabeus أطلق ماءً: نحو 5.6 ± 2.9 % جليد من كتلة التربة في الظل الدائم.',
+    },
+  },
+  {
+    id: 'li2018', cite: 'Li et al. (2018)', title: 'Direct evidence of surface exposed water ice in the lunar polar regions',
+    venue: 'PNAS 115(36), 8907–8912', url: doi('10.1073/pnas.1802345115'), sites: ['moon_south_pole'],
+    supports: {
+      en: 'NASA\'s Moon Mineralogy Mapper found ice exposed at the surface in permanently shadowed craters, patchy and in a small share of them.',
+      ar: 'جهاز Moon Mineralogy Mapper التابع لناسا رصد جليداً مكشوفاً على السطح في الفوهات المظللة دائماً، متقطعاً وفي جزء صغير منها.',
+    },
+  },
 ];
 
 export function referencesFor(...siteIds: string[]): Reference[] {
   return REFERENCES.filter((r) => siteIds.some((id) => r.sites.includes(id)));
+}
+
+export interface SiteSource { label: string; url: string; note?: Localized }
+
+/** Every public source tied to one site: peer-reviewed papers, then the analog programme page. */
+export function sourcesForSite(id: string, programmeSource?: { label: string; url: string }): SiteSource[] {
+  const out: SiteSource[] = referencesFor(id).map((r) => ({ label: `${r.cite}, ${r.title}. ${r.venue}`, url: r.url, note: r.supports }));
+  if (programmeSource && !out.some((o) => o.url === programmeSource.url)) out.push(programmeSource);
+  return out;
 }

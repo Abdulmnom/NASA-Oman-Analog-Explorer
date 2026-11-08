@@ -39,6 +39,7 @@ x'           = log10(x) for roughness_m and relief_m, x otherwise
 norm(x)      = clip((x' − min) / (max − min), 0, 1)
                min, max = lowest / highest measured x' over ALL sites (Earth + Mars + Moon)
 score_c      = mean over features measured on both sides of (1 − |norm_a − norm_b|)
+               (mineral features: skipped when both sides are below `signal_floor` = 0.2 of their body's range)
 overall      = Σ w_c · score_c / Σ w_c                 over criteria with ≥ 1 shared feature
 coverage     = Σ w_c · (shared_c / n_c) / Σ w_c        over all criteria with w > 0
 res_factor_c = max(0.5, 1 − 0.1 · |log2(res_a / res_b)|)   native resolutions from provenance
@@ -78,6 +79,14 @@ resolution among the criterion's measured features.
 
 ## 5. Mineral indices (`metrics/mineralogy.py`)
 
+**Shared absence is not similarity (`signal_floor` in `weights.yaml`).** Mineral indices are scaled
+within each body, so the weakest Earth site and the weakest Mars target both land near 0. Before this
+rule, Umm as Samim vs Terra Sirenum scored 100% on minerals although neither shows serpentine or
+carbonate. A mineral feature is now compared only when at least one site reaches 0.2 of its body's
+range; otherwise it is skipped for that pair and coverage drops. Effect: Umm as Samim vs Terra Sirenum
+86.9% → 78.2% (minerals not compared, confidence 65% → 44%); the ranking of the Omani sites is unchanged.
+
+
 * **Band depth** `BD = 1 − R_center / R_continuum`, continuum linear between shoulders.
 * Serpentine: 2.32 µm Mg-OH band (Ehlmann et al. 2010). Carbonate: requires **both** 2.33 µm and
   2.50 µm bands, taking the smaller of the two depths (Ehlmann et al. 2008). Serpentine has no 2.5 µm
@@ -107,9 +116,57 @@ The Dhofar AMADEE-18 site (chosen by experts for a 2018 Mars simulation) is the 
 data only, is in `sites.json` → `validation` and on the Methodology page. It is reported as computed,
 and the method is not adjusted to improve it. The AMADEE-18 coordinates are approximate (see sites.md).
 
+**Why Dhofar ranks 4th of 5 (diagnosis, 2026-11-07).** Mean similarity to the four Mars targets, split by
+criterion (from `sites.json` → `scores`):
+
+| Omani site | Terrain | Minerals | Surface (albedo) |
+|---|---|---|---|
+| Sharqiya Sands | 0.787 | 0.508 | 0.487 |
+| Umm as Samim | 0.758 | 0.414 | 0.417 |
+| Dhofar (AMADEE-18) | 0.757 | not measured | **0.080** |
+| Samail Ophiolite | 0.660 | 0.589 | 0.931 |
+| Jebel Shams | 0.353 | 0.449 | 0.931 |
+
+* On terrain, Dhofar is essentially tied for second place.
+* It has no mineral score (no cloud-free EMIT pixels), so its overall score rests on terrain (weight 0.4)
+  and surface (weight 0.2) alone.
+* Surface is albedo only here (no Earth thermal inertia). Dhofar's gravel plain has the highest albedo of
+  all ten scored sites (0.480, the top of the pooled range), while the Mars targets sit at 0.116–0.171.
+  The albedo match is therefore near zero, and with a third of the remaining weight it pulls Dhofar down.
+
+So the low rank comes from one measured, physical difference: a bright desert surface against dark Martian
+ground. It is not a computing error. It also fits why AMADEE-18 chose Dhofar: for field operations
+(logistics, access, varied terrain and geology to practise on), not for a match in surface brightness to a
+particular Mars landing site. We report the rank unchanged and explain it.
+
+**Benchmarks.** Seven analog sites used by NASA, ESA and the Mars Society (`config/benchmark_sites.yaml`)
+are scored with the same ranges without entering the Omani ranking. They are a second check that the
+index rewards recognised analogs (`benchmark_mean_mars` in `sites.json`).
+
+**Planned: a negative control.** One high-scoring known analog proves little unless a place that should
+*not* look like Mars scores clearly lower. The next step is a control site with the same window size,
+for example irrigated farmland well inland, run through `analog.compute` and `analog.export` like the
+benchmarks. If it scores as high as the analogs, the index lacks a bare-ground criterion (vegetation or
+surface water), and that would be reported as a limitation, not hidden. A control window must stay clear of
+the sea: open water is dark and flat and would match Mars albedo and terrain for the wrong reason.
+
+## 7b. Field environment (context, not scored)
+
+Site pages, the Analog Atlas and the mission plan show NASA POWER monthly climatology (2001–2025) for each
+Omani site and for the Majlis al Jinn candidate: air temperature at 2 m (mean, extremes, day–night range),
+rain, all-sky solar irradiance, humidity and wind. `analog/environment.py` reads the raw API answers
+unchanged and derives only rain per year and the coolest three consecutive months (Dec–Feb at every site).
+POWER describes a coarse grid cell, so each page shows the cell height next to the NASADEM elevation range
+and, where the ground is more than 500 m higher, the standard-atmosphere lapse-rate estimate (6.5 °C per km).
+Climate is not in the similarity index: that would need an equivalent Mars source (for example the Mars
+Climate Database) and a defensible way to compare Earth and Mars weather.
+
 ## 8. Open questions for the geologist review
 
 1. Should mineralogy weigh more than terrain for the Mars comparison?
 2. Is there a cited ATI → thermal inertia calibration for hyper-arid Oman surfaces?
 3. Is there a cited VSWIR or TIR chloride detection method usable on both EMIT and CRISM/THEMIS?
 4. Exact AMADEE-18 field coordinates (Groemer et al. 2020).
+5. Which inland Omani site makes the best negative control (clearly not Mars-like, no sea in a 10 km window)?
+6. Should albedo count when the Earth site is a bright desert and the Mars target is dark ground, or is
+   brightness a surface coating that says little about the rock underneath?
