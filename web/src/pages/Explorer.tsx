@@ -8,18 +8,23 @@ import ScoreBadge, { ScoreBar } from '../components/similarity/ScoreBadge';
 import { useI18n } from '../i18n';
 import { bestMatch, findSite, matchesFor, scoreFor, useDataset } from '../lib/data';
 import ContinueExploring from '../components/common/ContinueExploring';
+import SiteSources from '../components/common/SiteSources';
 import { sharedFeatures } from '../lib/analysis';
 
 type View = 'map' | 'compare' | 'targets' | 'map2' | 'table';
 const VIEWS: View[] = ['map', 'compare', 'targets', 'map2', 'table'];
 
 export default function Explorer() {
-  const { t, loc, num } = useI18n();
+  const { t, loc, num, lang } = useI18n();
   const data = useDataset();
   const [params, setParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const earth = data.earth_sites.find((s) => s.id === params.get('site')) ?? data.earth_sites[0];
+  // Oman's five scored sites, then Majlis al Jinn (Omani candidate), then world analog sites.
+  const omanExtra = (data.benchmarks ?? []).filter((b) => b.role === 'candidate');
+  const world = (data.benchmarks ?? []).filter((b) => b.role === 'benchmark');
+  const pool = [...data.earth_sites, ...omanExtra, ...world];
+  const earth = pool.find((s) => s.id === params.get('site')) ?? data.earth_sites[0];
   const matches = matchesFor(data, earth.id);
   const target =
     data.targets.find((s) => s.id === params.get('target')) ?? findSite(data, bestMatch(data, earth)?.target) ?? data.targets[0];
@@ -62,23 +67,34 @@ export default function Explorer() {
       <div className="explorer">
         <aside className="panel site-list">
           <h2 className="small-title">{t('explorer.pickSite')}</h2>
-          <ul>
-            {data.earth_sites.map((s) => {
-              const best = bestMatch(data, s);
-              return (
-                <li key={s.id}>
-                  <button type="button" className={s.id === earth.id ? 'active' : ''} onClick={() => select(s.id)}>
-                    <span className="name">{loc(s.name)}</span>
-                    {s.role === 'reference' ? (
-                      <span className="pill ref">{t('explorer.reference')}</span>
-                    ) : (
-                      best && <ScoreBar value={best.overall} />
-                    )}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
+          {([
+            ['explorer.groupOman', [...data.earth_sites, ...omanExtra]],
+            ['explorer.groupWorld', world],
+          ] as const).map(([key, list]) => list.length > 0 && (
+            <div key={key} className="site-group">
+              <p className="site-group-title">{t(key)}</p>
+              <ul>
+                {list.map((s) => {
+                  const best = bestMatch(data, s);
+                  return (
+                    <li key={s.id}>
+                      <button type="button" className={s.id === earth.id ? 'active' : ''} onClick={() => select(s.id)}>
+                        <span className="name">
+                          {loc(s.name)}
+                          {s.role === 'candidate' && <span className="pill soft">{t('site.role_candidate')}</span>}
+                        </span>
+                        {s.role === 'reference' ? (
+                          <span className="pill ref">{t('explorer.reference')}</span>
+                        ) : (
+                          best && <ScoreBar value={best.overall} />
+                        )}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
         </aside>
 
         <section className="explorer-main">
@@ -109,13 +125,24 @@ export default function Explorer() {
           ) : (
           <>
           <TwinMaps
-            earthSites={data.earth_sites}
+            earthSites={pool}
             earth={earth}
             targets={data.targets}
             target={target}
             onSelectEarth={(id) => select(id)}
             onSelectTarget={(id) => select(earth.id, id)}
           />
+
+          <div className="grid two">
+            <div className="panel">
+              <h3><span className="dot earth" /> {loc(earth.name)}</h3>
+              <p>{earth.card[lang].summary}</p>
+            </div>
+            <div className="panel">
+              <h3><span className={`dot ${target.body}`} /> {loc(target.name)}</h3>
+              <p>{target.card[lang].summary}</p>
+            </div>
+          </div>
 
           <div className="panel pair-strip">
             <p>
@@ -135,6 +162,7 @@ export default function Explorer() {
               {t('explorer.whyScore')} →
             </button>
           </div>
+          <SiteSources ids={[earth.id, target.id]} title={t('explorer.pairSources')} />
           </>
           )}
         </section>
