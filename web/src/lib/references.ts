@@ -118,8 +118,8 @@ export const REFERENCES: Reference[] = [
     id: 'groemer2020', cite: 'Groemer et al. (2020)', title: 'The AMADEE-18 Mars analog expedition in the Dhofar region of Oman',
     venue: 'Astrobiology 20(11), 1276–1286', url: doi('10.1089/ast.2019.2031'), sites: ['dhofar_amadee18'],
     supports: {
-      en: 'The mission paper for AMADEE-18: why Dhofar was chosen and what was tested there in 2018.',
-      ar: 'ورقة مهمة AMADEE-18: سبب اختيار ظفار وما اختُبر فيها عام 2018.',
+      en: 'Mission overview: 19 experiments in the Dhofar desert in February 2018, run with the Oman Astronomical Society and a support centre in Innsbruck.',
+      ar: 'نظرة عامة على المهمة: 19 تجربة في صحراء ظفار في فبراير 2018 بالتعاون مع الجمعية الفلكية العمانية ومركز دعم في إنسبروك.',
     },
   },
   {
@@ -159,11 +159,59 @@ export const REFERENCES: Reference[] = [
   { id: 'murchie2007', kind: 'method', cite: 'Murchie et al. (2007)', title: 'Compact Reconnaissance Imaging Spectrometer for Mars (CRISM) on Mars Reconnaissance Orbiter (MRO)', venue: 'JGR Planets 112', url: doi('10.1029/2006JE002682'), sites: [], supports: { en: 'CRISM: the Mars mineral spectra behind the serpentine and carbonate indices.', ar: 'CRISM: أطياف معادن المريخ وراء مؤشري السربنتين والكربونات.' } },
   { id: 'christensen2001', kind: 'method', cite: 'Christensen et al. (2001)', title: 'Mars Global Surveyor Thermal Emission Spectrometer experiment: Investigation description and surface science results', venue: 'JGR Planets 106, 23823–23871', url: doi('10.1029/2000JE001370'), sites: [], supports: { en: 'TES: the Mars albedo map, and thermal inertia where THEMIS has no data.', ar: 'TES: خريطة ألبيدو المريخ، والقصور الحراري حيث لا تتوفر بيانات THEMIS.' } },
   { id: 'fergason2006', kind: 'method', cite: 'Fergason et al. (2006)', title: 'High-resolution thermal inertia derived from the Thermal Emission Imaging System (THEMIS): Thermal model and applications', venue: 'JGR Planets 111', url: doi('10.1029/2006JE002735'), sites: [], supports: { en: 'How thermal inertia is derived from THEMIS, the 100 m Mars thermal inertia we use.', ar: 'كيف يُشتق القصور الحراري من THEMIS، وهو القصور الحراري المريخي بدقة 100 م الذي نستخدمه.' } },
-  { id: 'smith2010', kind: 'method', cite: 'Smith et al. (2010)', title: 'Initial observations from the Lunar Orbiter Laser Altimeter (LOLA)', venue: 'Geophysical Research Letters 37', url: doi('10.1029/2010GL043751'), sites: [], supports: { en: 'LOLA: the lunar elevation data behind the south-pole terrain score.', ar: 'LOLA: بيانات ارتفاع القمر وراء درجة تضاريس القطب الجنوبي.' } },
   { id: 'green2020', kind: 'method', cite: 'Green et al. (2020)', title: 'An Earth science imaging spectroscopy mission: The Earth Surface Mineral Dust Source Investigation (EMIT)', venue: 'IGARSS 2020, 6262–6265', url: doi('10.1109/IGARSS39084.2020.9323741'), sites: [], supports: { en: 'EMIT: the Earth mineral spectra behind the Omani serpentine and carbonate indices.', ar: 'EMIT: أطياف معادن الأرض وراء مؤشري السربنتين والكربونات في عُمان.' } },
   { id: 'liang2001', kind: 'method', cite: 'Liang (2001)', title: 'Narrowband to broadband conversions of land surface albedo I: Algorithms', venue: 'Remote Sensing of Environment 76(2), 213–238', url: doi('10.1016/S0034-4257(00)00205-4'), sites: [], supports: { en: 'The formula that turns MODIS bands into the Earth albedo values we compare.', ar: 'المعادلة التي تحوّل نطاقات MODIS إلى قيم ألبيدو الأرض التي نقارنها.' } },
+  {
+    id: 'searle2007', cite: 'Searle (2007)', title: 'Structural geometry, style and timing of deformation in the Hawasina Window, Al Jabal al Akhdar and Saih Hatat culminations, Oman Mountains',
+    venue: 'GeoArabia 12(2)', url: 'https://ora.ox.ac.uk/objects/uuid:0e6ad91c-dcbd-4ca9-9eee-1567f925366f', sites: ['jebel_shams'],
+    supports: {
+      en: 'Geology of the Jabal al Akhdar culmination, whose highest point is Jebel Shams: the carbonate sequence exposed in the walls of Wadi Ghul.',
+      ar: 'جيولوجيا قبة الجبل الأخضر التي أعلى نقاطها جبل شمس: تتابع الصخور الكربوناتية المكشوف في جدران وادي غول.',
+    },
+  },
+  {
+    id: 'smith2010', cite: 'Smith et al. (2010)', title: 'Initial observations from the Lunar Orbiter Laser Altimeter (LOLA)',
+    venue: 'Geophysical Research Letters 37, L18204', url: doi('10.1029/2010GL043751'), sites: ['moon_south_pole'],
+    supports: {
+      en: 'The LOLA instrument and its first polar elevation models: the topography data our Moon comparison uses.',
+      ar: 'جهاز LOLA ونماذج الارتفاع القطبية الأولى منه: بيانات التضاريس التي تعتمد عليها مقارنتنا مع القمر.',
+    },
+  },
+  {
+    id: 'mazarico2011', cite: 'Mazarico et al. (2011)', title: 'Illumination conditions of the lunar polar regions using LOLA topography',
+    venue: 'Icarus 211(2), 1066–1081', url: doi('10.1016/j.icarus.2010.10.030'), sites: ['moon_south_pole'],
+    supports: {
+      en: 'Where the south pole is permanently shadowed and where it is lit for most of the year, the reason Artemis targets its ridges.',
+      ar: 'أين يقع الظل الدائم في القطب الجنوبي وأين تبقى الإضاءة معظم السنة، وهذا سبب اختيار Artemis لحوافه.',
+    },
+  },
+  {
+    id: 'colaprete2010', cite: 'Colaprete et al. (2010)', title: 'Detection of water in the LCROSS ejecta plume',
+    venue: 'Science 330(6003), 463–468', url: doi('10.1126/science.1186986'), sites: ['moon_south_pole'],
+    supports: {
+      en: 'The 2009 LCROSS impact into Cabeus crater threw up water: about 5.6 ± 2.9 % ice by mass in the shadowed regolith.',
+      ar: 'اصطدام LCROSS عام 2009 بفوهة Cabeus أطلق ماءً: نحو 5.6 ± 2.9 % جليد من كتلة التربة في الظل الدائم.',
+    },
+  },
+  {
+    id: 'li2018', cite: 'Li et al. (2018)', title: 'Direct evidence of surface exposed water ice in the lunar polar regions',
+    venue: 'PNAS 115(36), 8907–8912', url: doi('10.1073/pnas.1802345115'), sites: ['moon_south_pole'],
+    supports: {
+      en: 'NASA\'s Moon Mineralogy Mapper found ice exposed at the surface in permanently shadowed craters, patchy and in a small share of them.',
+      ar: 'جهاز Moon Mineralogy Mapper التابع لناسا رصد جليداً مكشوفاً على السطح في الفوهات المظللة دائماً، متقطعاً وفي جزء صغير منها.',
+    },
+  },
 ];
 
 export function referencesFor(...siteIds: string[]): Reference[] {
   return REFERENCES.filter((r) => siteIds.some((id) => r.sites.includes(id)));
+}
+
+export interface SiteSource { label: string; url: string; note?: Localized }
+
+/** Every public source tied to one site: peer-reviewed papers, then the analog programme page. */
+export function sourcesForSite(id: string, programmeSource?: { label: string; url: string }): SiteSource[] {
+  const out: SiteSource[] = referencesFor(id).map((r) => ({ label: `${r.cite}, ${r.title}. ${r.venue}`, url: r.url, note: r.supports }));
+  if (programmeSource && !out.some((o) => o.url === programmeSource.url)) out.push(programmeSource);
+  return out;
 }

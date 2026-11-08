@@ -2,6 +2,7 @@
 numpy>=2.1
 pyyaml>=6.0
 pytest>=8.0
+pillow>=10.0      # image tiles read by analog.scout_ai (tests/test_grid.py)
 
 # Data download / raster processing (Phase 1-2; install when you have Earthdata access)
 # earthaccess>=0.11

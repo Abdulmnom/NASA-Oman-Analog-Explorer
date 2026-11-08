@@ -3,10 +3,11 @@ import { useI18n } from '../i18n';
 import { scoresCsv } from '../lib/analysis';
 import { useDataset } from '../lib/data';
 import { DATA_SOURCES } from '../lib/sources';
-import { REFERENCES } from '../lib/references';
 import { ENV_URL } from '../lib/environment';
 import ContinueExploring from '../components/common/ContinueExploring';
 import PageToc from '../components/common/PageToc';
+import { BENCHMARKS, OMAN_CANDIDATES, ARTEMIS_SOURCES } from '../lib/atlas';
+import { REFERENCES, sourcesForSite } from '../lib/references';
 import type { Provenance } from '../types';
 
 interface UsedRow {
@@ -182,21 +183,16 @@ export default function Sources() {
 
       <h2>{t('sources.papersTitle')}</h2>
       <p className="muted">{t('sources.papersIntro')}</p>
-      {(['site', 'method'] as const).map((kind) => (
-        <div key={kind}>
-          <h3>{t(kind === 'site' ? 'sources.papersSites' : 'sources.papersMethods')}</h3>
-          <ul className="refs">
-            {REFERENCES.filter((r) => (r.kind ?? 'site') === kind).map((r) => (
-              <li key={r.id}>
-                <a href={r.url} target="_blank" rel="noreferrer">{r.cite}</a> — <em>{r.title}</em>.{' '}
-                <span className="muted">{r.venue}</span>
-                <br />
-                <span className="small">{loc(r.supports)}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+      <ul className="refs">
+        {REFERENCES.filter((r) => r.kind === 'method').map((r) => (
+          <li key={r.id}>
+            <a href={r.url} target="_blank" rel="noreferrer">{r.cite}</a> — <em>{r.title}</em>.{' '}
+            <span className="muted">{r.venue}</span>
+            <br />
+            <span className="small">{loc(r.supports)}</span>
+          </li>
+        ))}
+      </ul>
 
       <h2>{t('sources.candidatesTitle')}</h2>
       <div className="table-wrap">
@@ -225,6 +221,40 @@ export default function Sources() {
       </div>
       <h2>{t('sources.mapsTitle')}</h2>
       <p>{t('sources.mapsText')}</p>
+
+      <h2>{t('sources.siteTable')}</h2>
+      <p className="muted">{t('sources.siteTableText')}</p>
+      <div className="site-source-groups">
+        {([
+          ['explorer.groupOman', [...data.earth_sites, ...(data.benchmarks ?? []).filter((b) => b.role === 'candidate')]],
+          ['explorer.groupTargets', data.targets],
+          ['explorer.groupWorld', (data.benchmarks ?? []).filter((b) => b.role === 'benchmark')],
+        ] as const).map(([key, list]) => (
+          <div key={key} className="panel">
+            <h3>{t(key)}</h3>
+            <ul className="site-source-list">
+              {list.map((site) => {
+                const atlas = [...BENCHMARKS, ...OMAN_CANDIDATES].find((a) => a.id === site.id);
+                const refs = sourcesForSite(site.id, atlas?.source ?? (site.id === 'moon_south_pole' ? ARTEMIS_SOURCES[0] : undefined));
+                return (
+                  <li key={site.id}>
+                    <Link to={`/site/${site.id}`}><span className={`dot ${site.body}`} /> {loc(site.name)}</Link>
+                    {refs.length ? (
+                      <ul>
+                        {refs.map((r) => (
+                          <li key={r.url}><a href={r.url} target="_blank" rel="noreferrer">{r.label}</a></li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="muted small">{t('sources.dataOnly')}</p>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
       <ContinueExploring from="sources" />
     </div>
   );

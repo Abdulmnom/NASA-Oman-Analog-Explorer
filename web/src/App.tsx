@@ -11,6 +11,8 @@ import About from './pages/About';
 import Atlas from './pages/Atlas';
 import Present from './pages/Present';
 import SiteDetail from './pages/SiteDetail';
+import Scout from './pages/Scout';
+import Log from './pages/Log';
 import Sources from './pages/Sources';
 
 /** Old /compare?earth=..&target=.. links open the Compare tab of the Explorer. */
@@ -47,6 +49,8 @@ export default function App() {
           <Route path="mission" element={<Mission />} />
           <Route path="about" element={<About />} />
           <Route path="atlas" element={<Atlas />} />
+          <Route path="scout" element={<Scout />} />
+          <Route path="log" element={<Log />} />
           <Route path="*" element={<Home />} />
         </Route>
       </Routes>
