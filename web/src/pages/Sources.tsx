@@ -3,6 +3,7 @@ import { useI18n } from '../i18n';
 import { scoresCsv } from '../lib/analysis';
 import { useDataset } from '../lib/data';
 import { DATA_SOURCES } from '../lib/sources';
+import { REFERENCES } from '../lib/references';
 import { ENV_URL } from '../lib/environment';
 import ContinueExploring from '../components/common/ContinueExploring';
 import PageToc from '../components/common/PageToc';
@@ -178,6 +179,24 @@ export default function Sources() {
           </tbody>
         </table>
       </div>
+
+      <h2>{t('sources.papersTitle')}</h2>
+      <p className="muted">{t('sources.papersIntro')}</p>
+      {(['site', 'method'] as const).map((kind) => (
+        <div key={kind}>
+          <h3>{t(kind === 'site' ? 'sources.papersSites' : 'sources.papersMethods')}</h3>
+          <ul className="refs">
+            {REFERENCES.filter((r) => (r.kind ?? 'site') === kind).map((r) => (
+              <li key={r.id}>
+                <a href={r.url} target="_blank" rel="noreferrer">{r.cite}</a> — <em>{r.title}</em>.{' '}
+                <span className="muted">{r.venue}</span>
+                <br />
+                <span className="small">{loc(r.supports)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
 
       <h2>{t('sources.candidatesTitle')}</h2>
       <div className="table-wrap">
