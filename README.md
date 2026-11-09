@@ -3,6 +3,8 @@
 **NASA Space Apps Challenge 2026 — Ibra**
 Challenge: *Identify Earth Locations that Analog the Permanent Moon Base Locations and Mars*
 
+**Live site:** https://nasa-oman-analog-explorer.vercel.app · mirror: https://abdulmnom.github.io/NASA-Oman-Analog-Explorer/
+
 An interactive website that compares Omani field sites with Mars landing regions (primary) and the
 lunar south pole (secondary, terrain only), using NASA data and an open, adjustable similarity index.
 Every score comes with a confidence value and every site card lists differences and data limits —
@@ -15,6 +17,35 @@ we never claim a site is "just like Mars".
 | Sharqiya (Wahiba) Sands | Nili Patera dune field | dune form |
 | Dhofar desert (AMADEE-18) | — (all Mars targets) | reference site used to validate the index |
 | Jebel Shams / Wadi Ghul | Lunar south pole (Shackleton rim) | slopes & relief only |
+
+## VEX Scout: screen a whole country before sending a team
+
+Field surveys of analog sites are expensive: every candidate needs a trip. **VEX Scout** (`/#/scout`) screens
+all of Oman first, from free data, and lets anyone fly a virtual drone over the real terrain of any part of it.
+
+1. **Screen.** Oman is split into **449 cells of 0.25° (about 27 km)**; a cell is kept when at least 30 % of it
+   is land inside Oman's border (Natural Earth 1:10m). For every cell, NASADEM (30 m) is averaged to the same
+   463 m scale as the site analysis, and slope, roughness and relief are compared with each Mars and Moon
+   target using the **same code and normalisation** as the site scores (terrain only). The map shows how
+   Mars-like or Moon-like each part of Oman is.
+2. **Second opinion (AI).** A k-nearest-neighbour model learned from Earth places that space agencies and analog
+   programmes already chose (the Atlas benchmarks, plus AMADEE-18 for Mars). It rates each cell on terrain and
+   NASA POWER climate (aridity, dry air, day-night swing) and explains which features fit and which do not.
+3. **Fly.** Pick a cell and a virtual drone flies over its real NASADEM terrain, with satellite imagery,
+   a slope safety view (< 10° safe, 10–25° caution, > 25° hazard), a Jezero-style hazard map, land cover,
+   and Mars colours. Autopilot survey, photos, KML route export and a **Dragonfly mode** that copies the
+   leapfrog plan of NASA's Dragonfly rotorcraft for Titan.
+4. **Decide.** A 2 km scan returns **GO / CONDITIONAL / NO-GO** from four checks: science match (top 15 % pass,
+   top 50 % caution), safe ground (≥ 40 % pass, ≥ 15 % caution), human footprint from ESA WorldCover 10 m
+   (< 1 % pass, < 5 % caution) and distance from Muscat (≤ 450 km pass). Any failure is NO-GO; any caution
+   is CONDITIONAL.
+
+**Cross-check:** the screening never used our site choices, yet the cell around Jebel Shams ranks **#4 of 449**
+for the Moon, the same answer as the full site analysis.
+
+**Honest limits:** the drone is virtual and the screening uses terrain only, so Scout narrows the search; a
+field visit still confirms the result. Code: `analysis/src/analog/grid.py`, `grid_layers.py`,
+`grid_buildings.py`, `scout_ai.py`; web: `web/src/pages/Scout.tsx`, `web/src/components/scout/`.
 
 ## How it works
 

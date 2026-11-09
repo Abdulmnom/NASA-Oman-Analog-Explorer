@@ -22,11 +22,18 @@ Moon grey `#b8c2d6`. Fonts: Inter (EN), IBM Plex Sans Arabic (AR).
 6. **Can we trust it?** — weight sensitivity, AMADEE-18 check (#4 of 5, explained), measured vs missing, shared-absence rule
 7. **Impact and next steps** — mission planners, Oman, open research; field campaign concept; roadmap
 
-## 30-second video script (alternative to slides; add English subtitles)
+## 30-second video script (VEX Scout cut, 26 s; English subtitles burned in)
+
+Recorded from the real website (no stock footage); narration is an AI voice, every visual is a live page.
 
 | Time | Visual | Narration (EN) |
 |---|---|---|
-| 0:00–0:05 | Spinning Earth and Mars from the home page | Where on Earth can we rehearse Mars and the Moon? We are Team VEX from Oman. |
-| 0:05–0:13 | Oman ↔ Mars slider (Samail ↔ Nili Fossae) | We compared five Omani sites with Mars landing regions and the lunar south pole, using eight open NASA datasets. |
-| 0:13–0:22 | Find analogs for a target, then the analog map | Pick any target and the Omani sites are ranked by an open similarity index, with a confidence score and honest gaps. |
-| 0:22–0:30 | Mission concept page, then the logo | The result: a data-backed map of Oman's analog sites, and a field campaign to test them. Oman Analog Explorer. |
+| 0:00–0:05 | Home page: Earth, Moon and Mars rotating | Where in Oman can we rehearse Mars and the Moon? We are Team VEX. |
+| 0:05–0:11 | VEX Scout map switching Mars ↔ Moon | VEX Scout screens all of Oman in four hundred forty nine cells, using open NASA data. |
+| 0:11–0:16 | Drone flight: satellite, then the slope safety lens | A virtual drone flies the real terrain, checking slopes and hazards. |
+| 0:16–0:22 | 2 km scan and its verdict panel | Then it returns GO, CONDITIONAL or NO GO, before any team travels. |
+| 0:22–0:26 | Team card | Oman Analog Explorer. (Card: Team VEX, members, challenge, NASA datasets.) |
+
+A longer 2:20 explainer (VEX Scout first, then the site analysis and the benchmark check) exists for the local
+judges and social media; it is not the submission demo.
+

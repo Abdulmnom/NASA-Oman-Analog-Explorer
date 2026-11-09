@@ -812,7 +812,8 @@
     "skip": "Skip to content",
     "meetTeam": "Meet Team VEX",
     "breadcrumb": "You are here",
-    "back": "Back"
+    "back": "Back",
+    "loading": "Loading…"
   },
   "theme": {
     "toLight": "Switch to light theme",
