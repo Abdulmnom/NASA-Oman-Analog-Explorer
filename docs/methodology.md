@@ -161,6 +161,29 @@ and, where the ground is more than 500 m higher, the standard-atmosphere lapse-r
 Climate is not in the similarity index: that would need an equivalent Mars source (for example the Mars
 Climate Database) and a defensible way to compare Earth and Mars weather.
 
+## 7c. VEX Scout: country-wide screening (terrain only)
+
+VEX Scout applies the terrain part of the index to all of Oman (`analysis/src/analog/grid.py`,
+`web/public/data/oman_grid.json`).
+
+* **Grid:** 0.25° cells (about 27 km); a cell is kept when at least 30 % is land inside Oman's border
+  (Natural Earth admin-0 1:10m v5.1.2). Result: 449 cells.
+* **Terrain:** NASADEM_HGT v001 read on a cell-centred grid and averaged to the common 463 m scale; slope,
+  roughness and relief use `metrics/terrain.py`, and are normalised with the **same ranges** as the site
+  analysis, so a cell score is directly comparable with a site score. Minerals and surface physics are not
+  used at this scale.
+* **AI second opinion** (`scout_ai.py`): k-nearest neighbours over terrain plus NASA POWER climatology
+  (aridity, dry air, day-night swing), trained on the Earth places agencies already chose (Atlas benchmarks;
+  AMADEE-18 for Mars). It is shown next to the rule-based score, never mixed into it.
+* **Drone scan decision:** science match (top 15 % pass, top 50 % caution), share of ground under 10° in a 2 km
+  scan (≥ 40 % pass, ≥ 15 % caution), human footprint = built-up + cropland share in ESA WorldCover 10 m 2021
+  (< 1 % pass, < 5 % caution), distance from Muscat (≤ 450 km pass). Any fail gives NO-GO; any caution
+  gives CONDITIONAL. The slope thresholds (10° and 25°) are our own, not a cited standard.
+* **Check:** without using our site list, the Jebel Shams cell ranks #4 of 449 for the Moon, which agrees with
+  the site analysis.
+* **Limits:** terrain only; the drone and its safety view work on a ~217 m heightmap, so boulders and small
+  obstacles are invisible. Scout narrows the search; it does not replace a field visit.
+
 ## 8. Open questions for the geologist review
 
 1. Should mineralogy weigh more than terrain for the Mars comparison?
